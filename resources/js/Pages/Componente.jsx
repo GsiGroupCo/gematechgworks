@@ -400,7 +400,7 @@ export default function Componente({ ComponentesData, status, error }) {
                   }
                   <Modal
                     isVisible = { ModalDeleteDoc }
-                    onClose   = { () => console.log() }
+                    onClose   = { {} }
                     tittle    = {`ADVERTENCIA`}
                   >
                     <>

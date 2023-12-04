@@ -1,19 +1,14 @@
 
-import React, {useEffect, useState } from 'react'
-import omsIcon from '@/Components/Icons/ots';
-import omsAppbar from '@/Components/UI/Oms/Appbar';
+import React, {useEffect, useState } from 'react' 
 import Caracteristica_target from '@/Components/UI/Activo/Caracteristica_target';
 import ButtonMenu from '@/Components/UI/ButtonMenu';
-import Modal from '@/Components/Panels/Modals/Modal';
-import Actions from '@/Components/UI/Oms/Actions';
+import Modal from '@/Components/Panels/Modals/Modal'; 
 import Panel_general from '@/Components/UI/Panel_general';
 import { Toaster, toast } from 'sonner';
 import ActivoIcon from '@/Components/Icons/activo';
 import { Link } from '@inertiajs/react';
-import DeleteDocument from '@/Components/forms/Oms/Documentos/FormDeleteDocuments/FormDeleteDocuments';
-import EditWork from '@/Components/forms/Oms/FormEditTrabajo/FormEditTrabajo';
-import ActionsWork from '@/Components/UI/Oms/Trabajo/Actions';
-
+import DeleteDocument from '@/Components/forms/Oms/Documentos/FormDeleteDocuments/FormDeleteDocuments'; 
+import ActionsWork from '@/Components/UI/Ots/Trabajo/Actions';
 
 const OTpage = ({ data, error, status, Activos, Responsables, Empresas, ResponsablesOT }) => {
 
@@ -486,7 +481,6 @@ const OTpage = ({ data, error, status, Activos, Responsables, Empresas, Responsa
                                 <div onClick = { () => {
                                     setTaqDocument(data.taqDoc)
                                     setDeleteDocuments(true)
-                                    console.log(data.taqDoc)
                                   }}
                                 className='w-auto h-full bg-red-500 px-4 py-2  text-white hover:bg-red-800 hover:border-white transition duration-700 ease-in-out cursor-pointer'>
                                   Eliminar

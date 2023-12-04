@@ -6,17 +6,6 @@ import { useForm } from "@inertiajs/react";
 
 
 const DeleteCertificacion = ({ doc_id, onClose, status, error }) =>  {
-
-  console.log(status)
-  
-  useEffect(() => {
-    if(status){
-      if(status === 'Documento eliminado correctamente'){
-        console.log('true')
-        onClose()
-      }
-    }
-  }, [status])
   
   const { data, post } = useForm()
 

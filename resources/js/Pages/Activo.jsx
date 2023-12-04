@@ -13,9 +13,10 @@ import Modal from '@/Components/Panels/Modals/Modal';
 import DeleteDocument from '@/Components/forms/Documentos/FormDeleteDocuments/FormDeleteDocuments';
 import DeleteCertificacion from '@/Components/forms/Certificacion/FormDeleteCertificacion/FormDeleteCertificacion';
 import CheckIcon from '@/Components/Icons/check';
+import Actions from '@/Components/UI/Activo/Actions';
 
 const ActivoPage= ({ Activo, Activos, Areas, oms, Empresas, status, error, Caracteristicas, Tipo, Responsables, Mantenimientos, Componentes }) => {
-
+    
   useEffect(() => {
     if(status){
       toast.success(status)
@@ -319,18 +320,6 @@ const ActivoPage= ({ Activo, Activos, Areas, oms, Empresas, status, error, Carac
       "estado"     : PanelComponentes
   }]
 
-  const Format_Excel_Buttons_List = [{  
-    "id"         : '0',
-    "label"      : "Ficha de Activo",
-    "icon"       : <DownloadIcon color="#FFFFFF" height="25px" width="25px" />,
-    function     : () => console.log('Excel'),
-  },{
-    "id"         : '1',
-    "label"      : "Ficha Tecnica",
-    "icon"       : <DownloadIcon color="#FFFFFF" height="25px" width="25px" />,
-    "function"   : () => console.log('Excel'),
-  }]
-  
   const ActividadesData = [];
   Activo.forEach(Activo => {
     Activo.mantenimientos.forEach(data => {
@@ -448,7 +437,6 @@ const ActivoPage= ({ Activo, Activos, Areas, oms, Empresas, status, error, Carac
         }
         if(fechaActual === fechaActualMinus1){
           data.estado = 'A 1 MES DE CADUCAR'
-          console.log(data.estado)
         }
       }
       CertificacionesData.push({
@@ -717,7 +705,19 @@ const ActivoPage= ({ Activo, Activos, Areas, oms, Empresas, status, error, Carac
         functionActions  = { Enabled_Actions }
         functionFormats  = { Enabled_Formats }
         setAcctionState  = { setModalActions }
-        childrenAcction  = { <>asd</> }
+        childrenAcction  = { 
+          <Actions 
+            Activo={Activo} 
+            Activos={Activos} 
+            Areas={Areas} 
+            Caracteristicas={Activo[0].caracteristicas} 
+            Componentes={Componentes} 
+            Empresas={Empresas} 
+            Mantenimientos={Mantenimientos} 
+            Responsables={Responsables} 
+            Tipo={Tipo} 
+          /> 
+        }
         childrenFormats  = { <>asd</> }
         acctions         = { ModalActions }
         formats          = { ModalFormats }

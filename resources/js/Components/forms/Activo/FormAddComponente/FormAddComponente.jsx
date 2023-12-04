@@ -18,7 +18,6 @@ const FormAddComponente = ({ taqActivos, onClose, Componentes }) =>  {
     onSubmit: async (formValue) => {
       data.taqActivos    = taqActivos, 
       data.taqComponente = Componente,
-      console.log(data)
       post('/componente/activo')
       onClose()
     }

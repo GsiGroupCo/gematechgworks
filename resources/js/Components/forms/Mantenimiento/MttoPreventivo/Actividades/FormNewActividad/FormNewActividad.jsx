@@ -18,7 +18,6 @@ const NewActMttoPrev = ({ onClose, Responsables, taqmttActivo }) =>  {
       data.taqresponsable = formValue.Responsable
       data.ultimomtto     = formValue.UltimoMtto
       data.taqmttActivo   = taqmttActivo
-      console.log(data)
       post('/act/prev/activo/store')
       onClose();
     }

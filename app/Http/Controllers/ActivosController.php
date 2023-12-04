@@ -90,13 +90,20 @@ class ActivosController extends Controller
                         'Mantenimientos_Preventivos',
                         'Mantenimientos_Correctivos',
                         'Componente'
-                    )->where('taqActivos','LIKE',$activo)->get()
+                    )->where('taqActivos','LIKE',$activo)->get(),
+                    "Activos" => activos::all(),
+                    "Areas" => area::all(),
+                    "oms" => om::all(),
+                    "Empresas" => empresas::all(),
+                    "Componentes" => componentes::all(),
+                    "Tipo" => tipos_activo::all(),
+                    "Responsables" => responsable::all(),
+                    "Mantenimientos" => mantenimientos::all(),
                 ]); 
             }else{
                 return redirect()->route('home') -> with('error', 'Activo no encontrado');
             }
-        } catch (\Throwable $th) {
-            dd($th); 
+        } catch (\Throwable $th) {  
             return redirect()->route('home') -> with('error', 'Problema encontrando activo');
         }
         

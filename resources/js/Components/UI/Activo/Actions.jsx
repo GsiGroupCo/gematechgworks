@@ -2,8 +2,7 @@ import FormCaracteristica from "@/Components/forms/Activo/Caracteristica/FormCar
 import CaracteristicaList from "@/Components/forms/Activo/Caracteristica/FormListCaracteristica";
 import FormAddOT from "@/Components/forms/Activo/FormAddOT/FormAddOT";
 import FormCloneActivo from "@/Components/forms/Activo/FormCloneActivo/FormCloneActivo";
-import FormEditandoActivo from "@/Components/forms/Activo/FormEditActivo/FormEditActivo";
-import FormMovimiento from "@/Components/forms/Activo/FormCloneActivo/FormMovimiento/FormMovimiento";
+import FormEditandoActivo from "@/Components/forms/Activo/FormEditActivo/FormEditActivo"; 
 import FormMttoCorrectivo from "@/Components/forms/Activo/FormMttoCorrectivo/FormMttoCorrectivo";
 import FormMttoPreventivo from "@/Components/forms/Mantenimiento/MttoPreventivo/FormNewMttoPreventivo/FormNewMttoPreventivo";
 import FormCertificacion from "@/Components/forms/Certificacion/FormCertificacion/FormCertificacion";
@@ -33,7 +32,6 @@ const  Actions = ({
     const [EditActivo, setEditActivo]                 = useState(false)
     const [cloneActivo, setcloneActivo]               = useState(false)
     const [ComponenteAdd, setComponenteAdd]           = useState(false)
-    const [Movimientos, setMovimientos]               = useState(false)
     const [MttoCorrectivo, setMttoCorrectivo]         = useState(false)
     const [MttoPreventivo, setMttoPreventivo]         = useState(false)
     
@@ -51,25 +49,6 @@ const  Actions = ({
             setAddCertificacion(false)
             setAcctions(false)
             setAddDocument(true)
-            setMovimientos(false)
-        }
-    }
-
-    function ShowAddMtto(){
-        if(AddMtto){
-            ShowAcctions();
-        }else{
-            setAddCaracteristica(false)
-            setEditCaracteristica(false)
-            setEditActivo(false)
-            setMttoCorrectivo(false)
-            setMttoPreventivo(false)
-            setAddCertificacion(false)
-            setcloneActivo(false)
-            setAcctions(false)
-            setAddDocument(false)
-            setMovimientos(false)
-            setAddMtto(true)
         }
     }
 
@@ -86,7 +65,6 @@ const  Actions = ({
             setAddDocument(false)
             setComponenteAdd(false)
             setcloneActivo(false)
-            setMovimientos(false)
             setAcctions(false)
             setAddCaracteristica(true)
         }
@@ -106,7 +84,6 @@ const  Actions = ({
             setMttoPreventivo(false)
             setMttoCorrectivo(false)
             setAcctions(false)
-            setMovimientos(false)
             setEditCaracteristica(true)
         }
     }
@@ -118,7 +95,6 @@ const  Actions = ({
             setAddMtto(false)
             setAddDocument(false)
             setcloneActivo(false)
-            setMovimientos(false)
             setAddCertificacion(false)
             setAddCaracteristica(false)
             setComponenteAdd(false)
@@ -141,7 +117,6 @@ const  Actions = ({
             setComponenteAdd(false)
             setMttoCorrectivo(false)
             setMttoPreventivo(false)
-            setMovimientos(false)
             setEditCaracteristica(false)
             setAcctions(false)
             setEditActivo(false)
@@ -159,31 +134,11 @@ const  Actions = ({
             setEditCaracteristica(false)
             setAcctions(false)
             setComponenteAdd(false)
-            setMovimientos(false)
             setEditActivo(false)
             setMttoPreventivo(false)
             setMttoCorrectivo(false)
             setcloneActivo(false)
             setAddCertificacion(true)
-        }
-    }
-
-    function ShowMovimiento(){
-        if(Movimientos){
-            ShowAcctions();
-        }else{
-            setAddMtto(false)
-            setAddDocument(false)
-            setAddCaracteristica(false)
-            setMttoCorrectivo(false)
-            setComponenteAdd(false)
-            setEditCaracteristica(false)
-            setMttoPreventivo(false)
-            setAcctions(false)
-            setEditActivo(false)
-            setcloneActivo(false)
-            setAddCertificacion(false)
-            setMovimientos(true)
         }
     }
 
@@ -201,7 +156,6 @@ const  Actions = ({
             setEditActivo(false)
             setcloneActivo(false)
             setAddCertificacion(false)
-            setMovimientos(false)
             setMttoCorrectivo(true)
         }
     }
@@ -219,7 +173,6 @@ const  Actions = ({
             setComponenteAdd(false)
             setcloneActivo(false)
             setAddCertificacion(false)
-            setMovimientos(false)
             setMttoCorrectivo(false)
             setMttoPreventivo(true)
         }
@@ -233,7 +186,6 @@ const  Actions = ({
         setMttoCorrectivo(false)
         setEditCaracteristica(false)
         setEditActivo(false)
-        setMovimientos(false)
         setAddCertificacion(false)
         setComponenteAdd(false)
         setcloneActivo(false)
@@ -253,7 +205,6 @@ const  Actions = ({
             setEditActivo(false)
             setcloneActivo(false)
             setAddCertificacion(false)
-            setMovimientos(false)
             setMttoCorrectivo(false)
             setMttoPreventivo(false)
             setComponenteAdd(true)
@@ -271,16 +222,6 @@ const  Actions = ({
         "label"      : "Agregar Certificacion",
         "estate"     : 1,
         "function"   : ShowAddCertifiacion,
-    },{
-        "id"         : "6492301286",
-        "label"      : "Agregar OT",
-        "estate"     : 1,
-        "function"   : ShowAddMtto,
-    },{
-        "id"         : "64901286",
-        "label"      : "Agregar Movimiento",
-        "estate"     : 1,
-        "function"   : ShowMovimiento,
     },{
         "id"         : "47228",
         "label"      : "Agregar Mantenimiento Preventivo",
@@ -376,7 +317,6 @@ const  Actions = ({
                     />
                 ) : null
             }
-            
             {
                 EditActivo ? (
                     <FormEditandoActivo 
@@ -394,17 +334,7 @@ const  Actions = ({
                          Empresa = { Empresas }
                     />
                 ) : null
-            }
-            {
-                Movimientos ? (
-                    <FormMovimiento
-                        taqActivos  = { Activo[0].taqActivos } 
-                        Empresas = { Empresas } 
-                        oms = { oms } 
-                        onClose = { onClose }
-                    />
-                ) : null
-            }
+            } 
             {
                 MttoCorrectivo ? (
                     <FormMttoCorrectivo 

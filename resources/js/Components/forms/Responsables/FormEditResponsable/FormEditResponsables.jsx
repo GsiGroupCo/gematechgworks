@@ -27,7 +27,6 @@ const EditResponsable = ({ onClose, status, Cargos, Responsable }) =>  {
       data.segundoapellido  = formValue.segundoapellido
       data.id_cargo         = formValue.id_cargo
       data.Image            = file
-      console.log(data)
       post('/responsables/update')
       onClose()
     }

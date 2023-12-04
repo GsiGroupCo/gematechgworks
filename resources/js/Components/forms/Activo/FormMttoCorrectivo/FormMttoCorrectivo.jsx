@@ -6,7 +6,7 @@ import { initialValue, validationSchema } from './FormMttoCorrectivo.form';
 import { useForm } from '@inertiajs/react';
 
 const FormMttoCorrectivo = ({ Areas, taqActivo, onClose, Responsables }) =>  {
-  console.log(taqActivo)
+  
   const { data, post, wasSuccessful } = useForm();
 
   const formik = useFormik({

@@ -7,8 +7,6 @@ import FormEditandoHerramienta from "@/Components/forms/Herramientas/FormEditHer
 import { useState } from "react";
 
 const  Actions = ({ Responsables, onClose, Caracteristicas, Herramienta, Categorias, Empresas }) => {
-
-    console.log(Categorias)
     
     const [Acctions, setAcctions]                      = useState(true)
     const [Actividad, setActividad]                    = useState(false)

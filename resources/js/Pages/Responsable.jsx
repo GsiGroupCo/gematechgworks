@@ -375,7 +375,7 @@ const ResponsablePage = ({ Responsable, status, error, Cargos }) => {
         urlImage = { Responsable[0].urlImage }
         empresa = { Responsable[0].nombre_empresa }
         cargo = { Responsable[0].cargo }
-        functionActions = { () => console.log('asdkasd') }
+        functionActions = { {} }
       />
       <div className='w-full h-auto  flex justify-center items-center justify-items-center gap-3'>
         <div className='w-full h-full flex justify-center items-start justify-items-center'>

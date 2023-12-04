@@ -8,8 +8,6 @@ import Actions from './Actions';
 
 const HerramientaAppbar = ({ Herramienta, Responsables, Caracteristicas, Categorias, Empresas }) => {
 
-  console.log(Categorias)
-  
   const [ModalImage, setModalImage] = useState(false)
   const [ModalActions, setModalActions] = useState(false)
 

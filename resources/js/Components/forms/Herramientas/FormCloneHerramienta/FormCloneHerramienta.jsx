@@ -20,7 +20,6 @@ const FormCloneHerramienta = ({ Herramienta, onClose, Empresa, Categoria }) =>  
       data.area       = formValue.area
       data.horasuso   = formValue.horasuso
       data.Image      = file
-      console.log(data)
       post('/herramienta/clone')
       onClose()
     }

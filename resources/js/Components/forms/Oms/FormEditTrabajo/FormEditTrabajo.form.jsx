@@ -2,8 +2,6 @@ import * as Yup from 'yup';
 
 export function initialValue(TrabajoData) {
 
-  console.log(TrabajoData.taqresponsable)
-
   return {
     taqresponsable :TrabajoData.taqresponsable,
    taqom          :TrabajoData.taqot,

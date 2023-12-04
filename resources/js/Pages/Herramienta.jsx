@@ -147,14 +147,7 @@ const empresaPage = ({ herramienta, Responsables, status, error, Caracteristicas
     data.origin = 'HerramientaPage'
     post(`/movimiento/herramienta/end`)
   }
-
-  const Format_Excel_Buttons_List = [{  
-    "id"         : '491168',
-    "label"      : "Ficha de Herramienta",
-    "icon"       : <DownloadIcon color="#FFFFFF" height="25px" width="25px" />,
-    function     : () => console.log('Excel'),
-  }]
-
+  
   const Data = [{  
     "id"         : '573588',
     "nombre"     : "TAQ",

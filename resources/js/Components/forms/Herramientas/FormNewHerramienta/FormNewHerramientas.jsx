@@ -5,12 +5,6 @@ import { initialValue, validationSchema } from './FormNewHerramientas.form';
 import { useForm } from '@inertiajs/react'
 
 const NewHerramienta = ({ onClose, status, Empresa, Categoria }) =>  {
-  console.log(Categoria)
-  useEffect(() => {
-    if(status === 'Herramienta Registrada Correctamente'){
-      onClose()
-    }
-  }, [status]);
 
   const { data, post } = useForm()
   const [file, setFile] = useState();

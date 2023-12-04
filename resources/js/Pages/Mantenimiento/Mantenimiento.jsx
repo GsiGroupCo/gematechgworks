@@ -46,7 +46,6 @@ export default function Mantenimiento({ Mtto, Responsables, status, error }) {
 
   function Edit(actividadData){
     setModalShow(true)
-    console.log(actividadData)
     setActividadSelected({
       actividad_id   :actividadData.actividad_id,
       nombre         :actividadData.nombre,
@@ -56,7 +55,6 @@ export default function Mantenimiento({ Mtto, Responsables, status, error }) {
       tipofrecuencia :actividadData.tipofrecuencia,
       taqManto       :actividadData.taqManto
     })
-    console.log(ActividadSelected)
   }
 
   function Delete(actividadData){

@@ -20,7 +20,6 @@ const FormMttoHoras = ({ Areas, taqActivo, Mantenimiento, Responsables }) =>  {
       data.taqresponsable = formValue.Responsable
       data.fecha          = formValue.Fecha 
       post(`/mtto/prev/activo`)
-      console.log(wasSuccessful)
       if(wasSuccessful){
         onclose()
       }

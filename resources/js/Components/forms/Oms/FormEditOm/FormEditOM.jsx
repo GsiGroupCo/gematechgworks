@@ -94,7 +94,6 @@ const EditOt  = ({ onClose, Responsables, Empresa, Ot }) =>  {
       for (const key in checkboxValues) {
         data[key] = checkboxValues[key];
       }
-      console.log(data)
       post('/oms/update')
       onClose()
     }

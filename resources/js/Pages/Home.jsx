@@ -299,7 +299,6 @@ import UploadDocument from '@/Components/forms/Documentos/FormUploadDocuments/Fo
           setPanel_Responsables(false)
           setPanelRigs(false)
           setPanel_Componentes(true) 
-          console.log(!Panel_Componentes)
           localStorage.setItem('PanelState', JSON.stringify({
             State:'Panel_Componentes'
           }));   

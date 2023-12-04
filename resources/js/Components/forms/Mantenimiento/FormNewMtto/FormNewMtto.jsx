@@ -16,7 +16,6 @@ const NewMtto = ({ onClose }) =>  {
       data.Nombre      = formValue.Nombre
       data.Descripcion = formValue.Descripcion
       data.Tipo        = formValue.Tipo
-      console.log(data)
       post('/mantenimiento/store')
       onClose()
     }

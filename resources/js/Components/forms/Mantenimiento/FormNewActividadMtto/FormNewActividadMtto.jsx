@@ -19,7 +19,6 @@ const NewActMtto = ({ onClose, Mantenimiento }) =>  {
       data.frecuencia     = formValue.frecuencia
       data.tipofrecuencia = Mantenimiento[0].tipe
       data.taqManto       = Mantenimiento[0].taqManto
-      console.log(data)
       post('/actividades/mantenimiento/store')
       onClose();
     }

@@ -24,7 +24,6 @@ const CaracteristicaList = ({ onClose, Caracteristicas }) => {
   function Delete(CaracteristicaData){
     data.taqHer = CaracteristicaData.taqHer
     data.taqotro = CaracteristicaData.taqotro
-    console.log(data)
     post(`/caracteristica/delete/herramienta`)
     onClose()
   }

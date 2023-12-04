@@ -128,7 +128,6 @@ export default function MantenimientoCorr({ Mtto, Responsables }) {
   const ActividadesFinalizadas = [];
   Mtto.forEach(Mtto => {
     Mtto.actividades__finalizadas.forEach(data => {
-      console.log(data)
       ActividadesFinalizadas.push({
         taqActCorrAct  : data.taqActCorrAct,
         taqmttActivo   : data.taqmttActivo,

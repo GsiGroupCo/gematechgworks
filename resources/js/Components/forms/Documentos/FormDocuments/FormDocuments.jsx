@@ -20,7 +20,6 @@ const FormDocument = ({ taqActivos, onClose }) =>  {
         data[propertyName] = file;
       });
       data.CantImages = files.length;
-      console.log(data)
       post('/document/activo')
       onClose();
     }
