@@ -130,7 +130,7 @@ const empresaPage = ({ Empresa, status, error, Responsables, CategoriasActivo, C
     <div>
       <EmpresaAppbar
         nombre  = { Empresa[0].nombre }
-        link    = {`https://gematech.co/storage/Empresas/${Empresa[0].urlImage}`}
+        link    = {`https://gworks.gematech.co/storage/Empresas/${Empresa[0].urlImage}`}
         Empresa = { Empresa }
         Resposanble = { Responsables }
         CategoriasActivo = { CategoriasActivo }
@@ -220,7 +220,7 @@ const empresaPage = ({ Empresa, status, error, Responsables, CategoriasActivo, C
                       EmpleadosFiltradosData ? (
                           EmpleadosFiltradosData.map( (data) => (
                             <div key = { data.taqresponsable } className='w-full h-auto flex justify-start items-center gap-3 border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                              <img loading="lazy" src={`https://gematech.co/storage/${data.urlImage}`} alt="image responsable" className='w-[60px] h-[60px] rounded-full object-cover border border-white' />
+                              <img loading="lazy" src={`https://gworks.gematech.co/storage/${data.urlImage}`} alt="image responsable" className='w-[60px] h-[60px] rounded-full object-cover border border-white' />
                               { data.responsable }
                             </div>
                           ))

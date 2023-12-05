@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "@inertiajs/react";
 
 
-const FormCertificacion = ({ taqActivos, onClose }) =>  {
+const FormCertificacion = ({ Taq, route, onClose }) =>  {
   
 
   const [files, setFiles] = useState([]);
@@ -16,7 +16,7 @@ const FormCertificacion = ({ taqActivos, onClose }) =>  {
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      data.taqActivos         = taqActivos;
+      data.Taq = Taq;
       data.fechacertificacion = formValue.fechacertificacion;
       data.frecuencia         = formValue.frecuencia;
       files.forEach((file, index) => {
@@ -24,7 +24,7 @@ const FormCertificacion = ({ taqActivos, onClose }) =>  {
         data[propertyName] = file;
       });
       data.CantImages = files.length;
-      post('/certificacion/store')
+      post(`${route}`)
       onClose()
     }
   })

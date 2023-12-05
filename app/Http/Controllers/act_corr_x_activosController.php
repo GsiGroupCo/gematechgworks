@@ -81,7 +81,6 @@ class act_corr_x_activosController extends Controller
             act_corr_x_activo::where('taqActCorrAct','LIKE',$request -> taqActCorrAct) -> delete();
             return redirect()->route('mtto.corr.activo.show', ['taqmttActivo' => $request -> taqmttActivo]) -> with('status', 'Actividad finalizada');
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()->route('mtto.corr.activo.show', ['taqmttActivo' => $request -> taqmttActivo]) -> with('error', 'Problema finalizando actividad');
         }
     }

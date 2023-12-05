@@ -17,7 +17,7 @@ const FormCaracteristica = ({ onClose, taqActivos }) =>  {
       data.taqActivos = taqActivos
       data.nombre     = formValue.Nombre
       data.value      = formValue.value
-      post('/caracteristica/store')
+      post('/caracteristica/activo/store')
       onClose()
     }
   })

@@ -1128,7 +1128,7 @@ const ActivoPage= ({ Activo, Activos, Areas, oms, Empresas, status, error, Carac
         tittle = {DocSelected.nombre} 
       >
         <div className='w-[900px] h-[800px]'>
-          <embed src={`https://gematech.co/storage/Activos/${DocSelected.url}`} type="application/pdf" className='w-full h-full' />
+          <embed src={`https://gworks.gematech.co/storage/Activos/${DocSelected.url}`} type="application/pdf" className='w-full h-full' />
         </div>
       </Modal>
       <Modal
@@ -1137,7 +1137,7 @@ const ActivoPage= ({ Activo, Activos, Areas, oms, Empresas, status, error, Carac
         tittle = { CertSelected.nombre} 
       >
         <div className='w-[900px] h-[800px]'>
-          <embed src={`https://gematech.co/storage/Certificaciones/${CertSelected.url}`} type="application/pdf" className='w-full h-full' />
+          <embed src={`https://gworks.gematech.co/storage/Certificaciones/${CertSelected.url}`} type="application/pdf" className='w-full h-full' />
         </div>
       </Modal>
       <Toaster richColors position='top-center'/>

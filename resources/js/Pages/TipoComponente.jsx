@@ -27,14 +27,14 @@ export default function TipoComponente({ Categoria, status, error }) {
                         (
                             data.urlImage != 'default-image.jpg' ? (
                                 <CardGeneral
-                                    link = {`https://gematech.co/storage/Componentes/${data.taqActivos}/${data.urlImage}`}
+                                    link = {`https://gworks.gematech.co/storage/Componentes/${data.taqActivos}/${data.urlImage}`}
                                      nombre={` ACTIVO: ${data.nombre} - SERIAL: ${data.serial}`}
                                     route={`/componente/${data.taqComponente}`}
                                     key={data.taqComponente}
                                 />
                             ) : (
                                 <CardGeneral
-                                    link = {`https://gematech.co/storage/${data.urlImage}`}
+                                    link = {`https://gworks.gematech.co/storage/${data.urlImage}`}
                                      nombre={` ACTIVO: ${data.nombre} - SERIAL: ${data.serial}`}
                                     route={`/componente/${data.taqComponente}`}
                                     key={data.taqComponente + `_default_image`}

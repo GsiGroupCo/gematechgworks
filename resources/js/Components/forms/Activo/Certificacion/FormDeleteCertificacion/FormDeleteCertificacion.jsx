@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "@inertiajs/react";
 
 
-const DeleteCertificacion = ({ doc_id, onClose, status, error }) =>  {
+const DeleteCertificacion = ({ doc_id, onClose }) =>  {
   
   const { data, post } = useForm()
 
@@ -15,7 +15,8 @@ const DeleteCertificacion = ({ doc_id, onClose, status, error }) =>  {
     validateOnChange: false,
     onSubmit: async () => {
       data.doc_id = doc_id;
-      post('/documento/delete/')
+      post('/certificacion/activos/delete')
+      onClose()
     }
   })
 

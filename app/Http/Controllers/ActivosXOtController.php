@@ -31,7 +31,7 @@ class ActivosXOtController extends Controller
                 }
             }
         } catch (\Throwable $th) {
-            dd($th);
+            
             if($request -> from === 'activos'){
                 return redirect() -> route('activos.show', ['activos' => $request->taqActivos]) -> with('error', 'No se puede asignar dos (2) veces una OT al mismo activo');
             }else if($request -> from === 'ot'){

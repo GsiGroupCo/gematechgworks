@@ -7,11 +7,10 @@ use Inertia\Inertia;
 use App\Models\cargos;
 use App\Models\empresas;
 use App\Models\responsable;
-use App\Models\tipos_activo;
-use App\Models\tipos_herramienta;
+use App\Models\tipos_activo; 
 use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\File;
+ 
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image; 
 
 class EmpresasController extends Controller
@@ -24,9 +23,13 @@ class EmpresasController extends Controller
                 $image = $request->file('Image'); 
                 if ($image != null) { 
                     $filename = $request->file('Image')->getClientOriginalName();  
-                    $ruta = "/home/gematech/public_html/storage/Empresas/".$request->taqempresa."/"; 
                     $compressedImage = Image::make($image)->encode('jpg', 80); 
-                    $request->File('Image')->move($ruta, $filename, $compressedImage->stream());
+                    $rutaDestino = "Empresas/{$request->taqempresa}";
+                    $rutaArchivo = "Empresas/{$request->taqempresa}/{$filename}";
+                    if (!Storage::disk('public')->exists($rutaDestino)) {
+                        Storage::disk('public')->makeDirectory($rutaDestino, 0777, true, true);
+                    }
+                    Storage::disk('public')->put($rutaArchivo, $compressedImage->stream());  
                     empresas::create([
                         'nombre'     => $request -> nombre,
                         'taqempresa' => $request -> taqempresa,
@@ -69,7 +72,7 @@ class EmpresasController extends Controller
                 return redirect()->route('home') -> with('error', 'Empresa no encontrada');
             }
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('home') -> with('error', 'Problema encontrando empresa'); 
         }
     }
@@ -77,14 +80,15 @@ class EmpresasController extends Controller
     public function update(Request $request)
     {
         try {
-            if($request -> File('Image')!=null){
-                $activo = empresas::where('taqempresa','LIKE',$request->taqempresa)->get();
-                $filePath = public_path("/storage/{$activo[0]['urlImage']}");
-                if (File::exists($filePath)) {
-                    File::delete($filePath);
+            if($request -> File('Image')!=null){  
+                $image = $request -> file('Image');
+                $filename = $image->getClientOriginalName();  
+                $compressedImage = Image::make($image)->encode('jpg', 80);  
+                $rutaArchivo = "Empresas/{$request->taqempresa}/{$filename}";
+                if (!Storage::disk('public')->exists($rutaArchivo)) {
+                    Storage::disk('public')->delete($rutaArchivo);
                 }
-                $filename = $request->file('Image')->getClientOriginalName();
-                $request->File('Image')->move(public_path()."/storage/".$request->taqempresa."/", $filename);
+                Storage::disk('public')->put($rutaArchivo, $compressedImage->stream()); 
                 empresas::where('taqempresa','LIKE',$request -> taqempresa)-> update([
                     'nombre'       => $request -> nombre,
                     'urlImage'     => $filename,
@@ -96,8 +100,7 @@ class EmpresasController extends Controller
                 ]);
                 return redirect()->route('empresa.show', ['empresa' => $request->taqempresa]) -> with('status', 'Empresa Editada Correctamente');
             }
-        } catch (\Throwable $th) {
-            dd($th);
+        } catch (\Throwable $th) { 
             return redirect()->route('empresa.show', ['empresa' => $request->taqempresa]) -> with('error', 'Problema  Editado Empresa');
         }
     }

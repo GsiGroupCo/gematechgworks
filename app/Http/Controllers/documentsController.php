@@ -25,7 +25,7 @@ class documentsController extends Controller
             }
             return redirect()->route('home')->with('status', 'Documento Registrado Correctamente');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('home')->with('error', 'Problema Registrando Activo');
         }
     }

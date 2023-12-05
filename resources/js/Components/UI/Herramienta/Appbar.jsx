@@ -28,9 +28,9 @@ const HerramientaAppbar = ({ Herramienta, Responsables, Caracteristicas, Categor
           <div className='hidden sm:flex w-auto h-full z-10 bg-white  rounded-md overflow-hidden border-2 border-white order-1'>
             {
               Herramienta[0].urlImage === 'default-image.jpg' ? (
-                <img onClick = { () => setModalImage(true) } loading="lazy" src={`https://gematech.co/storage/default-image.jpg`} alt={`imagen de ${Herramienta[0].nombre}`} className = ' w-full h-full object-fill hover:cursor-pointer' />
+                <img onClick = { () => setModalImage(true) } loading="lazy" src={`https://gworks.gematech.co/storage/default-image.jpg`} alt={`imagen de ${Herramienta[0].nombre}`} className = ' w-full h-full object-fill hover:cursor-pointer' />
               ) : (
-                <img onClick = { () => setModalImage(true) } loading="lazy" src={`https://gematech.co/storage/Herramientas/${Herramienta[0].taqHer}/${Herramienta[0].urlImage}`} alt={`imagen de ${Herramienta[0].nombre}`} className = 'hover:cursor-pointer w-full h-full object-fill ' />
+                <img onClick = { () => setModalImage(true) } loading="lazy" src={`https://gworks.gematech.co/storage/Herramientas/${Herramienta[0].taqHer}/${Herramienta[0].urlImage}`} alt={`imagen de ${Herramienta[0].nombre}`} className = 'hover:cursor-pointer w-full h-full object-fill ' />
               ) 
             }
           </div>
@@ -54,9 +54,9 @@ const HerramientaAppbar = ({ Herramienta, Responsables, Caracteristicas, Categor
         >
           {
             Herramienta[0].urlImage === 'default-image.jpg' ? (
-              <img src={`https://gematech.co/storage/default-image.jpg`} alt={`imagen de ${Herramienta[0].nombre}`} className = ' w-full h-full max-h-[500px] object-fill ' loading="lazy" />
+              <img src={`https://gworks.gematech.co/storage/default-image.jpg`} alt={`imagen de ${Herramienta[0].nombre}`} className = ' w-full h-full max-h-[500px] object-fill ' loading="lazy" />
             ) : (
-              <img src={`https://gematech.co/storage/Herramientas/${Herramienta[0].taqHer}/${Herramienta[0].urlImage}`} alt={`imagen de ${Herramienta[0].nombre}`} loading="lazy" className = 'max-h-[700px]  w-full h-full object-fill ' />
+              <img src={`https://gworks.gematech.co/storage/Herramientas/${Herramienta[0].taqHer}/${Herramienta[0].urlImage}`} alt={`imagen de ${Herramienta[0].nombre}`} loading="lazy" className = 'max-h-[700px]  w-full h-full object-fill ' />
             ) 
           }
         </Modal>

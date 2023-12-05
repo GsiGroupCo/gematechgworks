@@ -24,7 +24,7 @@ class movactivosController extends Controller
             ]);
             return redirect()->route('activos.show', ['activos' => $request -> taqActivos]) ->with('status', 'Movimiento Registrado');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('activos.show', ['activos' => $request -> taqActivos]) ->with('error', 'Problem Registrando Movimiento');
         }
     }

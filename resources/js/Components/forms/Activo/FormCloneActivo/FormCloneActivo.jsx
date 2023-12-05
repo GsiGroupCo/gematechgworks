@@ -22,7 +22,6 @@ const FormCloneActivo = ({ Activo, onClose, Tipo, Empresa }) =>  {
       data.id_tipo     = formValue.Tipo,
       data.nombre      = formValue.Nombre
       data.descripcion = formValue.Descripcion
-      data.dependencia = formValue.Dependencia
       data.serial      = formValue.Serial
       data.horasuso    = formValue.Horas_Uso
       data.Image       = File
@@ -158,50 +157,21 @@ const FormCloneActivo = ({ Activo, onClose, Tipo, Empresa }) =>  {
             }
           </div>
         </div>
-        <div className='w-full flex justify-center items-center gap-3'>
-          <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
-            <div className='w-full h-auto flex gap-2 justify-start items-center'>
-              <label htmlFor="Dependencia" className='font-bold text-black'>
-                Dependencia
-              </label> 
-              <span className='text-red-500 font-bold text-2xl'>
-                *
-              </span>
-            </div>
-            <select
-              name="Dependencia"
-              id="Dependencia"
-              value={formik.values.Dependencia}
-              onChange={formik.handleChange}
-              className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.Dependencia && formik.errors.Dependencia ? 'border-red-500' : 'border-black' }`}
-            >
-              <option value="" disabled > SELECCIONE UNA OPCION </option>
-              <option value="AI"> Activo Interno </option>
-              <option value="AE"> Activo Externo </option>
-              <option value="PS"> Activo Prestacion de Servicio </option>
-            </select>
-            {
-              formik.touched.Dependencia && formik.errors.Dependencia && (
-                <div className="text-red-500 font-bold">{formik.errors.Dependencia}</div>
-              )
-            }
+        <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
+          <div className='w-full h-auto flex gap-2 justify-start items-center'>
+            <label htmlFor="Horas_Uso" className='font-bold text-black'>
+              Horas de Uso
+            </label> 
           </div>
-          <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
-            <div className='w-full h-auto flex gap-2 justify-start items-center'>
-              <label htmlFor="Horas_Uso" className='font-bold text-black'>
-                Horas de Uso
-              </label> 
-            </div>
-            <input 
-              type="number"
-              min={0}
-              name="Horas_Uso"
-              id="Horas_Uso"
-              value={formik.values.Horas_Uso}
-              onChange={formik.handleChange}
-              className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.Horas_Uso && formik.errors.Horas_Uso ? 'border-red-500' : 'border-black' }`}
-            />
-          </div>
+          <input 
+            type="number"
+            min={0}
+            name="Horas_Uso"
+            id="Horas_Uso"
+            value={formik.values.Horas_Uso}
+            onChange={formik.handleChange}
+            className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.Horas_Uso && formik.errors.Horas_Uso ? 'border-red-500' : 'border-black' }`}
+          />
         </div>
         <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
           <div className='w-full h-auto flex gap-2 justify-start items-center'>

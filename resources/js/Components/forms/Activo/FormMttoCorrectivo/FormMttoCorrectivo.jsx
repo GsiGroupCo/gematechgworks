@@ -7,7 +7,7 @@ import { useForm } from '@inertiajs/react';
 
 const FormMttoCorrectivo = ({ Areas, taqActivo, onClose, Responsables }) =>  {
   
-  const { data, post, wasSuccessful } = useForm();
+  const { data, post } = useForm();
 
   const formik = useFormik({
     initialValues:initialValue(),

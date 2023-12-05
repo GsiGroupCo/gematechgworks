@@ -33,7 +33,7 @@ class CaracteristicasXActivoController extends Controller
             ]);
             return redirect()->route('activos.show', ['activos' => $request->taqActivos]) -> with('status', 'Caracteristica Editada exitosamente');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('activos.show', ['activos' => $request->taqActivos]) -> with('error', 'Problemas Editando la caracteristica');
         }
     }

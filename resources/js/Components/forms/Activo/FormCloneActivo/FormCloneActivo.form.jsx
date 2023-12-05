@@ -6,7 +6,6 @@ export function initialValue(Activo) {
     taqempresa  :Activo[0].taqempresa,
     Tipo        :Activo[0].id_tipo,
     Nombre      :Activo[0].nombre,
-    Dependencia :Activo[0].dependencia ? Activo[0].dependencia : '',
     Serial      :Activo[0].serial      ? Activo[0].serial      : '',
     Horas_Uso   :Activo[0].horasuso,
     Descripcion :Activo[0].descripcion ? Activo[0].descripcion : '',
@@ -24,7 +23,6 @@ export function validationSchema(initialValues) {
     Nombre: Yup.string().required('El Nombre es requerido'),
     Serial: Yup.string().required('El Serial es requerido'),
     Tipo: Yup.string().required('El Tipo es requerido'),
-    Dependencia:Yup.string().required('La Dependencia es requerida'),
     Imagen:Yup.string()
  });
 }

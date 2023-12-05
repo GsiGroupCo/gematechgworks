@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "@inertiajs/react";
 
 
-const FormDocument = ({ taqActivos, onClose }) =>  {
+const FormDocument = ({ Taq, route, onClose }) =>  {
  
   const [files, setFiles] = useState([]);
   const { data, post } = useForm()
@@ -14,13 +14,13 @@ const FormDocument = ({ taqActivos, onClose }) =>  {
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async () => {
-      data.taqActivos = taqActivos;
+      data.Taq = Taq;
       files.forEach((file, index) => {
         const propertyName = `Image_${index + 1}`;
         data[propertyName] = file;
       });
       data.CantImages = files.length;
-      post('/document/activo')
+      post(`${route}`)
       onClose();
     }
   })

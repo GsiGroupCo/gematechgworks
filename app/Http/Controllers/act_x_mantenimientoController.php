@@ -23,7 +23,6 @@ class act_x_mantenimientoController extends Controller
             ]);
             return redirect()->route('mtto.show', ['taqManto' => $request->taqManto]) -> with('status', 'Actividad agregada');
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()->route('mtto.show', ['taqManto' => $request->taqManto]) -> with('error', 'Problema agregando actividad');
         }
     }
@@ -48,7 +47,6 @@ class act_x_mantenimientoController extends Controller
             act_x_mantenimiento::where('actividad_id','LIKE',$request -> actividad_id )-> delete();
             return redirect() -> route('mtto.show', ['taqManto' => $request->taqManto]) -> with('status', 'Actividad eliminada');
         } catch (\Throwable $th) {
-            dd($th);
             return redirect() -> route('mtto.show', ['taqManto' => $request->taqManto]) -> with('error', 'Problema eliminando actividad');
         }
     }

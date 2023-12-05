@@ -4,9 +4,9 @@ import { useFormik } from "formik";
 import { initialValue, validationSchema } from './FormNewComponente.form';
 import { useForm } from '@inertiajs/react'
 
-const NewComponente = ({ onClose, Empresa, Tipos }) =>  {
+const NewComponente = ({ onClose, Tipos }) =>  {
 
-  const { data, post, errors } = useForm()
+  const { data, post } = useForm()
   const [file, setFile] = useState();
   const formik = useFormik({
     initialValues:initialValue(),

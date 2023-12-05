@@ -37,7 +37,7 @@ class docsHerramientaController extends Controller
             }
             return redirect() -> route('herramientas.show', ['taqHer' => $request->taqHer]) -> with('status', 'Documentos Registrado Correctamente');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect() -> route('herramientas.show', ['taqHer' => $request->taqHer]) -> with('error', 'Problema Registrando Documento');
         }
     }
@@ -58,7 +58,7 @@ class docsHerramientaController extends Controller
             docs_x_herramientas::where('taqDoc','LIKE', $request -> taqDoc)->delete();
             return redirect()->route('herramientas.show', ['taqHer' => $documento[0]['taqHer']]) ->with('status', 'Documento eliminado correctamente');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('herramientas.show', ['taqHer' => $documento[0]['taqHer']]) ->with('error', 'Problema eliminando el documento');
         }
     }

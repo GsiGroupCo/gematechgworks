@@ -13,7 +13,7 @@ import Modal from '@/Components/Panels/Modals/Modal';
 import NewTipeActivo from '@/Components/forms/Categorias/TipoActivo/FormNewTipoActivo/FormNewTipoActivo';
 import NewActivo from '@/Components/forms/Activo/FormNewActivo/FormNewActivo';
 import NewTipeComponente from '@/Components/forms/Categorias/TipoComponentes/FormNewTipoComponentes/FormNewTipoComponentes';
-import NewComponente from '@/Components/forms/Componente/FormNewActivo/FormNewComponente';
+import NewComponente from '@/Components/forms/Componente/FormNewComponente/FormNewComponente';
 import NewResponsable from '@/Components/forms/Responsables/FormNewResponsable/FormNewResponsables'; 
 import NewOm from '@/Components/forms/Oms/FormNewOM/FormNewOM';
 import NewMtto from '@/Components/forms/Mantenimiento/FormNewMtto/FormNewMtto';
@@ -753,14 +753,14 @@ import UploadDocument from '@/Components/forms/Documentos/FormUploadDocuments/Fo
                                                 ActivosFiltrados.map( (data) => (
                                                     data.urlImage != 'default-image.jpg' ? (
                                                         <CardGeneral
-                                                            link = {`http:localhost/storage/Activos/${data.taqActivos}/${data.urlImage}`}
+                                                            link = {`https://gworks.gematech.co/storage/Activos/${data.taqActivos}/${data.urlImage}`}
                                                             nombre={` ACTIVO: ${data.nombre} - SERIAL: ${data.serial}`}
                                                             route={`/activo/${data.taqActivos}`}
                                                             key={data.taqActivos}
                                                         />
                                                     ) : (
                                                         <CardGeneral
-                                                            link = {`http:localhost/storage/${data.urlImage}`}
+                                                            link = {`https://gworks.gematech.co/storage/${data.urlImage}`}
                                                             nombre={` ACTIVO: ${data.nombre} - SERIAL: ${data.serial}`}
                                                             route={`/activo/${data.taqActivos}`}
                                                             key={data.taqActivos}
@@ -801,14 +801,14 @@ import UploadDocument from '@/Components/forms/Documentos/FormUploadDocuments/Fo
                                         ComponentesFiltrados.map( (data) => (
                                             data.urlImage != 'default-image.jpg' ? (
                                                 <CardGeneral
-                                                    link = {`http:localhost/storage/Componentes/${data.taqComponente}/${data.urlImage}`}
+                                                    link = {`https://gworks.gematech.co/storage/Componentes/${data.taqComponente}/${data.urlImage}`}
                                                      nombre={` ACTIVO: ${data.nombre} - SERIAL: ${data.serial}`}
                                                     route={`/componente/${data.taqComponente}`}
                                                     key={data.taqComponente}
                                                 />
                                             ) : (
                                                 <CardGeneral
-                                                    link = {`http:localhost/storage/${data.urlImage}`}
+                                                    link = {`https://gworks.gematech.co/storage/${data.urlImage}`}
                                                      nombre={` ACTIVO: ${data.nombre} - SERIAL: ${data.serial}`}
                                                     route={`/componente/${data.taqComponente}`}
                                                     key={data.taqComponente}
@@ -846,14 +846,14 @@ import UploadDocument from '@/Components/forms/Documentos/FormUploadDocuments/Fo
                                         EmpresaFiltradas.map( (data) => (
                                             data.urlImage != 'default-image.jpg' ? (
                                                 <CardGeneral
-                                                    link = {`http:localhost/storage/Empresas/${data.urlImage}`}
+                                                    link = {`https://gworks.gematech.co/storage/Empresas/${data.urlImage}`}
                                                     nombre={data.nombre}
                                                     route={`/empresa/${data.taqempresa}`}
                                                     key={data.taqempresa}
                                                 />
                                             ) : (
                                                 <CardGeneral
-                                                    link = {`http:localhost/storage/${data.urlImage}`}
+                                                    link = {`https://gworks.gematech.co/storage/${data.urlImage}`}
                                                     nombre={data.nombre}
                                                     route={`/empresa/${data.taqempresa}`}
                                                     key={data.taqempresa}
@@ -887,7 +887,7 @@ import UploadDocument from '@/Components/forms/Documentos/FormUploadDocuments/Fo
                                 ResponsablesFiltrados ? (
                                     ResponsablesFiltrados.map( (data) => (
                                         <CardGeneral
-                                            link   = {`http:localhost/storage/${data.Image}`}
+                                            link   = {`https://gworks.gematech.co/storage/${data.Image}`}
                                             nombre = {`${data.nombre}`}
                                             route  = {`/responsables/${data.taqresponsable}`}
                                             key    = {data.taqresponsable}
@@ -1028,7 +1028,7 @@ import UploadDocument from '@/Components/forms/Documentos/FormUploadDocuments/Fo
                                 tittle = { DocSelectd.nombre } 
                             >
                                 <div className='w-[900px] h-[800px]'>
-                                    <embed src={`http:localhost/${DocSelectd.url}`} type="application/pdf" className='w-full h-full' />
+                                    <embed src={`https://gworks.gematech.co/${DocSelectd.url}`} type="application/pdf" className='w-full h-full' />
                                 </div>
                             </Modal>
                         </Panel_general>

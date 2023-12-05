@@ -20,7 +20,7 @@ import ValveIcon from '../Icons/valve'
 import PieGraph from '../Icons/PieGraph'
 import NewTipeActivo from '../forms/Categorias/TipoActivo/FormNewTipoActivo/FormNewTipoActivo'
 import NewTipeComponente from '../forms/Categorias/TipoComponentes/FormNewTipoComponentes/FormNewTipoComponentes'
-import NewComponente from '../forms/Componente/FormNewActivo/FormNewComponente'  
+import NewComponente from '../forms/Componente/FormNewComponente/FormNewComponente'  
 import NewMtto from '../forms/Mantenimiento/FormNewMtto/FormNewMtto'
 import NewResponsable from '../forms/Responsables/FormNewResponsable/FormNewResponsables'
 import PanelDashboard from '../Panels/Dashboard/PanelDashboard'
@@ -535,14 +535,14 @@ const Hud =  ({
                                                 ActivosFiltrados.map( (data) => (
                                                     data.urlImage != 'default-image.jpg' ? (
                                                         <CardGeneral
-                                                            link = {`https://gematech.co/storage/Activos/${data.taqActivos}/${data.urlImage}`}
+                                                            link = {`https://gworks.gematech.co/storage/Activos/${data.taqActivos}/${data.urlImage}`}
                                                             nombre={` ACTIVO: ${data.nombre} - SERIAL: ${data.serial}`}
                                                             route={`/activo/${data.taqActivos}`}
                                                             key={data.taqActivos}
                                                         />
                                                     ) : (
                                                         <CardGeneral
-                                                            link = {`https://gematech.co/storage/${data.urlImage}`}
+                                                            link = {`https://gworks.gematech.co/storage/${data.urlImage}`}
                                                             nombre={` ACTIVO: ${data.nombre} - SERIAL: ${data.serial}`}
                                                             route={`/activo/${data.taqActivos}`}
                                                             key={data.taqActivos}
@@ -583,14 +583,14 @@ const Hud =  ({
                                         ComponentesFiltrados.map( (data) => (
                                             data.urlImage != 'default-image.jpg' ? (
                                                 <CardGeneral
-                                                    link = {`https://gematech.co/storage/Componentes/${data.taqComponente}/${data.urlImage}`}
+                                                    link = {`https://gworks.gematech.co/storage/Componentes/${data.taqComponente}/${data.urlImage}`}
                                                      nombre={` ACTIVO: ${data.nombre} - SERIAL: ${data.serial}`}
                                                     route={`/componente/${data.taqComponente}`}
                                                     key={data.taqComponente}
                                                 />
                                             ) : (
                                                 <CardGeneral
-                                                    link = {`https://gematech.co/storage/${data.urlImage}`}
+                                                    link = {`https://gworks.gematech.co/storage/${data.urlImage}`}
                                                      nombre={` ACTIVO: ${data.nombre} - SERIAL: ${data.serial}`}
                                                     route={`/componente/${data.taqComponente}`}
                                                     key={data.taqComponente}
@@ -628,14 +628,14 @@ const Hud =  ({
                                         EmpresaFiltradas.map( (data) => (
                                             data.urlImage != 'default-image.jpg' ? (
                                                 <CardGeneral
-                                                    link = {`https://gematech.co/storage/Empresas/${data.urlImage}`}
+                                                    link = {`https://gworks.gematech.co/storage/Empresas/${data.urlImage}`}
                                                     nombre={data.nombre}
                                                     route={`/ empresa/${data.taqempresa}`}
                                                     key={data.taqempresa}
                                                 />
                                             ) : (
                                                 <CardGeneral
-                                                    link = {`https://gematech.co/storage/${data.urlImage}`}
+                                                    link = {`https://gworks.gematech.co/storage/${data.urlImage}`}
                                                     nombre={data.nombre}
                                                     route={`/ empresa/${data.taqempresa}`}
                                                     key={data.taqempresa}
@@ -669,7 +669,7 @@ const Hud =  ({
                                 ResponsablesFiltrados ? (
                                     ResponsablesFiltrados.map( (data) => (
                                         <CardGeneral
-                                            link = {`https://gematech.co/storage/${data.urlImage}`}
+                                            link = {`https://gworks.gematech.co/storage/${data.urlImage}`}
                                             nombre={`${data.primernombre} ${data.segundonombre ? data.segundonombre : ''} ${data.primerapellido} ${data.segundoapellido ? data.segundoapellido : ''}`}
                                             route={`/responsables/${data.taqresponsable}`}
                                             key={data.taqresponsable}

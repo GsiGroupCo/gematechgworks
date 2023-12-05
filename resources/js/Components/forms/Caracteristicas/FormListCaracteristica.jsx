@@ -1,15 +1,14 @@
 import FormPanelEditCaracteristica from "@/Components/forms/Activo/Caracteristica/FormEditCaracteristica/FormEditCaracteristica";
-import { router, useForm } from "@inertiajs/react";
+import { useForm } from "@inertiajs/react";
 import { useState } from "react";
 
-const CaracteristicaList = ({ onClose, Caracteristicas }) => {
-
-  const { get } = useForm()
+const CaracteristicaList = ({ onClose, Caracteristicas, route }) => {
+ 
+  const { post } = useForm()
 
   const [CaracteristicasItem, setCaracteristicasItem] = useState();
   const [DefaultPanel, setDefaultPanel] = useState(true);
-  const [EditPanel, setEditPanel] = useState(false);
-  const [Modal, setModal] = useState(false);
+  const [EditPanel, setEditPanel] = useState(false); 
 
   function ShowEditPanel(){
     if(DefaultPanel){
@@ -19,10 +18,11 @@ const CaracteristicaList = ({ onClose, Caracteristicas }) => {
       setDefaultPanel(false)
       setEditPanel(true)
     }
-  }
+  } 
 
-  function functionDefineCaracterID(data){
-    setCaracteristicasItem(data);
+  function Delete(Taq){
+    data.Taq = Taq
+    post(`${route}`)
   }
 
   return (
@@ -38,12 +38,12 @@ const CaracteristicaList = ({ onClose, Caracteristicas }) => {
                  <div className="w-auto flex justify-center items-center gap-3">
                   <div onClick = { () => { 
                     ShowEditPanel()
-                    functionDefineCaracterID(data)
+                    setCaracteristicasItem(data);
                   } } className="w-auto h-auto px-4 py-2 bg-yellow-500 rounded-md border-black hover:border-white border cursor-pointer hover:bg-yellow-800 text-white font-semibold">
                     Editar
                   </div>
                   <div onClick = { () => {
-                    get(`/caracteristica/delete/${data.taqActivos}/${data.taqotro}/`)
+                    Delete(data.taqotro)
                     onClose()
                   } } className="w-auto h-auto px-4 py-2 bg-red-500 rounded-md border-black hover:border-white border cursor-pointer hover:bg-red-800 text-white font-semibold">
                     Eliminar
@@ -56,7 +56,10 @@ const CaracteristicaList = ({ onClose, Caracteristicas }) => {
       }
       {
         EditPanel ? (
-          <FormPanelEditCaracteristica onClose = { onClose } Caracteristicas = { CaracteristicasItem } />
+          <FormPanelEditCaracteristica 
+            onClose = { onClose } 
+            Caracteristicas = { CaracteristicasItem } 
+          />
         ) : null
       }
     </div>

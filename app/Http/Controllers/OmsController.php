@@ -42,7 +42,7 @@ class OmsController extends Controller
                 return redirect()->route('home') -> with('error', 'Problema Registrando OM');
             }
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('home') -> with('error', 'Problema Registrando OM'); 
        }
     }
@@ -76,7 +76,7 @@ class OmsController extends Controller
                 return redirect()->route('home') -> with('error', 'OM no encontrada');
             }
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('home') -> with('error', 'Problema encontrando OM');
         }
     }

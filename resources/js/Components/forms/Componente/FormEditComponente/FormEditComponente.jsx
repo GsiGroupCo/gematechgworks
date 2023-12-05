@@ -1,25 +1,26 @@
 import { useFormik } from "formik";
-import { initialValue, validationSchema } from './FormEditActivo.form';
+import { initialValue, validationSchema } from './FormEditComponente.form';
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
-const FormEditandoActivo = ({ Activo, onClose }) =>  {
+const FormEditandoComponente = ({ Componente, onClose }) =>  {
   
   const [file, setFile] = useState();
   const { data, post } = useForm()
 
   const formik = useFormik({
-    initialValues:initialValue(Activo),
+    initialValues:initialValue(Componente),
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      data.taqActivos  = Activo[0].taqActivos
-      data.nombre      = formValue.Nombre
-      data.descripcion = formValue.Descripcion 
-      data.serial      = formValue.Serial
-      data.horasuso    = formValue.Horas_Uso
+      data.taqActivos  = Componente[0].taqComponente 
+      data.id_tipo     = formValue.id_tipo,
+      data.nombre      = formValue.Nombre,
+      data.descripcion = formValue.Descripcion,
+      data.serial      = formValue.Serial,
+      data.horasuso    = formValue.Horas_Uso, 
       data.Image       = file 
-      post('/activo/update')
+      post('/componente/update')
       onClose()
     }
   })
@@ -150,4 +151,4 @@ const FormEditandoActivo = ({ Activo, onClose }) =>  {
   )
 }
 
-export default FormEditandoActivo;
+export default FormEditandoComponente;

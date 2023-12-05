@@ -27,14 +27,14 @@ export default function TipoActivo({ TiposActivo, error, status }) {
                         (
                             data.urlImage != 'default-image.jpg' ? (
                                 <CardGeneral
-                                    link = {`https://gematech.co/storage/Activos/${data.taqActivos}/${data.urlImage}`}
+                                    link = {`https://gworks.gematech.co/storage/Activos/${data.taqActivos}/${data.urlImage}`}
                                     nombre={` ACTIVO: ${data.nombre} - SERIAL: ${data.serial}`}
                                     route={`/activo/${data.taqActivos}`}
                                     key={data.taqActivos}
                                 />
                             ) : (
                                 <CardGeneral
-                                    link = {`https://gematech.co/storage/${data.urlImage}`}
+                                    link = {`https://gworks.gematech.co/storage/${data.urlImage}`}
                                     nombre={` ACTIVO: ${data.nombre} - SERIAL: ${data.serial}`}
                                     route={`/activo/${data.taqActivos}`}
                                     key={data.taqActivos}

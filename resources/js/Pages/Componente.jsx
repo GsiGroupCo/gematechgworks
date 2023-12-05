@@ -2,6 +2,7 @@ import PanelCertificaciones from '@/Components/Panels/Activos/Certificaciones/P_
 import Modal from '@/Components/Panels/Modals/Modal'
 import ButtonMenu from '@/Components/UI/Activo/ButtonMenu'
 import Caracteristica_target from '@/Components/UI/Activo/Caracteristica_target'
+import Actions from '@/Components/UI/Componente/Actions'
 import Appbar from '@/Components/UI/Componente/Appbar'
 import Panel_general from '@/Components/UI/Panel_general'
 import React, { useEffect, useState } from 'react'
@@ -322,7 +323,11 @@ export default function Componente({ ComponentesData, status, error }) {
   return (
     <main className='w-full h-screen flex flex-col justify-start items-center justify-items-center'>
         <Appbar
-            Acciones={<></>}
+            Acciones={
+              <Actions
+               
+              />
+            }
             Componente={ComponentesData}
             formatos={<></>}
             key={`ActionMenu`}
@@ -397,16 +402,7 @@ export default function Componente({ ComponentesData, status, error }) {
                             </div>
                           ))
                       ) : null
-                  }
-                  <Modal
-                    isVisible = { ModalDeleteDoc }
-                    onClose   = { {} }
-                    tittle    = {`ADVERTENCIA`}
-                  >
-                    <>
-                    
-                    </>
-                  </Modal>
+                  } 
                 </Panel_general>
               ) : null
             }

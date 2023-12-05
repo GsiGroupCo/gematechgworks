@@ -33,7 +33,7 @@ class docsOtController extends Controller
             }
             return redirect() -> route('ots.show', ['ots' => $request->taqot]) -> with('status', 'Documentos Registrado Correctamente');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect() -> route('ots.show', ['ots' => $request->taqot]) -> with('error', 'Problema Registrando Documento');
         }
     }
@@ -55,7 +55,7 @@ class docsOtController extends Controller
             docs_x_ot::where('taqDoc','LIKE', $request -> taqDoc)->delete();
             return redirect() -> route('ots.show', ['ots' => $documento[0]['taqot']]) -> with('status', 'Documentos Eliminado Correctamente');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect() -> route('ots.show', ['ots' => $documento[0]['taqot']]) -> with('error', 'Problema Eliminando Documento');
         }
     }

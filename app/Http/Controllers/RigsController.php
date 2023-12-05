@@ -254,7 +254,7 @@ class RigsController extends Controller
                 return redirect()->route('home') -> with('error', 'OT no encontrada');
             }
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('home') -> with('error', 'Problema encontrando OT');
         }
     }

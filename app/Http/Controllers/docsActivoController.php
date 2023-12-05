@@ -29,7 +29,7 @@ class docsActivoController extends Controller
             }
             return redirect() -> route('activos.show', ['activos' => $request->taqActivos]) -> with('status', 'Documentos Registrado Correctamente');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect() -> route('activos.show', ['activos' => $request->taqActivos]) -> with('error', 'Problema Registrando Documento');
         }
     }
@@ -50,7 +50,7 @@ class docsActivoController extends Controller
             docs_x_activo::where('taqDoc','LIKE', $request -> taqDoc)->delete();
             return redirect()->route('activos.show', ['activos' => $documento[0]['taqActivos']]) ->with('status', 'Documento eliminado correctamente');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('activos.show', ['activos' => $documento[0]['taqActivos']]) ->with('error', 'Problema eliminando el documento');
         }
     }

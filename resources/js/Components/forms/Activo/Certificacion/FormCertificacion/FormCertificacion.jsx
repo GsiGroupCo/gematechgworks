@@ -26,7 +26,7 @@ const FormCertificacion = ({ activo_id, onClose }) =>  {
       });
       
       data.CantImages = files.length;
-      post('/certificacion/store');
+      post('/certificacion/activos/store');
       onClose();
     }
   })

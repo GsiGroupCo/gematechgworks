@@ -35,7 +35,7 @@ class act_prev_x_activosController extends Controller
 
             return redirect()->route('mtto.prev.activo.show', ['taqmttActivo' => $request -> taqmttActivo]) -> with('status', 'Actividad agregada correctamente');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('mtto.prev.activo.show', ['taqmttActivo' => $request -> taqmttActivo]) -> with('error', 'Problema agregando actividad');
         }
     }
@@ -54,7 +54,7 @@ class act_prev_x_activosController extends Controller
             ]);
             return redirect()->route('mtto.prev.activo.show', ['taqmttActivo' => $request -> taqmttActivo]) -> with('status', 'Actividad actualizada correctamente');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('mtto.prev.activo.show', ['taqmttActivo' => $request -> taqmttActivo]) -> with('error', 'Problema actualizando atividad');
         }
     }

@@ -1,27 +1,18 @@
-import FormCaracteristica from "@/Components/forms/Activo/Caracteristica/FormCaracteristica/FormCaracteristica";  
-import FormAddOT from "@/Components/forms/Activo/FormAddOM/FormAddOM";
-import FormCloneActivo from "@/Components/forms/Activo/FormCloneActivo/FormCloneActivo";
-import FormEditandoActivo from "@/Components/forms/Activo/FormEditActivo/FormEditActivo"; 
+
+import { useState } from "react";
+
+import FormCloneActivo from "@/Components/forms/Activo/FormCloneActivo/FormCloneActivo"; 
 import FormMttoCorrectivo from "@/Components/forms/Activo/FormMttoCorrectivo/FormMttoCorrectivo";
 import FormMttoPreventivo from "@/Components/forms/Mantenimiento/MttoPreventivo/FormNewMttoPreventivo/FormNewMttoPreventivo";
 import FormCertificacion from "@/Components/forms/Certificacion/FormCertificacion/FormCertificacion";
 import FormDocument from "@/Components/forms/Documentos/FormDocuments/FormDocuments";
-import { useState } from "react";
 import FormAddComponente from "@/Components/forms/Activo/FormAddComponente/FormAddComponente";
+import FormAddOM from "@/Components/forms/Componente/FormAddOM/FormAddOM";
 import CaracteristicaList from "@/Components/forms/Caracteristicas/FormListCaracteristica";
+import FormEditCaracteristica from "@/Components/forms/Caracteristicas/FormEditCaracteristica";
 
 const  Actions = ({ 
     onClose,
-    Activo,
-    Activos,
-    Responsables,
-    Componentes,
-    Mantenimientos,
-    Areas,
-    Tipo,
-    Caracteristicas, 
-    oms,
-    Empresas,
 }) => {
     const [Acctions, setAcctions]                     = useState(true)
     const [AddDocument, setAddDocument]               = useState(false)
@@ -29,9 +20,9 @@ const  Actions = ({
     const [AddMtto, setAddMtto]                       = useState(false)
     const [AddCaracteristica, setAddCaracteristica]   = useState(false)
     const [EditCaracteristica, setEditCaracteristica] = useState(false)
-    const [EditActivo, setEditActivo]                 = useState(false)
-    const [cloneActivo, setcloneActivo]               = useState(false)
-    const [ComponenteAdd, setComponenteAdd]           = useState(false)
+    const [EditComponenete, setEditComponenete]       = useState(false)
+    const [cloneComponente, setcloneComponente]       = useState(false)
+    const [ActivoAdd, setActivoAdd]                   = useState(false)
     const [MttoCorrectivo, setMttoCorrectivo]         = useState(false)
     const [MttoPreventivo, setMttoPreventivo]         = useState(false)
     
@@ -234,7 +225,7 @@ const  Actions = ({
         "function"   : ShowCorrectivos,
     },{
         "id"         : "571701123126",
-        "label"      : "Asignar Componente",
+        "label"      : "Asignar a Activo",
         "estate"     : 1,
         "function"   : ShowComponenteAdd,
     },{
@@ -249,12 +240,12 @@ const  Actions = ({
         "function"   : ShowEditCaracteristica,
     },{
         "id"         : "1213522726",
-        "label"      : "Editar Activo",
+        "label"      : "Editar Componente",
         "estate"     : 2,
         "function"   : ShowEditActivo,
     },{
         "id"         : "571701126",
-        "label"      : "Clonar Activo",
+        "label"      : "Clonar Componente",
         "estate"     : 2,
         "function"   : ShowCloneActivo,
     }]
@@ -276,53 +267,54 @@ const  Actions = ({
                     </div>
                 ) : null
             }
-            {
+            {/* {
                 AddDocument ? (
-                    <FormDocument  
-                        Taq      = { Activo[0].taqActivos } 
-                        route    = {`/document/activo/`}
+                    <FormDocument 
+                        Taq      = { Componente[0].taqComponente }
+                        route    = {`/document/componente/`}
                         onClose  = { onClose } 
                     />
                 ) : null
             }
             {
                 AddCertificacion ? (
-                    <FormCertificacion 
-                        Taq         = { Activo[0].taqActivos }
-                        route       = {`/certificacion/componente/store`}
-                        onClose     = { onClose }
+                    <FormCertificacion
+                        Taq      = { Componente[0].taqComponente }
+                        route    = {`/certificacion/componente/store`}
+                        onClose  = { onClose }
                     />
                 ) : null
             }
             {
                 AddMtto ? (
-                    <FormAddOT 
-                        taqActivos = { Activo[0].taqActivos }
-                        onClose    = { onClose }
-                        oms        = { oms }
+                    <FormAddOM
+                        Oms = { Oms }
+                        TaqComponente = { Componente[0].taqComponente }
+                        route={`/asignacion/om`}
                     />
                 ) : null
             }
             {
                 AddCaracteristica ? (
-                    <FormCaracteristica 
-                        taqActivos = { Activo[0].taqActivos }
-                        onClose    = { onClose }
+                    <FormEditCaracteristica
+                        Taq      = { Componente[0].taqComponente }
+                        route    = {`/certificacion/componente/store`}
+                        onClose  = { onClose }
                     />
                 ) : null
             }
             {
                 EditCaracteristica ? (
                     <CaracteristicaList
-                        route = {`caracteristica/activo/delete`}
-                        Caracteristicas = { Caracteristicas } 
+                        route = {`caracteristica/componente/delete`}
+                        Caracteristicas = { Caracteristicas }
                         onClose = { onClose }
                     />
                 ) : null
             }
             {
                 EditActivo ? (
-                    <FormEditandoActivo 
+                    <FormEditandoComponenete
                         Activo  = { Activo }
                         onClose = { onClose }
                     />
@@ -365,7 +357,7 @@ const  Actions = ({
                 ComponenteAdd ? (
                     <FormAddComponente Componentes = { Componentes }  onClose = { onClose } taqActivos = { Activo[0].taqActivos } />
                 ) : null
-            }
+            } */}
         </div>
     )
 }

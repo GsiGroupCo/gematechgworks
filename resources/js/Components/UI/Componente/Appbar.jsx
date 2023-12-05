@@ -31,9 +31,9 @@ const Appbar = ({
           <div onClick = { () => setModalImage(true) } className='hidden sm:flex w-auto h-full z-10  rounded-md overflow-hidden border-2 border-white order-1 cursor-pointer hover:scale-105 transition duration-700 ease-in-out'>
             {
               Componente[0].urlImage != 'default-image.jpg' ? (
-                <img src={`https://gematech.co/storage/Componentes/${Componente[0].taqComponente}/${Componente[0].urlImage}`} alt={`activo: ${Componente[0].nombre}`} className = ' w-full h-full object-fill ' loading="lazy"/>
+                <img src={`https://gworks.gematech.co/storage/Componentes/${Componente[0].taqComponente}/${Componente[0].urlImage}`} alt={`activo: ${Componente[0].nombre}`} className = ' w-full h-full object-fill ' loading="lazy"/>
               ) : (
-                <img src={`https://gematech.co/storage/${Componente[0].urlImage}`} alt={`activo: ${Componente[0].nombre}`} className = ' w-full h-full object-fill ' loading="lazy"/>
+                <img src={`https://gworks.gematech.co/storage/${Componente[0].urlImage}`} alt={`activo: ${Componente[0].nombre}`} className = ' w-full h-full object-fill ' loading="lazy"/>
               )
             }
           </div>
@@ -61,9 +61,9 @@ const Appbar = ({
         >
           {
             Componente[0].urlImage != 'default-image.jpg' ? (
-              <img src={`http://localhost:8000/storage/Componentes/${Componente[0].taqComponente}/${Componente[0].urlImage}`} alt={`activo: ${Componente[0].nombre}`} className = ' w-full h-full object-fill ' loading="lazy"/>
+              <img src={`http://gworks.gematech.co/storage/Componentes/${Componente[0].taqComponente}/${Componente[0].urlImage}`} alt={`activo: ${Componente[0].nombre}`} className = ' w-full h-full object-fill ' loading="lazy"/>
             ) : (
-              <img src={`http://localhost:8000/storage/${Componente[0].urlImage}`} alt={`activo: ${Componente[0].nombre}`} className = ' w-full h-full object-fill ' loading="lazy"/>
+              <img src={`http://gworks.gematech.co/storage/${Componente[0].urlImage}`} alt={`activo: ${Componente[0].nombre}`} className = ' w-full h-full object-fill ' loading="lazy"/>
             )
           }
         </Modal>

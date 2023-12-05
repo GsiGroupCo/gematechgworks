@@ -6,20 +6,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-use App\Models\activos;
-use App\Models\movimientos_x_activos;
-use App\Models\caracteristicas_x_activo;
+use App\Models\activos; 
 use App\Models\om;
 use App\Models\area;
 use App\Models\componentes;
 use App\Models\empresas;
-use App\Models\mantenimientos;
-use App\Models\mtto_corr_x_activos;
-use App\Models\mtto_prev_x_activos;
+use App\Models\mantenimientos; 
 use App\Models\responsable;
 use App\Models\tipos_activo;
-
-use Illuminate\Support\Facades\File;
+ 
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image; 
 
 
@@ -40,9 +36,13 @@ class ActivosController extends Controller
             $image = $request->file('Image');
             if ($image != null) { 
                 $filename = $request->file('Image')->getClientOriginalName();  
-                $ruta = "/home/gematech/public_html/storage/Activos/".$taqActivo; 
                 $compressedImage = Image::make($image)->encode('jpg', 80); 
-                $request->File('Image')->move($ruta, $filename, $compressedImage->stream()); 
+                $rutaDestino = "Activo/{$taqActivo}";
+                $rutaArchivo = "Activo/{$taqActivo}/{$filename}";
+                if (!Storage::disk('public')->exists($rutaDestino)) {
+                    Storage::disk('public')->makeDirectory($rutaDestino, 0777, true, true);
+                }
+                Storage::disk('public')->put($rutaArchivo, $compressedImage->stream());
                 activos::create([
                     'taqActivos' => $taqActivo, 
                     'id_tipo' => $request->id_tipo,
@@ -115,15 +115,14 @@ class ActivosController extends Controller
         try {   
             if($request -> File('Image')!=null){ 
                 $activo = activos::where('taqActivos','LIKE',$request->taqActivos)->get(); 
-                $filePath = "/home/gematech/public_html/storage/Activos/".$request->taqActivos."/{$activo[0]['urlImage']}";
-                if (File::exists($filePath)) {
-                    File::delete($filePath);
+                $image = $request -> File('Image');
+                $filename = $image->getClientOriginalName();  
+                $compressedImage = Image::make($image)->encode('jpg', 80);  
+                $rutaArchivo = "Activo/{$activo[0]['taqActivo']}/{$filename}";
+                if (!Storage::disk('public')->exists($rutaArchivo)) {
+                    Storage::disk('public')->delete($rutaArchivo);
                 }
-                $filename = $request->file('Image')->getClientOriginalName();  
-                $ruta = "/home/gematech/public_html/storage/Activos/".$request->taqActivos;
-                $image = $request->file('Image');
-                $compressedImage = Image::make($image)->encode('jpg', 80); 
-                $request->File('Image')->move($ruta, $filename, $compressedImage->stream());
+                Storage::disk('public')->put($rutaArchivo, $compressedImage->stream());
                 activos::where('taqActivos','LIKE',$request -> taqActivos)-> update([
                     'nombre'       => $request -> nombre,
                     'descripcion'  => $request -> descripcion,

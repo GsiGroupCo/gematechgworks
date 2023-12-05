@@ -1,41 +1,40 @@
 
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useFormik } from "formik";
-import { initialValue, validationSchema } from './FormAddOT.form';
-import { useForm } from '@inertiajs/react'
-import SearchInput from '@/Components/UI/Search';
+import { initialValue, validationSchema } from './FormAddOM.form';
+import { useForm } from '@inertiajs/react' 
 import Panel_general from '@/Components/UI/Panel_general';
 
-const FormAddOT = ({ taqActivos, onClose, oms }) =>  {
+const FormAddOM = ({ taqActivos, onClose, oms }) =>  {
 
   const { data, post } = useForm()
-  const [TaqOT, setTaqOT] = useState()
+  const [TaqOM, setTaqOM] = useState()
 
   const formik = useFormik({
     initialValues:initialValue(),
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      data.taqActivos  = taqActivos,
-      data.taqot       =taqom,
+      data.taqActivos = taqActivos,
+      data.taqom      = oms.taqom,
       data.from       = 'activos'
-      post('/asignacion/ot')
+      post('/asignacion/om')
       onClose()
     }
   })
 
-  const [OTSFiltradas, setOTSFiltradas] = useState(OTs);
-  const FilterOTs = ( searchTerm ) => {
+  const [OMSFiltradas, setOMSFiltradas] = useState(Oms);
+  const FilterOMs = ( searchTerm ) => {
     const filtered  = oms.filter((data) => {
-        consttaqom          = data.taqot.toLowerCase();
+        const taqom          = data.taqom.toLowerCase();
         const taqempresa     = data.taqempresa.toLowerCase();
         const fechainicio    = data.fechainicio.toLowerCase();
         const horainicio     = data.horainicio.toLowerCase();
         const fechafin       = data.fechafin ? data.fechafin.toLowerCase() : '';
         const horafin        = data.horafin ? data.horafin.toLowerCase() : '';
         const tipo           = data.tipo.toLowerCase();
-        const clasot         = data.tipo.toLowerCase();
+        const clasom         = data.tipo.toLowerCase();
         const descripcion    = data.descripcion?  data.descripcion.toLowerCase() : '';
         const prioridad      = data.prioridad.toLowerCase();
         const estado         = data.estado.toLowerCase();
@@ -57,7 +56,7 @@ const FormAddOT = ({ taqActivos, onClose, oms }) =>  {
             updated_at.includes(searchTerm) 
         );
     });
-    setOTSFiltradas(filtered);
+    setOMSFiltradas(filtered);
 };
  
    return (
@@ -67,32 +66,32 @@ const FormAddOT = ({ taqActivos, onClose, oms }) =>  {
         method = "POST"
       >
         <div className='w-full h-[500px]  flex flex-col '>
-            <Panel_general  FunctionfilterData = { FilterOTs } >
+            <Panel_general  FunctionfilterData = { FilterOMs } >
                 {
-                    omsFiltradas ? (
-                        omsFiltradas.map((data) => (
+                    OMSFiltradas ? (
+                        OMSFiltradas.map((data) => (
                             <div
-                            id={data.taqot}
-                            key={data.taqot}
+                            id={data.taqom}
+                            key={data.taqom}
                             onClick={() => {
-                                setTaqOT(data.taqot)
+                                setTaqOM(data.taqom)
                             }}
                                 className={`w-full h-auto px-4 py-2 cursor-pointer translate duration-700 ease-in-out ${
-                                   taqom === data.taqot
+                                   TaqOM === data.taqom
                                     ? 'bg-gray-800 text-white border border-black hover:border-white'
                                     : 'hover:bg-gray-800 hover:text-white border border-black hover:border-white'
                                 }`}
                             >
-                            {data.taqot}
+                            {data.taqom}
                         </div>
                         ))
                     ) : null
                 }
             </Panel_general>
         </div>
-        <input type="submit" value = "Asignar a OT" className="w-full h-auto px-4 py-2 border border-green-500 hover:border-white bg-green-500 hover:bg-green-800 text-white  font-bold  rounded-sm cursor-pointer transition duration-700 ease-in-out" />
+        <input type="submit" value = "Asignar a OM" className="w-full h-auto px-4 py-2 border border-green-500 hover:border-white bg-green-500 hover:bg-green-800 text-white  font-bold  rounded-sm cursor-pointer transition duration-700 ease-in-out" />
     </form>
   )
 }
 
-export default FormAddOT;
+export default FormAddOM;

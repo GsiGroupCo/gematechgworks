@@ -106,7 +106,7 @@ class mtto_prev_x_activosController extends Controller
                 return redirect()->route('activos.show', ['activos' => $request->taqActivos]) -> with('status', 'El Mantenimiento ya esta vinculado a este activo');
             }
         } catch (\Throwable $th) {
-            dd($th);
+            
         }
     }
 

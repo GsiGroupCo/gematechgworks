@@ -24,7 +24,7 @@ class TrabajoController extends Controller
             ]);
             return redirect()->route('ots.show', [ 'ots' => $request ->taqom ]) -> with('status','Trabajo Añadido Correctamente');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('ots.show', [ 'ots' => $request ->taqom ]) -> with('error','Problema Añadiendo Trabajo');
         }
     }

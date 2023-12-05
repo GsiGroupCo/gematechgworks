@@ -9,13 +9,24 @@ use Illuminate\Http\Request;
 
 use Inertia\Inertia;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image; 
 
 class ResponsablesController extends Controller
 {
     public function store(Request $request)
     { 
         $taqresponsable = uniqid(TRUE);
-        if($request -> File('Image')!=null){
+        if($request -> File('Image')!=null){ 
+            $image = $request-> file('Image');
+            $filename = $image->getClientOriginalName();  
+            $compressedImage = Image::make($image)->encode('jpg', 80); 
+            $rutaDestino = "Responsables/{$taqresponsable}";
+            $rutaArchivo = "Responsables/{$taqresponsable}/{$filename}";
+            if (!Storage::disk('public')->exists($rutaDestino)) {
+                Storage::disk('public')->makeDirectory($rutaDestino, 0777, true, true);
+            }
+            Storage::disk('public')->put($rutaArchivo, $compressedImage->stream()); 
             $filename = $request->file('Image')->getClientOriginalName();
             $request->File('Image')->move(public_path() . "/storage/" . "Responsables/" . $request -> taqresponsable  , $filename);
             responsable::create([
@@ -70,13 +81,15 @@ class ResponsablesController extends Controller
     {
         try {
             if($request -> File('Image')!=null){
-                $responsable = responsable::where('taqresponsable','LIKE',$request->taqresponsable)->get();
-                $filePath = public_path("/storage/Responsables/{$request -> taqresponsable}/{$responsable[0]['Image']}");
-                if (File::exists($filePath)) {
-                    File::delete($filePath);
+                $responsable = responsable::where('taqresponsable','LIKE',$request->taqresponsable)->get(); 
+                $image = $request -> File('Image');
+                $filename = $image->getClientOriginalName();  
+                $compressedImage = Image::make($image)->encode('jpg', 80);  
+                $rutaArchivo = "Responsables/{$responsable[0]['taqresponsable']}/{$filename}";
+                if (!Storage::disk('public')->exists($rutaArchivo)) {
+                    Storage::disk('public')->delete($rutaArchivo);
                 }
-                $filename = $request->file('Image')->getClientOriginalName();
-                $request->File('Image')->move(public_path()."/storage/Responsables".$request->taqresponsable."/", $filename);
+                Storage::disk('public')->put($rutaArchivo, $compressedImage->stream()); 
                 responsable::where('taqresponsable','LIKE',$request -> taqresponsable)-> update([ 
                     'nombre' => $request   -> nombre,
                     'cargo'  => $request   -> cargo_id,

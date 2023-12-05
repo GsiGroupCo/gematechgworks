@@ -19,7 +19,7 @@ class CargosController extends Controller
             ]);
             return redirect()->route('home') -> with('status', 'Se ha registrado el cargo correctamente.');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('home') -> with('error', 'Problema registrando el cargo');
         }
     }
@@ -32,7 +32,7 @@ class CargosController extends Controller
             ]);
             return redirect()->route('home') -> with('status', 'Se ha editado el cargo correctamente.');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('home') -> with('error', 'Problema editando el cargo');
         }
     }

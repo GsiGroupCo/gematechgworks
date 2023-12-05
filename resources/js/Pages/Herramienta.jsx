@@ -546,7 +546,7 @@ const documentosEliminadosData = [];
         tittle = { DocSelected.nombre} 
       >
         <div className='w-[900px] h-[800px]'>
-          <embed src={`https://gematech.co/storage/Herramientas/${DocSelected.url}`} type="application/pdf" className='w-full h-full' />
+          <embed src={`https://gworks.gematech.co/storage/Herramientas/${DocSelected.url}`} type="application/pdf" className='w-full h-full' />
         </div>
       </Modal>
       <Toaster richColors position='top-center' />

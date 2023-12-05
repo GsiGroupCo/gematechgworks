@@ -27,14 +27,14 @@ export default function TipoHerramientas({ Categorias, status, error }) {
                       (
                         data.urlImage != 'default-image.jpg' ? (
                             <CardGeneral
-                              link = {`https://gematech.co/storage/Herramientas/${data.taqHer}/${data.urlImage}`}
+                              link = {`https://gworks.gematech.co/storage/Herramientas/${data.taqHer}/${data.urlImage}`}
                                 nombre={data.nombre}
                                 route={`/herramienta/${data.taqHer}`}
                                 key={data.taqHer}
                             />
                         ) : (
                             <CardGeneral
-                                link = {`https://gematech.co/storage/${data.urlImage}`}
+                                link = {`https://gworks.gematech.co/storage/${data.urlImage}`}
                                 nombre={data.nombre}
                                 route={`/herramienta/${data.taqHer}`}
                                 key={data.taqHer + `_default_image`}

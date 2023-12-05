@@ -44,7 +44,7 @@ const FormMttoPreventivo = ({Activos}) =>  {
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      const response = await axios.post('http://localhost:3000/api/bonos/create', formValue).then(response => {
+      const response = await axios.post('http://gworks.gematech.co/api/bonos/create', formValue).then(response => {
           formValue.Activo = '';
           formValue.Area = '';
           formValue.Fecha_Lastt_Mtto = '';

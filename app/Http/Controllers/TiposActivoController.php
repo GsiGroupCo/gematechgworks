@@ -20,7 +20,7 @@ class TiposActivoController extends Controller
             ]);
             return redirect()->route( 'tipos.activo.show', ['type' => $id_tipo] ) -> with('status', 'Tipo de Activo Registrado Correctamente'); 
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('home') -> with('error', 'Problema Registrando el Tipo de Activo');
         }
     }

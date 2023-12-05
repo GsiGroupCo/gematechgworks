@@ -28,7 +28,7 @@ class docsResponsableController extends Controller
             }
             return redirect() -> route('responsables.show', ['responsables' => $request->taqresponsable]) -> with('status', 'Documentos Registrado Correctamente');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect() -> route('responsables.show', ['responsables' => $request->taqresponsable]) -> with('error', 'Problema Registrando Documento');
         }
     }
@@ -50,7 +50,7 @@ class docsResponsableController extends Controller
             docs_x_responsables::where('taqDoc','LIKE', $request -> taqDoc)->delete();
             return redirect() -> route('responsables.show', ['responsables' => $documento[0]['taqresponsable']]) -> with('status', 'Documentos Registrado Correctamente');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect() -> route('responsables.show', ['responsables' => $documento[0]['taqresponsable']]) -> with('error', 'Problema Registrando Documento');
         }
     }

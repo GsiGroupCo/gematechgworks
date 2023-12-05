@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\componentes;
 use App\Models\tipos_componentes;
-
-use Illuminate\Support\Facades\File;
+ 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image; 
 
 class ComponentesController extends Controller
 {
@@ -16,17 +18,22 @@ class ComponentesController extends Controller
         try {
             $taqComponente  = '';
             $countTypes = count(componentes::where('id_tipo','LIKE',$request -> id_tipo)->get());
-            $tipe       = tipos_componentes::where('id_tipo','LIKE',$request -> id_tipo)->get();
-
+            $tipe       = tipos_componentes::where('id_tipo','LIKE',$request -> id_tipo)->get(); 
             if($countTypes<9){
                 $taqComponente  = $tipe[0]['taq_componente_base'].'GW'.'_0'.$countTypes+1;
             }elseif( $countTypes >= 9 && $countTypes <= 99 ){
                 $taqComponente  = $tipe[0]['taq_componente_base'].'GW'.'_'.$countTypes+1;
-            }
-
+            } 
             if($request -> File('Image')!=null){
-                $filename = $request->file('Image')->getClientOriginalName();
-                $request->File('Image')->move(public_path() . "/storage/" . "Componentes/" . $taqComponente  , $filename);
+                $image = $request -> File('Image');
+                $filename = $image->getClientOriginalName();  
+                $compressedImage = Image::make($image)->encode('jpg', 80);  
+                $rutaDestino = "Componentes/{$taqComponente}";
+                $rutaArchivo = "Componentes/{$taqComponente}/{$filename}";
+                if (!Storage::disk('public')->exists($rutaDestino)) {
+                    Storage::disk('public')->makeDirectory($rutaDestino, 0777, true, true);
+                }
+                Storage::disk('public')->put($rutaArchivo, $compressedImage->stream());
                 componentes::create([
                     'taqComponente' => $taqComponente, 
                     'id_tipo'       => $request -> id_tipo,
@@ -50,7 +57,7 @@ class ComponentesController extends Controller
                 return redirect()->route('componentes.show', [ 'componentes' => $taqComponente ]) -> with('status', 'Componente Registrado Correctamente');
             }
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('home') -> with('error', 'Problema Registrando Componente');
         }
     }
@@ -84,7 +91,7 @@ class ComponentesController extends Controller
                 return redirect()->route('home') -> with('error', 'Componente no encontrado');
             }
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('home') -> with('error', 'Problema encontrando componente');
         }
     }
@@ -94,13 +101,15 @@ class ComponentesController extends Controller
     {
         try {
             if($request -> File('Image')!=null){
-                $Componente = componentes::where('taqComponente','LIKE',$request->taqComponente)->get();
-                $filePath = public_path("/storage/Componentes/{$Componente[0]['urlImage']}");
-                if (File::exists($filePath)) {
-                    File::delete($filePath);
+                $Componente = componentes::where('taqComponente','LIKE',$request->taqComponente)->get(); 
+                $image = $request -> File('Image');
+                $filename = $image->getClientOriginalName();  
+                $compressedImage = Image::make($image)->encode('jpg', 80);  
+                $rutaArchivo = "Componentes/{$Componente[0]['taqComponente']}/{$filename}";
+                if (!Storage::disk('public')->exists($rutaArchivo)) {
+                    Storage::disk('public')->delete($rutaArchivo);
                 }
-                $filename = $request->file('Image')->getClientOriginalName();
-                $request->File('Image')->move(public_path()."/storage/Componentes", $filename);
+                Storage::disk('public')->put($rutaArchivo, $compressedImage->stream());
                 componentes::where('taqComponente','LIKE',$request -> taqComponente)-> update([
                     'nombre'       => $request -> nombre,
                     'descripcion'  => $request -> descripcion,
@@ -109,7 +118,7 @@ class ComponentesController extends Controller
                     'horasuso'     => $request -> horasuso,
                     'urlImage'     => $filename,
                 ]);
-                return redirect()->route('componentes.show', ['componentes' => $request->taqComponente]) -> with('status', 'Activo Editado Correctamente');
+                return redirect()->route('componentes.show', ['componentes' => $request->taqComponente]) -> with('status', 'Componente Editado Correctamente');
             }else{
                 componentes::where('taqComponente','LIKE',$request -> taqComponente)-> update([
                     'nombre'       => $request -> nombre,
@@ -118,10 +127,10 @@ class ComponentesController extends Controller
                     'dependencia'  => $request -> dependencia,
                     'horasuso'     => $request -> horasuso,
                 ]);
-                return redirect()->route('componentes.show', ['componentes' => $request->taqComponente]) -> with('status', 'Activo Editado Correctamente');
+                return redirect()->route('componentes.show', ['componentes' => $request->taqComponente]) -> with('status', 'Componente Editado Correctamente');
             }
         } catch (\Throwable $th) {
-            return redirect()->route('componentes.show', ['componentes' => $request->taqComponente]) -> with('error', 'Problema  Editado Activo');
+            return redirect()->route('componentes.show', ['componentes' => $request->taqComponente]) -> with('error', 'Problema  Editado Componente');
         }
     }
 }

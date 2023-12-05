@@ -22,7 +22,7 @@ class ComponentesXActivoController extends Controller
                 return redirect() -> route('activos.show', ['activos' => $request->taqActivos]) -> with('error', 'No se puede asignar dos (2) veces un Componente al mismo activo');
             }
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect() -> route('activos.show', ['activos' => $request->taqActivos]) -> with('error', 'No se puede asignar dos (2) veces un Componente al mismo activo');
         }
     }

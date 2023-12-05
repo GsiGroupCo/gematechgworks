@@ -532,7 +532,7 @@ const OTpage = ({ data, error, status, Activos, Responsables, Empresas, Responsa
         tittle = {DocumentSelected.nombre} 
       >
         <div className='w-[900px] h-[800px]'>
-          <embed src={`https://gematech.co/storage/Oms/${DocumentSelected.DocURL}`} type="application/pdf" className='w-full h-full' />
+          <embed src={`https://gworks.gematech.co/storage/Oms/${DocumentSelected.DocURL}`} type="application/pdf" className='w-full h-full' />
         </div>
       </Modal>
       <Toaster richColors position='top-center'/>

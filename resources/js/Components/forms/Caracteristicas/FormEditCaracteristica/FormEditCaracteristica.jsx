@@ -7,7 +7,7 @@ import { initialValue, validationSchema } from './FormEditCaracteristica.form';
 import { useForm } from "@inertiajs/react";
 
 
-const FormPanelEditCaracteristica = ({ onClose, Caracteristicas }) =>  {
+const FormPanelEditCaracteristica = ({ onClose, Caracteristicas, route }) =>  {
   
   const { data , patch } = useForm()
 
@@ -20,7 +20,7 @@ const FormPanelEditCaracteristica = ({ onClose, Caracteristicas }) =>  {
       data.taqActivos        = Caracteristicas.taqActivos
       data.nombre            = formValue.Nombre
       data.valor             = formValue.value
-      patch('/caracteristica/update')
+      patch(`${route}`)
       onClose()
     }
   })

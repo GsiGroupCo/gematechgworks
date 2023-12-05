@@ -27,7 +27,7 @@ const ResponsableAppbar = ({ nombre, urlImage, taqresponsable, cargo, estado, Ca
               }
           </div>
           <div className='hidden sm:flex w-auto h-full z-10 bg-white   rounded-md overflow-hidden border-2 border-white order-1'>
-            <img src={`http://localhost:8000/storage/${urlImage}`} alt={`Imagen ${nombre}`}  className = ' w-full h-full object-fill ' loading="lazy"/>
+            <img src={`https://gworks.gematech.co/storage/${urlImage}`} alt={`Imagen ${nombre}`}  className = ' w-full h-full object-fill ' loading="lazy"/>
           </div>
         </div>
         <div className='hidden w-[300px] h-[110px] md:flex justify-center items-center justify-items-center p-2 '>

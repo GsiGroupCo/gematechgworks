@@ -38,9 +38,9 @@ const Appbar = ({
           <div onClick = { () => setModalState(true) } className='flex min-w-[150px] w-auto   h-full z-10  rounded-md overflow-hidden border-2 border-white order-1 cursor-pointer hover:scale-105 transition duration-700 ease-in-out'>
             {
               urlImage != 'default-image.jpg' ? (
-                <img src={`https://gematech.co/storage/Activos/${id}/${urlImage}`} alt={`activo: ${nombre}`} className = ' w-full h-full object-cover sm:object-fill ' loading="lazy"/>
+                <img src={`https://gworks.gematech.co/storage/Activos/${id}/${urlImage}`} alt={`activo: ${nombre}`} className = ' w-full h-full object-cover sm:object-fill ' loading="lazy"/>
               ) : (
-                <img src={`https://gematech.co/storage/${urlImage}`} alt={`activo: ${nombre}`} className = ' w-full h-full object-fill ' loading="lazy"/>
+                <img src={`https://gworks.gematech.co/storage/${urlImage}`} alt={`activo: ${nombre}`} className = ' w-full h-full object-fill ' loading="lazy"/>
               )
             }
           </div>
@@ -72,9 +72,9 @@ const Appbar = ({
         >
           {
             urlImage != 'default-image.jpg' ? (  
-              <img src={`https://gematech.co/storage/Activos/${id}/${urlImage}`} alt={`${nombre}`} className = 'max-w-[300px] sm:max-w-[650px] md:max-w-[780px] max-h-[800px] object-fill ' loading="lazy"/>
+              <img src={`https://gworks.gematech.co/storage/Activos/${id}/${urlImage}`} alt={`${nombre}`} className = 'max-w-[300px] sm:max-w-[650px] md:max-w-[780px] max-h-[800px] object-fill ' loading="lazy"/>
             ) : (
-              <img src={`https://gematech.co/storage/${urlImage}`} alt={`${nombre}`} className = ' max-w-[800px] max-h-[800px] object-fill ' loading="lazy"/>
+              <img src={`https://gworks.gematech.co/storage/${urlImage}`} alt={`${nombre}`} className = ' max-w-[800px] max-h-[800px] object-fill ' loading="lazy"/>
             )   
           }   
         </Modal>

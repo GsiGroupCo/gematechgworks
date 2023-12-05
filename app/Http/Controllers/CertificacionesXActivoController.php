@@ -44,7 +44,7 @@ class CertificacionesXActivoController extends Controller
             }
             return redirect() -> route('activos.show', ['activos' => $request->taqActivos]) -> with('status', 'Certificacion Registrada Correctamente');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect() -> route('activos.show', ['activos' => $request->taqActivos]) -> with('error', 'Problema Registrando Certificacion');
         }
     }
@@ -66,7 +66,7 @@ class CertificacionesXActivoController extends Controller
             cert_x_activo::where('taqDoc','LIKE', $request -> taqDoc)->delete();
             return redirect()->route('activos.show', ['activos' => $documento[0]['taqActivos']]) ->with('status', 'Certificacion eliminado correctamente');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect()->route('activos.show', ['activos' => $documento[0]['taqActivos']]) ->with('error', 'Problema eliminando el Certifido');
         }
     }
