@@ -14,23 +14,22 @@ class docsActivoController extends Controller
 {
     public function store(Request $request)
     {
-        try {
+        try { 
             for ($i = 1; $i <= $request -> CantImages; $i++) {
                 $documento = $request -> file('Image_'.$i);
                 $nombre = $documento -> getClientOriginalName();
-                $ruta = "/home/gematech/public_html/storage/Activos/".$request->taqActivos."/Documentos";
+                $ruta = "/home/gematech/public_html/storage/Activos/".$request->Taq."/Documentos";
                 $documento->move($ruta, $nombre);
                 docs_x_activo::create([
-                    'taqActivos'  => $request -> taqActivos,
+                    'taqActivos'  => $request -> Taq,
                     'taqDoc'      => uniqid(TRUE),
                     'nombre'      => $nombre,
-                    'DocURL'      => $request -> taqActivos . "/Documentos/" . $nombre,
+                    'DocURL'      => $request -> Taq . "/Documentos/" . $nombre,
                 ]);
             }
-            return redirect() -> route('activos.show', ['activos' => $request->taqActivos]) -> with('status', 'Documentos Registrado Correctamente');
-        } catch (\Throwable $th) {
-            
-            return redirect() -> route('activos.show', ['activos' => $request->taqActivos]) -> with('error', 'Problema Registrando Documento');
+            return redirect() -> route('activos.show', ['activos' => $request->Taq]) -> with('status', 'Documentos Registrado Correctamente');
+        } catch (\Throwable $th) { 
+            return redirect() -> route('activos.show', ['activos' => $request->Taq]) -> with('error', 'Problema Registrando Documento');
         }
     }
 

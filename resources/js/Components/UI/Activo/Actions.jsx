@@ -1,14 +1,10 @@
-import FormCaracteristica from "@/Components/forms/Activo/Caracteristica/FormCaracteristica/FormCaracteristica";  
-import FormAddOT from "@/Components/forms/Activo/FormAddOM/FormAddOM";
-import FormCloneActivo from "@/Components/forms/Activo/FormCloneActivo/FormCloneActivo";
-import FormEditandoActivo from "@/Components/forms/Activo/FormEditActivo/FormEditActivo"; 
-import FormMttoCorrectivo from "@/Components/forms/Activo/FormMttoCorrectivo/FormMttoCorrectivo";
-import FormMttoPreventivo from "@/Components/forms/Mantenimiento/MttoPreventivo/FormNewMttoPreventivo/FormNewMttoPreventivo";
-import FormCertificacion from "@/Components/forms/Certificacion/FormCertificacion/FormCertificacion";
+
+import FormCloneActivo from "@/Components/forms/Activo/FormCloneActivo";
+import FormCaracteristica from "@/Components/forms/Caracteristicas/FormCaracteristica";
+import CaracteristicaList from "@/Components/forms/Caracteristicas/FormListCaracteristica";
+import FormCertificacion from "@/Components/forms/Certificaciones/FormCertificacion";
 import FormDocument from "@/Components/forms/Documentos/FormDocuments/FormDocuments";
 import { useState } from "react";
-import FormAddComponente from "@/Components/forms/Activo/FormAddComponente/FormAddComponente";
-import CaracteristicaList from "@/Components/forms/Caracteristicas/FormListCaracteristica";
 
 const  Actions = ({ 
     onClose,
@@ -23,6 +19,7 @@ const  Actions = ({
     oms,
     Empresas,
 }) => {
+ 
     const [Acctions, setAcctions]                     = useState(true)
     const [AddDocument, setAddDocument]               = useState(false)
     const [AddCertificacion, setAddCertificacion]     = useState(false)
@@ -31,9 +28,7 @@ const  Actions = ({
     const [EditCaracteristica, setEditCaracteristica] = useState(false)
     const [EditActivo, setEditActivo]                 = useState(false)
     const [cloneActivo, setcloneActivo]               = useState(false)
-    const [ComponenteAdd, setComponenteAdd]           = useState(false)
-    const [MttoCorrectivo, setMttoCorrectivo]         = useState(false)
-    const [MttoPreventivo, setMttoPreventivo]         = useState(false)
+    const [ComponenteAdd, setComponenteAdd]           = useState(false) 
     
     function ShowAddDocument(){
         if(AddDocument){
@@ -41,10 +36,8 @@ const  Actions = ({
         }else{
             setAddMtto(false)
             setAddCaracteristica(false)
-            setEditCaracteristica(false)
-            setMttoCorrectivo(false)
-            setEditActivo(false)
-            setMttoPreventivo(false)
+            setEditCaracteristica(false) 
+            setEditActivo(false) 
             setcloneActivo(false)
             setAddCertificacion(false)
             setAcctions(false)
@@ -58,9 +51,7 @@ const  Actions = ({
         }else{
             setAddMtto(false)
             setEditCaracteristica(false)
-            setAddCertificacion(false)
-            setMttoPreventivo(false)
-            setMttoCorrectivo(false)
+            setAddCertificacion(false) 
             setEditActivo(false)
             setAddDocument(false)
             setComponenteAdd(false)
@@ -80,9 +71,7 @@ const  Actions = ({
             setcloneActivo(false)
             setAddCertificacion(false)
             setComponenteAdd(false)
-            setAddCaracteristica(false)
-            setMttoPreventivo(false)
-            setMttoCorrectivo(false)
+            setAddCaracteristica(false) 
             setAcctions(false)
             setEditCaracteristica(true)
         }
@@ -97,9 +86,7 @@ const  Actions = ({
             setcloneActivo(false)
             setAddCertificacion(false)
             setAddCaracteristica(false)
-            setComponenteAdd(false)
-            setMttoCorrectivo(false)
-            setMttoPreventivo(false)
+            setComponenteAdd(false) 
             setEditCaracteristica(false)
             setAcctions(false)
             setEditActivo(true)
@@ -114,9 +101,7 @@ const  Actions = ({
             setAddDocument(false)
             setAddCaracteristica(false)
             setAddCertificacion(false)
-            setComponenteAdd(false)
-            setMttoCorrectivo(false)
-            setMttoPreventivo(false)
+            setComponenteAdd(false) 
             setEditCaracteristica(false)
             setAcctions(false)
             setEditActivo(false)
@@ -134,56 +119,16 @@ const  Actions = ({
             setEditCaracteristica(false)
             setAcctions(false)
             setComponenteAdd(false)
-            setEditActivo(false)
-            setMttoPreventivo(false)
-            setMttoCorrectivo(false)
+            setEditActivo(false) 
             setcloneActivo(false)
             setAddCertificacion(true)
         }
-    }
-
-    function ShowCorrectivos(){
-        if(MttoCorrectivo){
-            ShowAcctions();
-        }else{
-            setAddMtto(false)
-            setAddDocument(false)
-            setAddCaracteristica(false)
-            setEditCaracteristica(false)
-            setMttoPreventivo(false)
-            setAcctions(false)
-            setComponenteAdd(false)
-            setEditActivo(false)
-            setcloneActivo(false)
-            setAddCertificacion(false)
-            setMttoCorrectivo(true)
-        }
-    }
-
-    function ShowPreventivos(){
-        if(MttoPreventivo){
-            ShowAcctions();
-        }else{
-            setAddMtto(false)
-            setAddDocument(false)
-            setAddCaracteristica(false)
-            setEditCaracteristica(false)
-            setAcctions(false)
-            setEditActivo(false)
-            setComponenteAdd(false)
-            setcloneActivo(false)
-            setAddCertificacion(false)
-            setMttoCorrectivo(false)
-            setMttoPreventivo(true)
-        }
-    }
+    } 
 
     function ShowAcctions(){
         setAddDocument(false)
-        setAddMtto(false)
-        setMttoPreventivo(false)
-        setAddCaracteristica(false)
-        setMttoCorrectivo(false)
+        setAddMtto(false) 
+        setAddCaracteristica(false) 
         setEditCaracteristica(false)
         setEditActivo(false)
         setAddCertificacion(false)
@@ -204,9 +149,7 @@ const  Actions = ({
             setAcctions(false)
             setEditActivo(false)
             setcloneActivo(false)
-            setAddCertificacion(false)
-            setMttoCorrectivo(false)
-            setMttoPreventivo(false)
+            setAddCertificacion(false) 
             setComponenteAdd(true)
         }
     }
@@ -222,16 +165,6 @@ const  Actions = ({
         "label"      : "Agregar Certificacion",
         "estate"     : 1,
         "function"   : ShowAddCertifiacion,
-    },{
-        "id"         : "47228",
-        "label"      : "Agregar Mantenimiento Preventivo",
-        "estate"     : 1,
-        "function"   : ShowPreventivos,
-    },{
-        "id"         : "649086",
-        "label"      : "Agregar Mantenimiento Correctivo",
-        "estate"     : 1,
-        "function"   : ShowCorrectivos,
     },{
         "id"         : "571701123126",
         "label"      : "Asignar Componente",
@@ -287,19 +220,10 @@ const  Actions = ({
             }
             {
                 AddCertificacion ? (
-                    <FormCertificacion 
+                    <FormCertificacion
                         Taq         = { Activo[0].taqActivos }
                         route       = {`/certificacion/componente/store`}
                         onClose     = { onClose }
-                    />
-                ) : null
-            }
-            {
-                AddMtto ? (
-                    <FormAddOT 
-                        taqActivos = { Activo[0].taqActivos }
-                        onClose    = { onClose }
-                        oms        = { oms }
                     />
                 ) : null
             }
@@ -338,29 +262,6 @@ const  Actions = ({
                     />
                 ) : null
             } 
-            {
-                MttoCorrectivo ? (
-                    <FormMttoCorrectivo 
-                        taqActivo = { Activo[0].taqActivos }
-                        Responsables = { Responsables }
-                        Activos = { Activos } 
-                        Areas = { Areas } 
-                        onClose = { onClose }
-                    />
-                ) : null
-            }
-            {
-                MttoPreventivo ? (
-                    <FormMttoPreventivo 
-                        Mantenimiento = { Mantenimientos }
-                        taqActivo = { Activo[0].taqActivos }
-                        Responsables = { Responsables }
-                        Activos = { Activos } 
-                        Areas = { Areas } 
-                        onClose = { onClose }
-                    />
-                ) : null
-            }
             {
                 ComponenteAdd ? (
                     <FormAddComponente Componentes = { Componentes }  onClose = { onClose } taqActivos = { Activo[0].taqActivos } />

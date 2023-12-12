@@ -1,4 +1,4 @@
-import CardGeneral from '@/Components/UI/Card_general'
+import CardGeneral from '@/Components/UI/CartaGeneral'
 import CategoriaAppbar from '@/Components/UI/Categorias/Appbar'
 import React, { useEffect } from 'react'
 import { Toaster, toast } from 'sonner';

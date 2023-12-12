@@ -13,6 +13,7 @@ class CreateComponentesTable extends Migration
             $table->string('taqComponente') -> unique(); 
             $table->string('id_tipo');
             $table->string('nombre');
+            $table->string('estado');
             $table->string('descripcion',500) -> nullable();
             $table->string('serial')   -> nullable();
             $table->string('horasuso') -> nullable();

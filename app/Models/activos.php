@@ -27,6 +27,10 @@ class activos extends Model
         return $this->hasMany(componente_x_activos::class,'taqActivos','taqActivos');
     }
 
+    public function Galeria(){
+        return $this->hasMany(galeria_x_activos::class,'taqActivos','taqActivos');
+    }
+    
     public function Movimiento(){
         return $this->hasMany(movimientos_x_activos::class,'taqActivos','taqActivos');
     }

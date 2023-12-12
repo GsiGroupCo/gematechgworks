@@ -5,7 +5,7 @@ import MantoIcon from '@/Components/Icons/manto';
 import omsIcon from '@/Components/Icons/ots';
 import HerramientaAppbar from '@/Components/UI/Herramienta/Appbar';
 import Caracteristica_target from '@/Components/UI/Activo/Caracteristica_target';
-import ButtonMenu from '@/Components/UI/ButtonMenu';
+import ButtonMenu from '@/Components/UI/MenuButton';
 import Panel_general from '@/Components/UI/Panel_general';
 import { Toaster, toast } from 'sonner';
 import Modal from '@/Components/Panels/Modals/Modal';

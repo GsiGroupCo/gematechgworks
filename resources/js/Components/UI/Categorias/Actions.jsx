@@ -92,22 +92,7 @@ const  Actions = ({ onClose, taqresponsable }) => {
                 <FormDocument onClose = { () => onClose() } taqresponsable = { taqresponsable } key = { taqresponsable } />
             ) : null
         }
-        
-        {
-            PanelDocumentos ? (
-                <>
-                
-                </>
-            ) : null
-        }
-        
-        {
-            PanelDocumentos ? (
-                <>
-                
-                </>
-            ) : null
-        }
+
     </div>
   )
 }

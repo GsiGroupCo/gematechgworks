@@ -16,6 +16,7 @@ class CreateActivosTable extends Migration
             $table->string('descripcion',500)->nullable();
             $table->string('serial')->nullable();
             $table->string('horasuso')->nullable();
+            $table->string('estado');
             $table->string('urlImage')->nullable();
             $table->timestamps();
         });

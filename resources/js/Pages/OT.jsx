@@ -1,7 +1,7 @@
 
 import React, {useEffect, useState } from 'react' 
 import Caracteristica_target from '@/Components/UI/Activo/Caracteristica_target';
-import ButtonMenu from '@/Components/UI/ButtonMenu';
+import ButtonMenu from '@/Components/UI/MenuButton';
 import Modal from '@/Components/Panels/Modals/Modal'; 
 import Panel_general from '@/Components/UI/Panel_general';
 import { Toaster, toast } from 'sonner';

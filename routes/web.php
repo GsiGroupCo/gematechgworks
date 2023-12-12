@@ -26,7 +26,7 @@ use App\Http\Controllers\MovimientosXActivo;
 use App\Http\Controllers\CertificacionesXActivoController; 
 use App\Http\Controllers\CertificacionesXComponentesController; 
 use App\Http\Controllers\documentsController;
-use App\Http\Controllers\documentosActivosController;
+use App\Http\Controllers\docsActivoController;
 use App\Http\Controllers\documentosComponnetesController;
 use App\Http\Controllers\docsOmController;
 use App\Http\Controllers\act_x_mantenimientoController;
@@ -172,7 +172,7 @@ Route::controller(documentsController::class)->group(function () {
     Route::get('/documents/show/{taqDoc}','show')      -> name('docs.show')   -> middleware('auth');
 });
 
-Route::controller(documentosActivosController::class)->group(function () {
+Route::controller(docsActivoController::class)->group(function () {
     Route::post('document/activo/', 'store')                            -> name('documentos.activos.store')->middleware('auth'); 
     Route::post('document/activo/mtto', 'storeMtto')                    -> name('documentos.activosMtto.store')->middleware('auth'); 
     Route::post('documento/activo/delete/','delete')                    -> name('documentos.activos.delete')->middleware('auth');  
@@ -180,10 +180,10 @@ Route::controller(documentosActivosController::class)->group(function () {
 });
 
 Route::controller(documentosComponnetesController::class)->group(function () {
-    Route::post('document/activo/', 'store')                            -> name('documentos.activos.store')->middleware('auth'); 
-    Route::post('document/activo/mtto', 'storeMtto')                    -> name('documentos.activosMtto.store')->middleware('auth'); 
-    Route::post('documento/activo/delete/','delete')                    -> name('documentos.activos.delete')->middleware('auth');  
-    Route::post('DeleteDocsMttoActivo','deleteMtto')                    -> name('documentos.activos.mtto.delete')->middleware('auth'); 
+    Route::post('document/componente/', 'store')                 -> name('documentos.componentes.store')->middleware('auth'); 
+    Route::post('document/componente/mtto', 'storeMtto')         -> name('documentos.componentesMtto.store')->middleware('auth'); 
+    Route::post('documento/componente/delete/','delete')         -> name('documentos.componentes.delete')->middleware('auth');  
+    Route::post('documento/mtto/componente/delete','deleteMtto') -> name('documentos.componentes.mtto.delete')->middleware('auth'); 
 });
 
 Route::controller(docsOmController::class)->group(function () {

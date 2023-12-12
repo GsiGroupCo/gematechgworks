@@ -1,1043 +1,518 @@
 
-
-import  { useEffect, useState } from 'react' 
-import { Toaster, toast } from 'sonner'; 
-import { Link, router } from '@inertiajs/react';  
-
-import logo_gema from '../../../public/img/gema.png'
-import logo_gworks from '../../../public/img/LogoGworks.png'
-import ButtonMenu from '@/Components/UI/ButtonMenu';
-import PanelDashboard from '@/Components/Panels/Dashboard/PanelDashboard';
-import Panel_general from '@/Components/UI/Panel_general';
 import Modal from '@/Components/Panels/Modals/Modal';
-import NewTipeActivo from '@/Components/forms/Categorias/TipoActivo/FormNewTipoActivo/FormNewTipoActivo';
-import NewActivo from '@/Components/forms/Activo/FormNewActivo/FormNewActivo';
-import NewTipeComponente from '@/Components/forms/Categorias/TipoComponentes/FormNewTipoComponentes/FormNewTipoComponentes';
-import NewComponente from '@/Components/forms/Componente/FormNewComponente/FormNewComponente';
-import NewResponsable from '@/Components/forms/Responsables/FormNewResponsable/FormNewResponsables'; 
-import NewOm from '@/Components/forms/Oms/FormNewOM/FormNewOM';
-import NewMtto from '@/Components/forms/Mantenimiento/FormNewMtto/FormNewMtto';
-import NewEmpresa from '@/Components/forms/Empresa/FormNewEmpresa/FormNewEmpresa';
-import CardGeneral from '@/Components/UI/Card_general';
-import Elemento_general from '@/Components/UI/Elemento_general'; 
-import UploadDocument from '@/Components/forms/Documentos/FormUploadDocuments/FormUploadDocuments';
+import MenuAppbar from '@/Components/UI/MenuAppbar';
+import PanelSection from '@/Components/UI/PanelSection'; 
+import CreateActivo from '@/Components/forms/Activo/CreateActivo';
+import CreateCateoria from '@/Components/forms/Categoria/CreateCategoria'; 
+import CreateComponente from '@/Components/forms/Componente/CreateComponente';
+import CreateDocumento from '@/Components/forms/Documentos/CreateDocumento';
+import CreateEmpresa from '@/Components/forms/Empresa/CreateEmpresa'; 
+import CreateMantenimiento from '@/Components/forms/Mantenimiento/CreateMantenimiento';
+import CreateOms from '@/Components/forms/Oms/CreateOms';
+import CreateResponsable from '@/Components/forms/Responsable/CreateResponsable';
+import { router } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
   const Dashboard = ({
+    Activos,
+    Componentes,
+    Oms,
     Rigs,
     Tipos_Activo,
     Tipos_Componentes,
-    Oms, 
-    Activos, 
-    Componentes, 
-    Documentos, 
+    Documentos,
     Cargos,
     Empresas,
-    Mantenimientos, 
-    Responsables, 
-    status, 
-    error
-  }) => {
-
-    const [ShowModalDocs, setShowModalDocs] = useState(false)
-    const [ShowUploadDocument, setShowUploadDocument] = useState(false);
-    const [DocSelectd, setDocSelectd] = useState({
-        taqDoc:"",
-        nombre:"",
-        url:""
-    })
-
-    function ShowModalDoc(data){
-        setDocSelectd({
-          taqDoc:data.taqDoc,
-          nombre:data.nombre,
-          url:data.DocURL
-        })
-        setShowModalDocs(true)
-      }
-    
-    useEffect(() => {
-      if(status){
-        toast.success(status)
-      }
-      if(error){
-        toast.error(error)
-      }
-    }, [status, error])
+    Mantenimientos,
+    Responsables,
+  }) => { 
 
     useEffect(() => {
-      const storedPanelState = localStorage.getItem('PanelState');
-      if(storedPanelState) {
-        const parsedPanelState = JSON.parse(storedPanelState); 
-        if(parsedPanelState.State === 'Default') {
-          ShowDefault();
+        const storedPanelState = localStorage.getItem('PanelState');
+        if(storedPanelState) {
+          const parsedPanelState = JSON.parse(storedPanelState); 
+          if(parsedPanelState.State === 'Default') {
+            ShowDefault();
+          }
+          if(parsedPanelState.State === 'CategoriasActivoPanel') {
+            ShowCategoriasActivo();
+          }
+          if(parsedPanelState.State === 'CategoriasComponentePanel') {
+            ShowCategoriasComponentes();
+          }
+          if(parsedPanelState.State === 'ActivosPanel') {
+            Show_Activos();
+          }
+          if(parsedPanelState.State === 'RigsPanel') {
+            ShowRigs();
+          }
+          if(parsedPanelState.State === 'OmsPanel') {
+            ShowOms();
+          } 
+          if(parsedPanelState.State === 'EmpresasPanel') {
+            ShowEmpresa();
+          } 
+          if(parsedPanelState.State === 'DocumentosPanel') {
+            ShowDocumentos();
+          } 
+          if(parsedPanelState.State === 'ComponentesPanel') {
+            ShowComponentes();
+          }
+          if(parsedPanelState.State === 'ResponsblesPanel') {
+            ShowResponsables();
+          } 
         }
-        if(parsedPanelState.State === 'PanelCategorias') {
-          ShowCategorias();
-        }
-        if(parsedPanelState.State === 'Panel_Activos') {
-          Show_Activos();
-        }
-        if(parsedPanelState.State === 'Panel_Rigs') {
-          ShowRigs();
-        }
-        if(parsedPanelState.State === 'Panel_Oms') {
-          ShowOms();
-        } 
-        if(parsedPanelState.State === 'Panel_Empresa') {
-          ShowEmpresa();
-        } 
-        if(parsedPanelState.State === 'Panel_Documentos') {
-          ShowDocumentos();
-        } 
-        if(parsedPanelState.State === 'Panel_Componentes') {
-          ShowComponentes();
-        }
-        if(parsedPanelState.State === 'Panel_Responsables') {
-          ShowResponsables();
-        } 
-      }
     },[])
-       
-    const [Default, setDefault] = useState(true)
-    const [Panel_Activos, setPanel_Activos] = useState(false)
-    const [Panel_Componentes, setPanel_Componentes] = useState(false)
-    const [Panel_Oms, setPanel_Oms] = useState(false)  
-    const [Panel_Documentos, setPanel_Documentos] = useState(false)
-    const [Panel_Empresa, setPanel_Empresa] = useState(false)
-    const [Panel_Mantenimiento, setPanel_Mantenimiento] = useState(false)
-    const [Panel_Responsables, setPanel_Responsables] = useState(false)
-    const [PanelRigs, setPanelRigs] = useState(false)
-    const [PanelCategorias, setPanelCategorias] = useState(false)
+         
+    const [ShowModal, setShowModal] = useState(false);
 
+    const [DefaultPanel, setDefaultPanel] = useState(true)
+    const [ActivosPanel, setActivosPanel] = useState(false)
+    const [ComponentesPanel, setComponentesPanel] = useState(false)
+    const [OmsPanel, setOmsPanel] = useState(false)  
+    const [DocumentosPanel, setDocumentosPanel] = useState(false)
+    const [EmpresasPanel, setEmpresasPanel] = useState(false)
+    const [MantenimientosPanel, setMantenimientosPanel] = useState(false)
+    const [ResponsablesPanel, setResponsablesPanel] = useState(false)
+    const [RigsPanel, setRigsPanel] = useState(false)
+    const [CategoriasActivoPanel, setCategoriasActivoPanel] = useState(false)
+    const [CategoriasComponentePanel, setCategoriasComponentePanel] = useState(false)
+  
     function ShowDefault() {
-      setDefault(true)
-      setPanel_Activos(false)
-      setPanelCategorias(false)
-      setPanel_Empresa(false)
-      setPanel_Documentos(false)
-      setPanel_Responsables(false)
-      setPanel_Mantenimiento(false)
-      setPanel_Oms(false)
-      setPanelRigs(false)
-      setPanel_Componentes(false)
-      localStorage.setItem('PanelState', JSON.stringify({
-        State:'Default'
-      }));
+        setActivosPanel(false)
+        setComponentesPanel(false)
+        setOmsPanel(false)
+        setDocumentosPanel(false)
+        setEmpresasPanel(false)
+        setMantenimientosPanel(false)
+        setResponsablesPanel(false)
+        setRigsPanel(false)
+        setCategoriasActivoPanel(false) 
+        setCategoriasComponentePanel(false)
+        setDefaultPanel(true)
+        localStorage.setItem('PanelState', JSON.stringify({
+          State:'Default'
+        }));
     }
-
+  
     function ShowRigs(){
-        if(PanelRigs){
+        if(RigsPanel){
             ShowDefault()
         }else{
-            setDefault(false)
-            setPanel_Empresa(false)
-            setPanel_Responsables(false)
-            setPanel_Documentos(false)
-            setPanel_Mantenimiento(false)
-            setPanel_Oms(false)
-            setPanel_Componentes(false)
-            setPanel_Activos(false)
-            setPanelCategorias(false)
-            setPanelRigs(true)
+            setActivosPanel(false)
+            setComponentesPanel(false)
+            setOmsPanel(false)
+            setDocumentosPanel(false)
+            setEmpresasPanel(false)
+            setMantenimientosPanel(false)
+            setResponsablesPanel(false)
+            setCategoriasActivoPanel(false) 
+            setCategoriasComponentePanel(false) 
+            setDefaultPanel(false)
+            setRigsPanel(true)
             localStorage.setItem('PanelState', JSON.stringify({
-            State:'Panel_Rigs'
+            State:'RigsPanel'
+            })); 
+        }
+    }
+  
+    function ShowCategoriasActivo(){
+        if(CategoriasActivoPanel){
+          ShowDefault()
+        }else{
+            setActivosPanel(false)
+            setComponentesPanel(false)
+            setOmsPanel(false)
+            setDocumentosPanel(false)
+            setEmpresasPanel(false)
+            setMantenimientosPanel(false)
+            setResponsablesPanel(false)
+            setDefaultPanel(false)
+            setRigsPanel(false)
+            setCategoriasComponentePanel(false) 
+            setCategoriasActivoPanel(true) 
+            localStorage.setItem('PanelState', JSON.stringify({
+              State:'CategoriasPanel'
             })); 
         }
     }
 
-    function ShowCategorias(){
-      if(PanelCategorias){
-        ShowDefault()
-      }else{
-          setDefault(false)
-          setPanel_Empresa(false)
-          setPanel_Responsables(false)
-          setPanel_Documentos(false)
-          setPanel_Mantenimiento(false)
-          setPanel_Oms(false)
-          setPanel_Componentes(false)
-          setPanel_Activos(false)
-          setPanelRigs(false)
-          setPanelCategorias(true)
-          localStorage.setItem('PanelState', JSON.stringify({
-            State:'PanelCategorias'
-          })); 
-      }
+    function ShowCategoriasComponentes(){
+        if(CategoriasComponentePanel){
+          ShowDefault()
+        }else{
+            setActivosPanel(false)
+            setComponentesPanel(false)
+            setOmsPanel(false)
+            setDocumentosPanel(false)
+            setEmpresasPanel(false)
+            setMantenimientosPanel(false)
+            setResponsablesPanel(false)
+            setDefaultPanel(false)
+            setRigsPanel(false)
+            setCategoriasActivoPanel(false)
+            setCategoriasComponentePanel(true) 
+            localStorage.setItem('PanelState', JSON.stringify({
+              State:'CategoriasPanel'
+            })); 
+        }
     }
-
+  
     function Show_Activos() {
-      if(Panel_Activos){
-        ShowDefault()
-      }else{
-          setDefault(false)
-          setPanel_Empresa(false)
-          setPanel_Responsables(false)
-          setPanel_Documentos(false)
-          setPanel_Componentes(false)
-          setPanel_Mantenimiento(false)
-          setPanel_Oms(false)
-          setPanelCategorias(false)
-          setPanelRigs(false)
-          setPanel_Activos(true)
-          localStorage.setItem('PanelState', JSON.stringify({
-            State:'Panel_Activos'
-          }));  
-      }
-    }
-
-    function ShowOms() {
-        if(Panel_Oms){
+        if(ActivosPanel){
           ShowDefault()
         }else{
-            setDefault(false)
-            setPanel_Empresa(false)
-            setPanel_Documentos(false)
-            setPanel_Componentes(false)
-            setPanel_Responsables(false)
-            setPanel_Mantenimiento(false)
-            setPanelCategorias(false)
-            setPanel_Activos(false)
-            setPanelRigs(false)
-            setPanel_Oms(true)
+            setComponentesPanel(false)
+            setOmsPanel(false)
+            setDocumentosPanel(false)
+            setEmpresasPanel(false)
+            setMantenimientosPanel(false)
+            setResponsablesPanel(false)
+            setDefaultPanel(false)
+            setRigsPanel(false)
+            setCategoriasActivoPanel(false) 
+            setCategoriasComponentePanel(false)
+            setActivosPanel(true)
             localStorage.setItem('PanelState', JSON.stringify({
-              State:'Panel_Oms'
-            })); 
-        }
-    }
-
-    function ShowEmpresa() {
-        if(Panel_Empresa){
-          ShowDefault()
-        }else{
-            setDefault(false)
-            setPanel_Responsables(false)
-            setPanel_Componentes(false)
-            setPanelCategorias(false)
-            setPanel_Mantenimiento(false)
-            setPanel_Documentos(false)
-            setPanel_Activos(false)
-            setPanel_Oms(false)
-            setPanelRigs(false)
-            setPanel_Empresa(true) 
-            localStorage.setItem('PanelState', JSON.stringify({
-              State:'Panel_Empresa'
+              State:'ActivosPanel'
             }));  
         }
     }
-
-    function ShowDocumentos() {
-      if(Panel_Documentos){
+  
+    function ShowOms() {
+          if(OmsPanel){
+            ShowDefault()
+          }else{
+                setComponentesPanel(false)
+                setDocumentosPanel(false)
+                setEmpresasPanel(false)
+                setMantenimientosPanel(false)
+                setResponsablesPanel(false)
+                setDefaultPanel(false)
+                setRigsPanel(false) 
+                setCategoriasActivoPanel(false) 
+                setCategoriasComponentePanel(false)
+                setActivosPanel(false)
+                setOmsPanel(true)
+              localStorage.setItem('PanelState', JSON.stringify({
+                State:'OmsPanel'
+              })); 
+          }
+    }
+  
+    function ShowEmpresa() {
+        if(EmpresasPanel){
         ShowDefault()
-      }else{
-          setDefault(false)
-          setPanel_Empresa(false)
-          setPanel_Responsables(false)
-          setPanelCategorias(false)
-          setPanel_Mantenimiento(false)
-          setPanel_Activos(false)
-          setPanel_Componentes(false)
-          setPanel_Oms(false)
-          setPanelRigs(false)
-          setPanel_Documentos(true) 
-          localStorage.setItem('PanelState', JSON.stringify({
-            State:'Panel_Documentos'
-          }));
-      }
-  }
-
-    function ShowMantenimiento() {
-        if(Panel_Mantenimiento){
+        }else{
+            setComponentesPanel(false)
+            setDocumentosPanel(false)
+            setMantenimientosPanel(false)
+            setResponsablesPanel(false)
+            setDefaultPanel(false)
+            setRigsPanel(false)
+            setCategoriasActivoPanel(false) 
+            setCategoriasComponentePanel(false)
+            setActivosPanel(false)
+            setOmsPanel(false)
+            setEmpresasPanel(true)
+            localStorage.setItem('PanelState', JSON.stringify({
+            State:'EmpresasPanel'
+            }));  
+        }
+    }
+  
+    function ShowDocumentos() {
+        if(DocumentosPanel){
           ShowDefault()
         }else{
-            setDefault(false)
-            setPanel_Empresa(false)
-            setPanel_Documentos(false)
-            setPanel_Responsables(false)
-            setPanel_Activos(false)
-            setPanel_Oms(false)
-            setPanel_Componentes(false)
-            setPanelCategorias(false)
-            setPanelRigs(false)
-            setPanel_Mantenimiento(true) 
+            setComponentesPanel(false)
+            setMantenimientosPanel(false)
+            setResponsablesPanel(false)
+            setDefaultPanel(false)
+            setRigsPanel(false)
+            setCategoriasActivoPanel(false) 
+            setCategoriasComponentePanel(false)
+            setActivosPanel(false)
+            setOmsPanel(false)
+            setEmpresasPanel(false)
+            setDocumentosPanel(true)
             localStorage.setItem('PanelState', JSON.stringify({
-              State:'Panel_Mantenimiento'
+              State:'DocumentosPanel'
             }));
         }
     }
-
-    function ShowResponsables() {
-        if(Panel_Responsables){
-          ShowDefault()
+  
+    function ShowMantenimiento() {
+        if(MantenimientosPanel){
+        ShowDefault()
         }else{
-            setDefault(false)
-            setPanel_Empresa(false)
-            setPanelCategorias(false)
-            setPanel_Activos(false)
-            setPanel_Documentos(false)
-            setPanel_Oms(false)
-            setPanel_Componentes(false)
-            setPanel_Mantenimiento(false)
-            setPanelRigs(false)
-            setPanel_Responsables(true)
+            setComponentesPanel(false)
+            setResponsablesPanel(false)
+            setDefaultPanel(false)
+            setRigsPanel(false)
+            setCategoriasActivoPanel(false) 
+            setCategoriasComponentePanel(false)
+            setActivosPanel(false)
+            setOmsPanel(false)
+            setEmpresasPanel(false)
+            setDocumentosPanel(false)
+            setMantenimientosPanel(true)
             localStorage.setItem('PanelState', JSON.stringify({
-              State:'Panel_Responsables'
+            State:'Panel_Mantenimiento'
+            }));
+        }
+    }
+  
+    function ShowResponsables() {
+        if(ResponsablesPanel){
+        ShowDefault()
+        }else{
+            setComponentesPanel(false)
+            setDefaultPanel(false)
+            setRigsPanel(false)
+            setCategoriasActivoPanel(false) 
+            setCategoriasComponentePanel(false)
+            setActivosPanel(false)
+            setOmsPanel(false)
+            setEmpresasPanel(false)
+            setDocumentosPanel(false)
+            setMantenimientosPanel(false)
+            setResponsablesPanel(true)
+            localStorage.setItem('PanelState', JSON.stringify({
+            State:'ResponsblesPanel'
             })); 
         }
     }
-    
+      
     function ShowComponentes() {
-      if(Panel_Componentes){
-        ShowDefault()
-      }else{
-          setDefault(false)
-          setPanel_Empresa(false)
-          setPanel_Activos(false)
-          setPanel_Oms(false)
-          setPanel_Documentos(false)
-          setPanelCategorias(false)
-          setPanel_Mantenimiento(false)
-          setPanel_Responsables(false)
-          setPanelRigs(false)
-          setPanel_Componentes(true) 
-          localStorage.setItem('PanelState', JSON.stringify({
-            State:'Panel_Componentes'
-          }));   
-      }
-    }
- 
-    const Buttons = [{
-      "id"         : "453706520", 
-      "label"      : "Categorias",
-      "cantidad"   : 2,
-      "Myfunction" : ShowCategorias,
-      "estado"     : PanelCategorias
-    },{
-      "id"         : "58951", 
-      "label"      : "Activos",
-      "cantidad"   : Activos?.length > 0 ? Activos?.length : '0',
-      "Myfunction" : Show_Activos,
-      "estado"     : Panel_Activos
-    },{
-      "id"         : '39582', 
-      "label"      : "Componentes",
-      "cantidad"   : Componentes?.length > 0 ? Componentes?.length : '0',
-      "Myfunction" : ShowComponentes,
-      "estado"     : Panel_Componentes
-    },{
-      "id"         : '34258', 
-      "label"      : "Empresas",
-      "cantidad"   : Empresas?.length > 0 ? Empresas?.length : '0',
-      "Myfunction" : ShowEmpresa,
-      "estado"     : Panel_Empresa
-    },{
-      "id"         : '456465', 
-      "label"      : "Rigs",
-      "cantidad"   : Rigs?.length > 0 ? Rigs?.length : '0',
-      "Myfunction" : ShowRigs,
-      "estado"     : PanelRigs
-    },{
-      "id"         : '41891', 
-      "label"      : "Responsables",
-      "cantidad"   : Responsables?.length > 0 ? Responsables?.length : '0',
-      "Myfunction" : ShowResponsables,
-      "estado"     : Panel_Responsables
-    },{
-      "id"         : '58122', 
-      "label"      : "Mantenimientos",
-      "cantidad"   : Mantenimientos?.length > 0 ? Mantenimientos?.length : '0',
-      "Myfunction" : ShowMantenimiento,
-      "estado"     : Panel_Mantenimiento
-    },{
-      "id"         : '397asd34', 
-      "label"      : "Om's",
-      "cantidad"   : Oms?.length  > 0 ? Oms?.length  : '0',
-      "Myfunction" : ShowOms,
-      "estado"     : Panel_Oms
-    },{
-      "id"         : '865115', 
-      "label"      : "Documentos",
-      "cantidad"   : Documentos?.length,
-      "Myfunction" : ShowDocumentos,
-      "estado"     : Panel_Documentos
-    },{
-      "id"         : '742225', 
-      "label"      : "Salir",
-      "Myfunction" : () => router.get(`logout`),
-      "estado"     : false
-    }]
-
-    useEffect(() => {
-        setTiposActivosFiltrados(Tipos_Activo)
-    }, [Tipos_Activo])   
-
-    const [VisibleActivos, setVisibleActivos] = useState(true)
-    const [TiposActivosFiltrados, setTiposActivosFiltrados] = useState();
-    const FilterTiposActivo = ( searchTerm ) => {
-        const filtered = Tipos_Activo.filter((data) => {
-            const id_tipo           =   data.id_tipo.toLowerCase();
-            const nombre            =   data.nombre.toLowerCase();
-            const taq_activo_base   =   data.taq_activo_base.toLowerCase();
-            return ( 
-                id_tipo.includes(searchTerm)         ||
-                nombre.includes(searchTerm)          ||
-                taq_activo_base.includes(searchTerm) 
-            );
-        });
-        setTiposActivosFiltrados(filtered);
-    };
-
-    function ShowCategoriaActivos(){
-        if(VisibleActivos){
-            setVisibleActivos(false)
-            setVisibleComponentes(false)
+        if(ComponentesPanel){
+            ShowDefault()
         }else{
-            setVisibleComponentes(false)
-            setVisibleActivos(true)
+            setDefaultPanel(false)
+            setRigsPanel(false)
+            setCategoriasActivoPanel(false) 
+            setCategoriasComponentePanel(false)
+            setActivosPanel(false)
+            setOmsPanel(false)
+            setEmpresasPanel(false)
+            setDocumentosPanel(false)
+            setMantenimientosPanel(false)
+            setResponsablesPanel(false)
+            setComponentesPanel(true)
+            localStorage.setItem('PanelState', JSON.stringify({
+                State:'ComponentesPanel'
+            }));   
         }
-    }
-
-    useEffect(() => {
-        setTiposComponentesFiltrados(Tipos_Componentes)
-    }, [Tipos_Componentes])   
-
-    const [VisibleComponentes, setVisibleComponentes] = useState(false)
-    const [TiposComponentesFiltrados, setTiposComponentesFiltrados] = useState();
-    const FilterTiposComponentes = ( searchTerm ) => {
-        const filtered = Tipos_Componentes.filter((data) => {
-            const id_tipo              =  data.id_tipo.toLowerCase();
-            const nombre               =  data.nombre.toLowerCase();
-            const taq_componente_base  =  data.taq_componente_base.toLowerCase();
-            return ( 
-                id_tipo.includes(searchTerm)             ||
-                nombre.includes(searchTerm)              ||
-                taq_componente_base.includes(searchTerm) 
-            );
-        });
-        setTiposComponentesFiltrados(filtered);
-    };
-
-    function ShowCategoriaComponentes(){
-        if(VisibleComponentes){
-            setVisibleActivos(false)
-        }else{
-            setVisibleActivos(false)
-            setVisibleComponentes(true)
+    }   
+    
+    const Buttons = [
+        {
+            "id"         : "45123706520", 
+            "label"      : "Categorias de Activo",
+            "cantidad"   : Tipos_Activo?.length > 0 ? Tipos_Activo?.length : '0',
+            "Myfunction" : ShowCategoriasActivo,
+            "estado"     : CategoriasActivoPanel
+        },{
+            "id"         : "453706520", 
+            "label"      : "Categorias de Componente",
+            "cantidad"   : Tipos_Componentes?.length > 0 ? Tipos_Componentes?.length : '0',
+            "Myfunction" : ShowCategoriasComponentes,
+            "estado"     : CategoriasComponentePanel
+        },{
+            "id"         : "58951", 
+            "label"      : "Activos",
+            "cantidad"   : Activos?.length > 0 ? Activos?.length : '0',
+            "Myfunction" : Show_Activos,
+            "estado"     : ActivosPanel
+        },{
+            "id"         : '39582', 
+            "label"      : "Componentes",
+            "cantidad"   : Componentes?.length > 0 ? Componentes?.length : '0',
+            "Myfunction" : ShowComponentes,
+            "estado"     : ComponentesPanel
+        },{
+            "id"         : '34258', 
+            "label"      : "Empresas",
+            "cantidad"   : Empresas?.length > 0 ? Empresas?.length : '0',
+            "Myfunction" : ShowEmpresa,
+            "estado"     : EmpresasPanel
+        },{
+            "id"         : '456465', 
+            "label"      : "Rigs",
+            "cantidad"   : Rigs?.length > 0 ? Rigs?.length : '0',
+            "Myfunction" : ShowRigs,
+            "estado"     : RigsPanel
+        },{
+            "id"         : '41891', 
+            "label"      : "Responsables",
+            "cantidad"   : Responsables?.length > 0 ? Responsables?.length : '0',
+            "Myfunction" : ShowResponsables,
+            "estado"     : ResponsablesPanel
+        },{
+            "id"         : '58122', 
+            "label"      : "Mantenimientos",
+            "cantidad"   : Mantenimientos?.length > 0 ? Mantenimientos?.length : '0',
+            "Myfunction" : ShowMantenimiento,
+            "estado"     : MantenimientosPanel
+        },{
+            "id"         : '397asd34', 
+            "label"      : "Om's",
+            "cantidad"   : Oms?.length  > 0 ? Oms?.length  : '0',
+            "Myfunction" : ShowOms,
+            "estado"     : OmsPanel
+        },{
+            "id"         : '865115', 
+            "label"      : "Documentos",
+            "cantidad"   : Documentos?.length,
+            "Myfunction" : ShowDocumentos,
+            "estado"     : DocumentosPanel
+        },{
+            "id"         : '742225', 
+            "label"      : "Salir",
+            "Myfunction" : () => router.get(`logout`),
+            "estado"     : false
         }
-    }
+    ]
 
-  
-  const [ActionsModalActivo, setActionsModalActivo] = useState(false);
-  const [FormatsModalActivo, setFormatsModalActivo] = useState(false);
-  
-  const [ActivosFiltrados, setActivosFiltrados] = useState(Activos); 
-
-  const filterActivos = ( searchTerm ) => {
-      const filtered = Activos.filter((data) => {
-          const taqActivos  =   data.taqActivos.toLowerCase();
-          const empresa     =   data.empresa.nombre.toLowerCase();
-          const nombre      =   data.nombre.toLowerCase();
-          const tipo        =   data.tipo ? data.tipo.nombre.toLowerCase() : '';
-          const descripcion =   data.descripcion ? data.descripcion.toLowerCase() : '';
-          const serial      =   data.serial ? data.serial.toLowerCase() : '';
-          return ( 
-              taqActivos.includes(searchTerm)  ||
-              tipo.includes(searchTerm)      ||
-              nombre.includes(searchTerm)      ||
-              empresa.includes(searchTerm)     ||
-              descripcion.includes(searchTerm) ||
-              serial.includes(searchTerm)       
-          );
-      });
-      setActivosFiltrados(filtered);
-  };
-
-  useEffect(() => {
-      setEmpresaFiltradas(Empresas)
-  }, [Empresas])
-
-  const [EmpresaFiltradas, setEmpresaFiltradas] = useState();
-  const [ActionsModalEmpresas, setActionsModalEmpresas] = useState(false);
-  const filterEmpresa = ( searchTerm ) => {
-      const filtered = Empresas.filter((data) => {
-          const taqHer      =   data.taqHer.toLowerCase();
-          const nombre      =   data.nombre.toLowerCase();
-          const area        =   data.area.toLowerCase();
-          const serial      =   data.serial ? data.serial.toLowerCase() : '';
-          const horasuso    =   data.horasuso.toLowerCase();
-          const urlImage    =   data.urlImage.toLowerCase();
-          return ( 
-              taqHer.includes(searchTerm)    ||
-              nombre.includes(searchTerm)    ||
-              area.includes(searchTerm)      ||
-              serial.includes(searchTerm)    ||
-              horasuso.includes(searchTerm)  ||
-              urlImage.includes(searchTerm)    
-          );
-      });
-      setEmpresaFiltradas(filtered);
-  };
-
-  useEffect(() => {
-      setDocumentosFiltrados(Documentos)
-  }, [Documentos])
-
-  const [DocumentosFiltrados, setDocumentosFiltrados] = useState();
-  const FilterDocumentos = ( searchTerm ) => {
-      const filtered = Documentos.filter((data) => {
-          const taqDoc = data.taqDoc.toLowerCase();
-          const nombre = data.nombre.toLowerCase(); 
-          return ( 
-              taqDoc.includes(searchTerm)    ||
-              nombre.includes(searchTerm)     
-          );
-      });
-      setDocumentosFiltrados(filtered);
-  };
-
-  useEffect(() => {
-      setComponentesFiltrados(Componentes)
-  }, [Componentes])
-
-  const [ComponentesFiltrados, setComponentesFiltrados] = useState(Componentes);
-  const filterComponentes = ( searchTerm ) => {
-      const filtered = Componentes.filter((data) => {
-          const activo_id   =   data.activo_id.toLowerCase();
-          const nombre      =   data.nombre.toLowerCase();
-          const descripcion =   data.descripcion ? data.descripcion.toLowerCase() : '';
-          const modelo      =   data.modelo.toLowerCase();
-          const serial      =   data.serial.toLowerCase();
-          const horas_uso   =   data.horas_uso.toLowerCase();
-          const urlImage    =   data.urlImage.toLowerCase();
-          const created_at  =   data.created_at.toString().toLowerCase();
-          const updated_at  =   data.updated_at.toString().toLowerCase();
-          return ( 
-              activo_id.includes(searchTerm)  ||
-              nombre.includes(searchTerm)     ||
-              descripcion.includes(searchTerm)||
-              modelo.includes(searchTerm)     ||
-              serial.includes(searchTerm)     ||
-              horas_uso.includes(searchTerm)  ||
-              urlImage.includes(searchTerm)   ||
-              created_at.includes(searchTerm) ||
-              updated_at.includes(searchTerm) 
-          );
-      });
-      setComponentesFiltrados(filtered);
-  };
-
-  const [OmsFiltrados, setOmsFiltrados] = useState(Oms);
-  const [ActionsModalOts, setActionsModalOts] = useState(false)
-  const filterOms = ( searchTerm ) => {
-      const filtered  = oms.filter((data) => {
-          const taqom          = data.taqom.toLowerCase();
-          const taqempresa     = data.taqempresa.toLowerCase();
-          const taqresponsable = data.responsable.nombre.toLowerCase();
-          const fechainicio    = data.fechainicio.toLowerCase();
-          const horainicio     = data.horainicio.toLowerCase();
-          const fechafin       = data.fechafin ? data.fechafin.toLowerCase() : '';
-          const horafin        = data.horafin ? data.horafin.toLowerCase() : '';
-          const tipo           = data.tipo.toLowerCase();
-          const clasot         = data.tipo.toLowerCase();
-          const descripcion    = data.descripcion?  data.descripcion.toLowerCase() : '';
-          const prioridad      = data.prioridad.toLowerCase();
-          const estado         = data.estado.toLowerCase();
-          const created_at     = data.created_at.toLowerCase();
-          const updated_at     = data.updated_at.toLowerCase();
-          return (
-              taqom.includes(searchTerm)          ||
-              taqempresa.includes(searchTerm)     ||
-              taqresponsable.includes(searchTerm) ||
-              fechainicio.includes(searchTerm)    ||
-              horainicio.includes(searchTerm)     ||
-              fechafin.includes(searchTerm)       ||
-              tipo.includes(searchTerm)           ||
-              clasot.includes(searchTerm)         ||
-              descripcion.includes(searchTerm)    ||
-              prioridad.includes(searchTerm)      ||
-              horafin.includes(searchTerm)        ||
-              estado.includes(searchTerm)         ||
-              created_at.includes(searchTerm)     ||
-              updated_at.includes(searchTerm) 
-          );
-      });
-      setOmsFiltrados(filtered);
-  };
-
-  const [ResponsablesFiltrados, setResponsablesFiltrados] = useState();
-  const [ActionsModalResponsables, setActionsModalResponsables] = useState(false);
-
-  useEffect(() => {
-      setResponsablesFiltrados(Responsables)
-  }, [Responsables])
-
-  const filterResponsables = ( searchTerm ) => {
-      const filtered = Responsables.filter((data) => {
-          const taqresponsable  =   data.taqresponsable.toLowerCase(); 
-          const nombre          =   data.nombre.toLowerCase(); 
-          const cargo           =   data.id_cargo.toLowerCase();
-          const estado          =   data.estado.toLowerCase();
-          return (
-              taqresponsable.includes(searchTerm)  || 
-              nombre.includes(searchTerm)          ||
-              cargo.includes(searchTerm)           ||
-              estado.includes(searchTerm)
-          );
-      });
-      setResponsablesFiltrados(filtered);
-  };
-
-  useEffect(() => {
-      setMantenimientosData(Mantenimientos)
-  }, [Mantenimientos])
-
-  const [MantenimientosData, setMantenimientosData] = useState();
-  const FilterMantenimientos = ( searchTerm ) => {
-      const filtered           = Mantenimientos.filter((data) => {
-          const taqManto       =   data.taqManto.toLowerCase();
-          const Nombre         =   data.Nombre.toLowerCase();
-          const tipe           =   data.tipe.toLowerCase();
-          const descripcion    =   data.descripcion.toLowerCase();
-          return (
-              taqManto.includes(searchTerm)    ||
-              Nombre.includes(searchTerm)      ||
-              tipe.includes(searchTerm)        ||
-              descripcion.includes(searchTerm)
-          );
-      });
-      setMantenimientosData(filtered);
-  };
-
-
-
+    const Sections = [
+        {
+            "id"         : "13d2d523a2314a6", 
+            "Tittle"     : "Categorias Activo",
+            "ExcelAction": null,
+            "Data"       : Tipos_Activo, 
+            "State"      : CategoriasActivoPanel,
+        },
+        {
+            "id"         : "13d2d523a4a6", 
+            "Tittle"     : "Categorias Componente",
+            "ExcelAction": null,
+            "Data"       : Tipos_Componentes, 
+            "State"      : CategoriasComponentePanel
+        },
+        {
+            "id"         : "bb35e3728ef0", 
+            "Tittle"     : "Activo",
+            "ExcelAction": "/Download/activos",
+            "Data"       : Activos, 
+            "State"      : ActivosPanel
+        },
+        {
+            "id"         : "f21ff4cf82c1", 
+            "Tittle"     : "Componente",
+            "ExcelAction": "/Download/componentes",
+            "Data"       : Componentes, 
+            "State"      : ComponentesPanel
+        },
+        {
+            "id"         : "96334918fb7d", 
+            "Tittle"     : "Empresa",
+            "ExcelAction": "/Download/clientes",
+            "Data"       : Empresas,
+            "State"      : EmpresasPanel
+        },
+        {
+            "id"         : "4abe7087a2bd", 
+            "Tittle"     : "Rig",
+            "ExcelAction": "/Download/rigs",
+            "Data"       : Rigs, 
+            "State"      : RigsPanel
+        }, 
+        {
+            "id"         : "2e576d97ea68", 
+            "Tittle"     : "Responsable",
+            "ExcelAction": "/Download/responsables",
+            "Data"       : Responsables, 
+            "State"      : ResponsablesPanel
+        }, 
+        {
+            "id"         : "c5c06ae3d247", 
+            "Tittle"     : "Mantenimiento",
+            "ExcelAction": "/Download/mantenimientos",
+            "Data"       : Mantenimientos, 
+            "State"      : MantenimientosPanel
+        }, 
+        {
+            "id"         : "76b1ac64b527", 
+            "Tittle"     : "Om",
+            "ExcelAction": "/Download/oms",
+            "Data"       : Oms, 
+            "State"      : OmsPanel
+        }, 
+        {
+            "id"         : "c74ca769b631", 
+            "Tittle"     : "Documento",
+            "ExcelAction": null,
+            "Data"       : Documentos, 
+            "State"      : DocumentosPanel
+        }, 
+    ]
+      
     return (
-      <main className = 'w-full h-auto  flex flex-col justify-start items-center justify-items-center'>
-        <div className='w-full h-screen  bg-gray-300    flex  flex-col md:flex-row  justify-center items-start justify-items-center relative overflow-visible '>
-            <div className='hidden xl:w-[20%] h-screen  px-4 py-4 xl:flex flex-col justify-between  items-center justify-items-center gap-2 overflow-y-auto'>
-                <div onClick = { () => Show_Default() } className=' cursor-pointer w-full h-auto p-4 flex justify-center items-center gap-2 bg-white rounded-md shadow-md shadow-black'>
-                    <img src={logo_gema} alt="logo gworks" className='w-[70px] h-[70px] object-cover' loading="lazy" />
-                    <span className='text-4xl font-bold text-black'>GEMA</span>
-                </div>
-                <div className='w-full flex flex-col justify-center items-center gap-1'>
-                {
-                    Buttons ? (
-                        Buttons.map( (data) => (
-                            <ButtonMenu 
-                                key = { data.id }
-                                children = { data.children }
-                                label = { data.label }
-                                cantidad = { data.cantidad }
-                                Myfunction = { data.Myfunction }
-                                estado = { data.estado }
-                            />
-                        ))
-                    ) : null
-                }
-                </div>
-                <div className='w-full h-auto p-4 flex justify-center items-center bg-white rounded-md shadow-md shadow-black'>
-                    <img src={logo_gworks} alt="logo gworks" className='w-full h-full object-cover' loading="lazy"/>
-                </div>
-            </div>
-            <div className='w-full h-screen flex-col justify-start items-start justify-items-center overflow-visible'>
-                {
-                    Default ? (
-                        <PanelDashboard OmsFinalizadas={`123`} OmsPendientes={`125`} TotalOm={`257`} responsables={Responsables} key={`65465465`}/>
-                    )
-                    : null
-                }
-                {
-                    PanelCategorias ? (
-                        <div className='w-full h-full overflow-hidden'>
-                            <div className='w-full h-auto px-4 py-2 flex gap-3'>
-                                <div onClick={()=>ShowCategoriaActivos()} className={`w-1/2 h-auto px-4 py-2 flex flex-col md:flex-row justify-between transition duration-700 ease-in-out ${ VisibleActivos ? 'border border-white bg-gray-800 text-white' : 'hover:bg-gray-800 bg-white border hover:border-white border-gray-800 hover:text-white text-gray-800' } font-semibold cursor-pointer rounded-md`}>
-                                    <div className='text-center'>
-                                        Categorias de Activo
-                                    </div>
-                                    <div className='text-center'>
-                                        { Tipos_Activo.length }
-                                    </div>
-                                </div> 
-                                <div  onClick={()=>ShowCategoriaComponentes()} className={`w-1/2 h-auto px-4 py-2 flex flex-col md:flex-row justify-between transition duration-700 ease-in-out ${ VisibleComponentes ? 'border border-white bg-gray-800 text-white' : 'hover:bg-gray-800 bg-white border hover:border-white border-gray-800 hover:text-white text-gray-800' } font-semibold cursor-pointer rounded-md`}>
-                                    <div className='text-center'>
-                                        Categorias de Componentes
-                                    </div>
-                                    <div className='text-center'>
-                                        { Tipos_Componentes.length }
-                                    </div>
-                                </div>
-                            </div>
-                            {
-                                VisibleActivos ? (
-                                    <Panel_general FunctionfilterData = { FilterTiposActivo } >
-                                        <div className='w-full h-full flex flex-col justify-start items-center gap-3'>
-                                        {
-                                            TiposActivosFiltrados ? (
-                                                TiposActivosFiltrados.map( (data) => (
-                                                    <Elemento_general key = { data.id_tipo } link = {`/tipos/activo/${data.id_tipo}`} >
-                                                        <div className='w-full flex justify-between'>
-                                                            <div>
-                                                                {data.nombre}
-                                                            </div>
-                                                            <div>
-                                                                Activos: { data.activos != null ? data.activos.length : 0}
-                                                            </div>
-                                                        </div>
-                                                    </Elemento_general>
-                                                ))
-                                            ) : null
-                                        }
-                                        <div className='w-auto h-autopx-4 py-2 flex justify-center items-center gap-3 absolute bottom-2 right-5'>
-                                            <div onClick = { () => setActionsModalActivo(true) } className='w-auto h-auto bg-green-500 hover:bg-green-800 px-4 py-2 rounded-md text-white transition duration-700 ease-in-out cursor-pointer'>
-                                                Registrar categoria de activo
-                                            </div>
-                                        </div>
-                                        </div>
-                                        <Modal
-                                            isVisible = { ActionsModalActivo }
-                                            onClose = { () => setActionsModalActivo(false) }
-                                            tittle = {`Registrando categoria de activo `} 
-                                        >
-                                            <NewTipeActivo onClose = {() => setActionsModalActivo(false)}/>
-                                        </Modal>
-                                    </Panel_general>
-                                ) : null
-                            }
-                            {
-                                VisibleComponentes ? (
-                                    <Panel_general FunctionfilterData = { FilterTiposComponentes } >
-                                        <div className='w-full h-full flex flex-col justify-start items-center gap-3'>
-                                        {
-                                            TiposComponentesFiltrados ? (
-                                                TiposComponentesFiltrados.map( (data) => (
-                                                    <Elemento_general key={data.id_tipo} link = {`/tipos/componente/${data.id_tipo}`} >
-                                                        <div className='w-full flex justify-between'>
-                                                            <div>
-                                                                {data.nombre}
-                                                            </div>
-                                                            <div>
-                                                                Componentes: { data ? data.componentes ? data.componentes.length : '0' : '0' }
-                                                            </div>
-                                                        </div>
-                                                    </Elemento_general>
-                                                ))
-                                            ) : null
-                                        }
-                                        <div className='w-auto h-autopx-4 py-2 flex justify-center items-center gap-3 absolute bottom-2 right-5'>
-                                            <div onClick = { () => setActionsModalActivo(true) } className='w-auto h-auto bg-green-500 hover:bg-green-800 px-4 py-2 rounded-md text-white transition duration-700 ease-in-out cursor-pointer'>
-                                                Registrar categoria de componente
-                                            </div>
-                                        </div>
-                                        </div>
-                                        <Modal
-                                            isVisible = { ActionsModalActivo }
-                                            onClose = { () => setActionsModalActivo(false) }
-                                            tittle = {`Registrando categoria de componente`} 
-                                        >
-                                            <NewTipeComponente onClose = {() => setActionsModalActivo(false)}/>
-                                        </Modal>
-                                    </Panel_general>
-                                ) : null
-                            }
-                        </div>
-                    )
-                    : null
-                }                
-                {
-                    Panel_Activos ? (
-                        <div className='w-full h-full  p-4 flex flex-col justify-start items-center '>
-                             {
-                                Activos ?  (
-                                    <Panel_general FunctionfilterData = { filterActivos } >
-                                        <div className='w-full h-full grid  grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-4'>
-                                        {
-                                            ActivosFiltrados ? (
-                                                ActivosFiltrados.map( (data) => (
-                                                    data.urlImage != 'default-image.jpg' ? (
-                                                        <CardGeneral
-                                                            link = {`https://gworks.gematech.co/storage/Activos/${data.taqActivos}/${data.urlImage}`}
-                                                            nombre={` ACTIVO: ${data.nombre} - SERIAL: ${data.serial}`}
-                                                            route={`/activo/${data.taqActivos}`}
-                                                            key={data.taqActivos}
-                                                        />
-                                                    ) : (
-                                                        <CardGeneral
-                                                            link = {`https://gworks.gematech.co/storage/${data.urlImage}`}
-                                                            nombre={` ACTIVO: ${data.nombre} - SERIAL: ${data.serial}`}
-                                                            route={`/activo/${data.taqActivos}`}
-                                                            key={data.taqActivos}
-                                                        />
-                                                    )
-                                                ))
-                                            ) : null
-                                        }
-                                        <div className='w-auto h-autopx-4 py-2 flex justify-center items-center gap-3 absolute bottom-2 right-5'>
-                                            <div onClick = { () => setActionsModalActivo(true) } className='scale-90 hover:scale-110 w-auto h-auto bg-green-500 hover:bg-green-800 px-4 py-2 rounded-md text-white transition duration-700 ease-in-out cursor-pointer hover:border hover:border-white'>
-                                                Registrar Activo
-                                            </div>
-                                            <a href='/Download/activos' className='scale-90 hover:scale-110 w-auto h-auto bg-green-500 hover:bg-green-800 px-4 py-2 rounded-md text-white transition duration-700 ease-in-out cursor-pointer hover:border hover:border-white'>
-                                                Descargar Listado Activos
-                                            </a>
-                                        </div>
-                                        </div>
-                                        <Modal
-                                            isVisible = { ActionsModalActivo }
-                                            onClose = { () => setActionsModalActivo(false) }
-                                            tittle = {`Registrando Activo`} 
-                                        >
-                                            <NewActivo onClose = {() => setActionsModalActivo(false)} status = { status } Empresa = { Empresas } Tipos = { Tipos_Activo } />
-                                        </Modal> 
-                                    </Panel_general>
-                                ) : null
-                             }
-                        </div>
-                    )
-                    : null
-                }
-                {
-                    Panel_Componentes ? (
-                        <Panel_general FunctionfilterData = { filterComponentes } >
-                            <div className='w-full h-full grid  grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-4'>
-                                {
-                                    ComponentesFiltrados ? (
-                                        ComponentesFiltrados.map( (data) => (
-                                            data.urlImage != 'default-image.jpg' ? (
-                                                <CardGeneral
-                                                    link = {`https://gworks.gematech.co/storage/Componentes/${data.taqComponente}/${data.urlImage}`}
-                                                     nombre={` ACTIVO: ${data.nombre} - SERIAL: ${data.serial}`}
-                                                    route={`/componente/${data.taqComponente}`}
-                                                    key={data.taqComponente}
-                                                />
-                                            ) : (
-                                                <CardGeneral
-                                                    link = {`https://gworks.gematech.co/storage/${data.urlImage}`}
-                                                     nombre={` ACTIVO: ${data.nombre} - SERIAL: ${data.serial}`}
-                                                    route={`/componente/${data.taqComponente}`}
-                                                    key={data.taqComponente}
-                                                />
-                                            )
-                                        ))
-                                    ) : null
-                                }
-                                <div className='w-auto h-autopx-4 py-2 flex justify-center items-center gap-3 absolute bottom-2 right-5'>
-                                    <div onClick = { () => setActionsModalActivo(true) } className='w-auto h-auto bg-green-500 hover:bg-green-800 px-4 py-2 rounded-md text-white transition duration-700 ease-in-out cursor-pointer'>
-                                        Registrar Componente
-                                    </div>
-                                    <a href='/Download/componentes' className='w-auto h-auto bg-green-500 hover:bg-green-800 px-4 py-2 rounded-md text-white transition duration-700 ease-in-out cursor-pointer'>
-                                        Descargar Listado de Componentes
-                                    </a>
-                                </div>
-                            </div>
-                            <Modal
-                                isVisible = { ActionsModalActivo }
-                                onClose = { () => setActionsModalActivo(false) }
-                                tittle = {`Registrando Nuevo Componente`} 
-                            >
-                                <NewComponente onClose = {() => setActionsModalActivo(false)} Empresa = { Empresas } Tipos = { Tipos_Componentes } />
-                            </Modal>
-                        </Panel_general>
-                    )
-                    : null
-                }
-                {
-                    Panel_Empresa ? (
-                        <Panel_general FunctionfilterData = { filterEmpresa } >
-                            <div className='w-full h-full grid  grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-4'>
-                                {
-                                    EmpresaFiltradas ? (
-                                        EmpresaFiltradas.map( (data) => (
-                                            data.urlImage != 'default-image.jpg' ? (
-                                                <CardGeneral
-                                                    link = {`https://gworks.gematech.co/storage/Empresas/${data.urlImage}`}
-                                                    nombre={data.nombre}
-                                                    route={`/empresa/${data.taqempresa}`}
-                                                    key={data.taqempresa}
-                                                />
-                                            ) : (
-                                                <CardGeneral
-                                                    link = {`https://gworks.gematech.co/storage/${data.urlImage}`}
-                                                    nombre={data.nombre}
-                                                    route={`/empresa/${data.taqempresa}`}
-                                                    key={data.taqempresa}
-                                                />
-                                            )
-                                        ))
-                                    ) : null
-                                }
-                                <div className='w-auto h-autopx-4 py-2 flex justify-center items-center gap-3 absolute bottom-2 right-5'>
-                                    <div onClick = { () => setActionsModalEmpresas(true) } className='w-auto h-auto bg-green-500 hover:bg-green-800 px-4 py-2 rounded-md text-white transition duration-700 ease-in-out cursor-pointer'>
-                                        Registrar Empresa
-                                    </div>
-                                </div>
-                            </div>
-                            <Modal
-                                isVisible = { ActionsModalEmpresas }
-                                onClose = { () => setActionsModalEmpresas(false) }
-                                tittle = {` Registrar Nueva Empresa`} 
-                            >
-                                <NewEmpresa onClose = { () => setActionsModalEmpresas(false) }  status = { status } />
-                            </Modal>
-                        </Panel_general>
-                    )
-                    : null
-                }
-                {
-                    Panel_Responsables ? (
-                        <Panel_general FunctionfilterData = { filterResponsables } >
-                            <div className='w-full h-full grid  grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-4  overflow-y-auto overflow-x-hidden'>
-                            {
-                                ResponsablesFiltrados ? (
-                                    ResponsablesFiltrados.map( (data) => (
-                                        <CardGeneral
-                                            link   = {`https://gworks.gematech.co/storage/${data.Image}`}
-                                            nombre = {`${data.nombre}`}
-                                            route  = {`/responsables/${data.taqresponsable}`}
-                                            key    = {data.taqresponsable}
-                                        />
-                                    ))
-                                ) : null
-                            }
-                            <div className='w-auto h-autopx-4 py-2 flex justify-center items-center gap-3 absolute bottom-2 right-5'>
-                                <div onClick = { () => setActionsModalResponsables(true) } className='w-auto h-auto bg-green-500 hover:bg-green-800 px-4 py-2 rounded-md text-white transition duration-700 ease-in-out cursor-pointer'>
-                                    Registrar Responsable
-                                </div>
-                            </div>
-                            </div>
-                            <Modal
-                                isVisible = { ActionsModalResponsables }
-                                onClose = { () => setActionsModalResponsables(false) }
-                                tittle = {`Nuevo Responsable`} 
-                            >
-                                <NewResponsable Cargos = { Cargos } onClose = { () => setActionsModalResponsables(false) } status = { status } />
-                            </Modal>
-                        </Panel_general>
-                    )
-                    : null
-                }
-                {
-                    Panel_Oms ? (
-                        <Panel_general FunctionfilterData = { filterOms } >
-                            <div className='w-full h-full flex flex-col justify-start items-center gap-3'>
-                                {
-                                    OmsFiltrados ? (
-                                        OmsFiltrados.map((data) => (
-                                            <Link href={`/oms/${data.taqom}`} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                                                <div className='w-full flex flex-col sm:flex-row  justify-between sm:items-center items-start'>
-                                                    <div className='w-full sm:w-[80%] flex flex-col gap-3'>
-                                                        <span className={`${data.estado === 'EN PROCESO' ? 'text-red-500' : 'text-green-500' } font-semibold`}> { data.taqom } </span>
-                                                        <span> { data.descripcion } </span>
-                                                    </div>
-                                                    <div className='w-full sm:w-[20%]'>
-                                                        {data.responsable.nombre}
-                                                    </div>
-                                                </div>
-                                            </Link>
-                                        ))
-                                    ) : null
-                                }
-                                <div className='w-auto h-autopx-4 py-2 flex justify-center items-center gap-3 absolute bottom-2 right-5'>
-                                    <div onClick = { () => setActionsModalOts(true) } className='w-auto h-auto bg-green-500 hover:bg-green-800 px-4 py-2 rounded-md text-white transition duration-700 ease-in-out cursor-pointer'>
-                                        Registrar Orden de trabajo
-                                    </div>
-                                </div>
-                            </div>
-                            <Modal
-                                isVisible = { ActionsModalOts }
-                                onClose = { () => setActionsModalOts(false) }
-                                tittle = {`Nueva Orden de Trabajo`} 
-                            >
-                                <NewOm LastOm = {Oms && Oms[0] ? Oms[0].taqom : "0"}  Responsables = { Responsables } Empresa = { Empresas } Activos = { Activos } onClose = { () => setActionsModalOts(false) } status={status} />
-                            </Modal>
-                        </Panel_general>
-                    )
-                    : null
-                }
-                {
-                    Panel_Mantenimiento ? (
-                        <Panel_general FunctionfilterData = { FilterMantenimientos } >
-                            <div className='w-full h-full flex flex-col justify-start items-center gap-3'>
-                                {
-                                    MantenimientosData ? (
-                                        MantenimientosData.map((data) => (
-                                            <Link href={`/mantenimiento/show/${data.taqManto}`} className='w-full h-auto flex justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                                                <div className='w-full flex justify-between items-center'>
-                                                    <div className='w-[80%] flex flex-col gap-3'>
-                                                        <span className='text-red-500 font-semibold'> { data.Nombre } </span>
-                                                        <span> { data.descripcion } </span>
-                                                    </div>
-                                                    <div className='w-[20%]'>
-                                                        {data.tipe} 
-                                                    </div>
-                                                </div>
-                                            </Link>
-                                        ))
-                                    ) : null
-                                }
-                                <div className='w-auto h-autopx-4 py-2 flex justify-center items-center gap-3 absolute bottom-2 right-5'>
-                                    <div onClick = { () => setActionsModalOts(true) } className='w-auto h-auto bg-green-500 hover:bg-green-800 px-4 py-2 rounded-md text-white transition duration-700 ease-in-out cursor-pointer'>
-                                        Registrar Mantenimiento
-                                    </div>
-                                </div>
-                            </div>
-                            <Modal
-                                isVisible = { ActionsModalOts }
-                                onClose = { () => setActionsModalOts(false) }
-                                tittle = {`Nuevo Mantenimiento`} 
-                            >
-                                <NewMtto onClose = { () => setActionsModalOts(false) }  />
-                            </Modal>
-                        </Panel_general>
-                    )
-                    : null
-                }
-                {
-                    Panel_Documentos ? (
-                        <Panel_general FunctionfilterData = { FilterDocumentos } >
-                            <div className='w-full h-full flex flex-col justify-start items-center gap-3'>
-                                {
-                                    DocumentosFiltrados ? (
-                                        DocumentosFiltrados.map((data) => (
-                                            <div key = { data.taqDoc }  className='w-full h-auto flex flex-col sm:flex-row gap-3 justify-between items-center border bg-white border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                                                <span className='w-[90%] '> { data.nombre } </span>
-                                                <div className='w-full sm:w-auto h-full flex flex-col sm:flex-row justify-center items-center gap-2'>
-                                                    <div onClick={ () => ShowModalDoc(data) } className='w-full sm:w-auto max-h-[40px] h-full px-4 py-2 bg-green-600 hover:bg-green-800 text-white cursor-pointer border hover:border-white '>
-                                                        Ver
-                                                    </div>
-                                                    <div className='w-full sm:w-auto max-h-[40px] h-full px-4 py-2 bg-red-600 hover:bg-red-800 text-white cursor-pointer border hover:border-white '>
-                                                        Eliminar
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))
-                                    ) : null
-                                }
-                            <div className='w-auto h-autopx-4 py-2 flex justify-center items-center gap-3 absolute bottom-2 right-5'>
-                                <div onClick = { () => setShowUploadDocument(true) } className='w-auto h-auto bg-green-500 hover:bg-green-800 px-4 py-2 rounded-md text-white transition duration-700 ease-in-out cursor-pointer'>
-                                    Subir Documentos
-                                </div>
-                            </div>
-                            </div>
-                            <Modal
-                                isVisible = { ShowUploadDocument }
-                                onClose = { () => setShowUploadDocument(false) }
-                                tittle = {` Registrando Documento `} 
-                            >
-                                <UploadDocument onClose = { () => setShowUploadDocument(false) } />
-                            </Modal>
-                            <Modal
-                                isVisible = { ShowModalDocs }
-                                onClose = { () => setShowModalDocs(false) }
-                                tittle = { DocSelectd.nombre } 
-                            >
-                                <div className='w-[900px] h-[800px]'>
-                                    <embed src={`https://gworks.gematech.co/${DocSelectd.url}`} type="application/pdf" className='w-full h-full' />
-                                </div>
-                            </Modal>
-                        </Panel_general>
-                    )
-                    : null
-                }
-            </div>
-        </div>
-        <Toaster richColors position='top-center'/>     
+      <main className='w-full h-screen overflow-hidden bg-gray-800 flex flex-col xl:flex-row '>
+        <MenuAppbar Buttons = { Buttons } Default = { ShowDefault } /> 
+        <div className='w-full xl:w-[80%] h-full overflow-y-auto xl:p-4'>
+             {
+               Sections ?  Sections.map((Constructor) => (
+                <PanelSection key={Constructor.id} Values = {Constructor} ShowModal = { () => setShowModal(true) } />
+               )) : null 
+             }
+        </div> 
+        <Modal
+            isVisible = { ShowModal }
+            onClose = { () => setShowModal(false) }
+            tittle = {`Opciones`} 
+        >
+          {
+            ActivosPanel ? (
+              <CreateActivo Empresa = { Empresas } Tipos = { Tipos_Activo } onClose = { () => setShowModal(false) } />
+            ) : null 
+          }
+          {
+            CategoriasActivoPanel  ? (
+              <CreateCateoria onClose = { () => setShowModal(false) } route={`/categoria/create/activo`} key = {`d992f2f2cbd9d094be`} />
+            ) : null 
+          }
+          {
+            CategoriasComponentePanel  ? (
+              <CreateCateoria onClose = { () => setShowModal(false) } route={`/categoria/create/componente`} key={`c0ef6ff5f88c81216b`}/>
+            ) : null 
+          }
+          {
+            ComponentesPanel  ? (
+              <CreateComponente onClose = { () => setShowModal(false) } Tipos = { Tipos_Componentes } key={`31d3add5cad3afb5a8`}/>
+            ) : null 
+          }
+          {
+            EmpresasPanel  ? (
+              <CreateEmpresa onClose = { () => setShowModal(false) } key={`0d49a8bbf20be5f63e`} />
+            ) : null 
+          } 
+          {
+            RigsPanel  ? (
+              <CreateEmpresa onClose = { () => setShowModal(false) } key={`a14476a7b0a1f82d62`} />
+            ) : null 
+          }
+          {
+            ResponsablesPanel ? (
+              <CreateResponsable Cargos = { Cargos } onClose = { () => setShowModal(false) } key={`22d5ef25092ed15861`} />
+            ) : null 
+          }
+          {
+            MantenimientosPanel ? (
+              <CreateMantenimiento onClose = { () => setShowModal(false) } key={`8651aeb15d291641db`} />
+            ) : null 
+          }
+          {
+            OmsPanel ? (
+              <CreateOms LastOm = {Oms && Oms[0] ? Oms[0].taqom : "0"} Responsables = { Responsables } onClose = { () => setShowModal(false) } key={`8fe4b439accaa0b558`}/>
+            ) : null 
+          }
+          {
+            DocumentosPanel ? (
+              <CreateDocumento route={``} Taq={``} onClose = { () => setShowModal(false) } key={`c53166671f945e794f`}/>
+            ) : null 
+          }
+        </Modal>
       </main>
     )
   }

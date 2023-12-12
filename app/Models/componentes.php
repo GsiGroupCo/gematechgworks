@@ -23,6 +23,9 @@ class componentes extends Model
     public function Activo(){
         return $this->belongsTo(componente_x_activos::class,'taqComponente','taqComponente');
     }
+    public function Galeria(){
+        return $this->hasMany(galeria_x_componentes::class,'taqComponente','taqComponente');
+    }
     public function Categoria(){
         return $this->belongsTo(tipos_componentes::class,'id_tipo','id_tipo');
     }

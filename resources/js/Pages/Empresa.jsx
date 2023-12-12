@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import ActivoIcon from '@/Components/Icons/activo';
 import UserIcon from '@/Components/Icons/user';
 import EmpresaAppbar from '@/Components/UI/Empresa/Appbar';
-import ButtonMenu from '@/Components/UI/ButtonMenu';
+import ButtonMenu from '@/Components/UI/MenuButton';
 import Panel_general from '@/Components/UI/Panel_general';
 import { Link } from '@inertiajs/react';
 import { Toaster, toast } from 'sonner';
