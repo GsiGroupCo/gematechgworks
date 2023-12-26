@@ -13,6 +13,7 @@ use App\Models\componentes;
 use App\Models\empresas;
 use App\Models\mantenimientos; 
 use App\Models\responsable;
+use App\Models\rigs;
 use App\Models\tipos_activo;
  
 use Illuminate\Support\Facades\Storage;
@@ -50,6 +51,7 @@ class ActivosController extends Controller
                     'descripcion' => $request->descripcion,
                     'serial' => $request->serial, 
                     'horasuso' => $request->horasuso,
+                    'estado'   => 'VIGENTE',
                     'urlImage' => $filename,
                 ]); 
                 return redirect()->route('activos.show', ['activos' => $taqActivo])->with('status', 'Activo Registrado Correctamente');
@@ -61,13 +63,13 @@ class ActivosController extends Controller
                     'descripcion' => $request->descripcion, 
                     'modelo' => $request->modelo,
                     'serial' => $request->serial,
+                    'estado'   => 'VIGENTE',
                     'horas_uso' => $request->horas_uso,
                     'urlImage' => "default-image.jpg",
                 ]);
                 return redirect()->route('activos.show', ['activos' => $taqActivo])->with('status', 'Activo Registrado Correctamente');
             }
-        } catch (\Throwable $th) {
-            dd($th);
+        } catch (\Throwable $th) { 
             return redirect()->route('home')->with('error', 'Problema Registrando Activo');
         }
     }
@@ -91,10 +93,10 @@ class ActivosController extends Controller
                         'Mantenimientos_Correctivos',
                         'Componente'
                     )->where('taqActivos','LIKE',$activo)->get(),
+                    "Rigs" => rigs::all(),
                     "Activos" => activos::all(),
                     "Areas" => area::all(),
                     "oms" => om::all(),
-                    "Empresas" => empresas::all(),
                     "Componentes" => componentes::all(),
                     "Tipo" => tipos_activo::all(),
                     "Responsables" => responsable::all(),

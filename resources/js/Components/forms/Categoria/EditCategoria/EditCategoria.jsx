@@ -4,17 +4,18 @@ import { useFormik } from "formik";
 import { initialValue, validationSchema } from './EditCategoria.form';
 import { useForm } from '@inertiajs/react'
 
-const EditCategoria = ({ onClose, route }) =>  {
+const EditCategoria = ({ onClose, route, Taq }) =>  {
 
-  const { data,post } = useForm()
+  const { data,patch } = useForm()
 
   const formik = useFormik({
     initialValues:initialValue(),
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      data.nombre          = formValue.nombre, 
-      post({route})
+      data.Taq    = Taq,
+      data.nombre = formValue.nombre, 
+      patch(route)
       onClose()
     }
   })

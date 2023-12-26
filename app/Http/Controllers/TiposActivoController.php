@@ -16,7 +16,7 @@ class TiposActivoController extends Controller
             tipos_activo::create([
                 'id_tipo'         => $id_tipo,
                 'nombre'          => $request -> nombre,
-                'taq_activo_base' => $request -> taq_activo_base,
+                'taq_activo_base' => $request -> taq,
             ]);
             return redirect()->route( 'tipos.activo.show', ['type' => $id_tipo] ) -> with('status', 'Tipo de Activo Registrado Correctamente'); 
         } catch (\Throwable $th) {
@@ -46,15 +46,15 @@ class TiposActivoController extends Controller
     }
 
     public function update(Request $request)
-    {
-        try {
-            tipos_activo::where('id_tipo','LIKE',$request -> id_tipo)-> update([
-                'nombre'          => $request -> nombre,
-                'taq_activo_base' => $request -> taq_activo_base,
+    { 
+        try { 
+            tipos_activo::where('id_tipo','LIKE',$request -> Taq)-> update([
+                'nombre' => $request -> nombre
             ]);
-            return redirect()->route( 'tipos.activo.show', [ 'type' => $request -> id_tipo ]) -> with('status', 'Tipo de Activo Registrado Correctamente'); 
+            return redirect()->route( 'categorias.activo.show', [ 'type' => $request -> Taq ]) -> with('status', 'Categoria actualizada correctamente'); 
         } catch (\Throwable $th) {
-            return redirect()->route('home') -> with('error', 'Problema Actualizando el Tipo de Activo');
+            dd($th);
+            return redirect()->route('home') -> with('error', 'Problema Actualizando la categoria');
         }
     }
 }

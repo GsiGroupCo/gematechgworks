@@ -10,7 +10,6 @@ const PanelMovimientos = ({ state }) => {
         const taqmovactivs  =   data.taqmovactivs.toLowerCase();
         const activo_id    =   data.activo_id.toLowerCase();
         consttaqom         =   data.taqot.toLowerCase();
-        const taqempresa    =   data.taqempresa.toLowerCase();
         const fechaSalida   =   data.fechaSalida.toString().toLowerCase();
         const fechaRetorno  =   data.fechaRetorno.toString().toLowerCase();
         const estado        =   data.estado.toLowerCase();
@@ -21,8 +20,7 @@ const PanelMovimientos = ({ state }) => {
         return (
             taqmovactivs.includes(searchTerm) ||
             activo_id.includes(searchTerm) ||
-           taqom.includes(searchTerm) ||
-            taqempresa.includes(searchTerm) ||
+            taqom.includes(searchTerm) ||
             fechaSalida.includes(searchTerm) ||
             fechaRetorno.includes(searchTerm) ||
             ubicacion.includes(searchTerm) ||

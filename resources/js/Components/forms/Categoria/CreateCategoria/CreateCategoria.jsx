@@ -13,9 +13,10 @@ const CreateCategoria = ({ onClose, route }) =>  {
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      data.nombre          = formValue.nombre,
-      data.taq_activo_base = formValue.taq_activo_base,
-      post({route})
+      data.nombre        = formValue.nombre,
+      data.taq           = formValue.taq_activo_base, 
+      console.log(data)
+      post(route)
       onClose()
     }
   })

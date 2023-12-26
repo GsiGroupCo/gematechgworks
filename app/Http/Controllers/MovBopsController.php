@@ -21,18 +21,14 @@ class movactivosController extends Controller
     public function create($taqactivos,$categoria)
     {
         if($categoria == 'EQUIPOS INTERNOS'){
-            return view('ot/createOIT',[
-                'taqEmpresa' =>  empresas::where('taqempresa','LIKE','GSI')->get(),
+            return view('ot/createOIT',[ 
                 'taqBop' => activos::where('taqActivos','LIKE',$taqactivos)->get(),
-                'respon' => User::where('taqempresa','LIKE','GSI')->get(),
                 'creacion' => 'movei',
             ]);
         }
         else if($categoria == 'PRESTACION DE SERVICIOS'){
-            return view('ot/createOT',[
-                'taqEmpresa' =>  empresas::where('taqempresa','NOT LIKE','GSI')->get(),
+            return view('ot/createOT',[ 
                 'taqBop' => activos::where('taqActivos','LIKE',$taqactivos)->get(),
-                'respon' => User::where('taqempresa','LIKE','GSI')->get(),
                 'creacion' => 'movps',
             ]);
         }
@@ -52,7 +48,6 @@ class movactivosController extends Controller
             'taqmovactivos'     => "MOV-ACT-".$request->taqActivos.$request->taqot.$var,
             'taqActivos'        => $request -> taqActivos,
             'taqot'          => $request ->taqom,
-            'taqempresa'     => $request -> taqempresa,
             'ubicacionactual'=> $request -> areaactual,
             'ubicacionnueva' => $request -> areasolicitante,
             'fecha'          => $request -> fecha,

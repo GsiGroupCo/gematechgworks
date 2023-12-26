@@ -15,7 +15,6 @@ const PanelDashboard = ({ responsables, TotalOm ,OmsPendientes ,OmsFinalizadas  
     const filtered = responsables.filter((data) => {
         // Convierte todos los valores a minúsculas para
         const taqresponsable   =   data.taqresponsable.toLowerCase();
-        const taqempresa       =   data.taqempresa.toLowerCase();
         const primernombre     =   data.primernombre.toLowerCase();
         const segundonombre    =   data.segundonombre  ? data.segundonombre.toLowerCase() : '' ;
         const primerapellido   =   data.primerapellido.toLowerCase();
@@ -28,7 +27,6 @@ const PanelDashboard = ({ responsables, TotalOm ,OmsPendientes ,OmsFinalizadas  
         // Comprueba si algún campo contiene el término de búsqueda
         return (
             taqresponsable.includes(searchTerm) ||
-            taqempresa.includes(searchTerm) ||
             primernombre.includes(searchTerm) ||
             segundonombre.includes(searchTerm) ||
             primerapellido.includes(searchTerm) ||

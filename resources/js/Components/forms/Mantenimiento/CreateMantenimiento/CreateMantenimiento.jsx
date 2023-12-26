@@ -11,7 +11,7 @@ const CreateMantenimiento = ({ onClose }) =>  {
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      data.Nombre      = formValue.Nombre
+      data.nombre      = formValue.nombre
       data.Descripcion = formValue.Descripcion
       data.Tipo        = formValue.Tipo
       post('/mantenimiento/store')
@@ -31,8 +31,8 @@ const CreateMantenimiento = ({ onClose }) =>  {
         </h3>
         <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
             <div className='w-full h-auto flex gap-2 justify-start items-center'>
-                <label htmlFor="Nombre" className='font-bold text-black'>
-                Nombre
+                <label htmlFor="nombre" className='font-bold text-black'>
+                    Nombre
                 </label> 
                 <span className='text-red-500 font-bold text-2xl'>
                 *
@@ -40,16 +40,16 @@ const CreateMantenimiento = ({ onClose }) =>  {
             </div>
             <input 
                 type="text"
-                name="Nombre"
-                id="Nombre"
-                value={formik.values.Nombre}
+                name="nombre"
+                id="nombre"
+                value={formik.values.nombre}
                 onChange={formik.handleChange}
                 placeholder='MANTENIMIENTO A MOTOSOLDADOR'
-                className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.Nombre && formik.errors.Nombre ? 'border-red-500' : 'border-black' }`}
+                className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.nombre && formik.errors.nombre ? 'border-red-500' : 'border-black' }`}
             />
             {
-                formik.touched.Nombre && formik.errors.Nombre && (
-                <div className="text-red-500 font-bold">{formik.errors.Nombre}</div>
+                formik.touched.nombre && formik.errors.nombre && (
+                <div className="text-red-500 font-bold">{formik.errors.nombre}</div>
                 )
             }
         </div>

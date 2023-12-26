@@ -7,6 +7,9 @@ import React, { useState } from 'react'
 
 export default function TipoComponente({ Categoria }) {
     
+
+  console.log(Categoria[0].id_tipo)
+
   const [ActionModal, setActionModal] = useState(false)
 
   const [AccionesState, setAccionesState] = useState(true)
@@ -102,7 +105,7 @@ export default function TipoComponente({ Categoria }) {
           }
           {
             EditCategoriaState ? (
-              <EditCategoria onClose = {() => setActionModal(false)} route = {`edit/`} />
+              <EditCategoria Taq = { Categoria[0].id_tipo } onClose = {() => setActionModal(false)} route = {`/categorias/componente/updated`} />
             ) : null
           }
           {

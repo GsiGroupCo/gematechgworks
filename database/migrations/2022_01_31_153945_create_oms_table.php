@@ -11,7 +11,6 @@ class CreateOmsTable extends Migration
     {
         Schema::create('oms', function (Blueprint $table) {
             $table->string('taqom')->unique(); 
-            $table->string('taqempresa');
             $table->string('taqresponsable');
             $table->string('fechainicio');
             $table->string('horainicio');
@@ -26,7 +25,6 @@ class CreateOmsTable extends Migration
 
         Schema::table('oms', function (Blueprint $table) {
             $table->foreign('taqresponsable')->references('taqresponsable')->on('responsables');
-            $table->foreign('taqempresa')->references('taqempresa')->on('empresas');
         });
     }
 

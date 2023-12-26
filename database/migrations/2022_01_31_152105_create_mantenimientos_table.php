@@ -10,7 +10,7 @@ class CreateMantenimientosTable extends Migration
     {
         Schema::create('mantenimientos', function (Blueprint $table) {
             $table->string('taqManto')->unique();
-            $table->string('Nombre');
+            $table->string('nombre');
             $table->string('tipe');
             $table->string('descripcion',500);
             $table->timestamps();

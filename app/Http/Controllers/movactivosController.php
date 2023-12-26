@@ -14,8 +14,7 @@ class movactivosController extends Controller
             movimientos_x_activos::create([
                 'taqmovactivs' => uniqid(TRUE),
                 'taqActivos'   => $request -> taqActivos,
-                'taqot'        => $request ->taqom,
-                'taqempresa'   => $request -> taqempresa,
+                'taqot'        => $request ->taqom, 
                 'fechaSalida'  => $request -> fechaSalida,
                 'fechaRetorno' => 'SIN RETORNAR',
                 'estado'       => 'EN PROCESO',

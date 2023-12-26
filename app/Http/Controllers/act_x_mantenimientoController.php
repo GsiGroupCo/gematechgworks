@@ -10,7 +10,7 @@ class act_x_mantenimientoController extends Controller
 {
 
     public function store(Request $request)
-    {
+    { 
         try {
             act_x_mantenimiento::create([
                 'actividad_id'  => uniqid(TRUE),
@@ -21,9 +21,10 @@ class act_x_mantenimientoController extends Controller
                 'componente'    => $request -> componente,
                 'taqManto'      => $request -> taqManto,
             ]);
-            return redirect()->route('mtto.show', ['taqManto' => $request->taqManto]) -> with('status', 'Actividad agregada');
+            return redirect()->route('mantenimiento.show', ['taqManto' => $request->taqManto]) -> with('status', 'Actividad agregada');
         } catch (\Throwable $th) {
-            return redirect()->route('mtto.show', ['taqManto' => $request->taqManto]) -> with('error', 'Problema agregando actividad');
+            dd($th);
+            return redirect()->route('mantenimiento.show', ['taqManto' => $request->taqManto]) -> with('error', 'Problema agregando actividad');
         }
     }
 
@@ -36,18 +37,18 @@ class act_x_mantenimientoController extends Controller
                 'sistema'      => $request -> sistema,
                 'componente'   => $request -> componente,
             ]);
-            return redirect()->route('mtto.show', ['taqManto' => $request->taqManto]) -> with('status', 'Actividad actualizada');
-        } catch (\Throwable $th) {
-            return redirect()->route('mtto.show', ['taqManto' => $request->taqManto]) -> with('status', 'Problema actualizando actividad');
+            return redirect()->route('mantenimiento.show', ['taqManto' => $request->taqManto]) -> with('status', 'Actividad actualizada');
+        } catch (\Throwable $th) { 
+            return redirect()->route('mantenimiento.show', ['taqManto' => $request->taqManto]) -> with('status', 'Problema actualizando actividad');
         }
     }
 
     public function delete(Request $request){
         try {
             act_x_mantenimiento::where('actividad_id','LIKE',$request -> actividad_id )-> delete();
-            return redirect() -> route('mtto.show', ['taqManto' => $request->taqManto]) -> with('status', 'Actividad eliminada');
+            return redirect() -> route('mantenimiento.show', ['taqManto' => $request->taqManto]) -> with('status', 'Actividad eliminada');
         } catch (\Throwable $th) {
-            return redirect() -> route('mtto.show', ['taqManto' => $request->taqManto]) -> with('error', 'Problema eliminando actividad');
+            return redirect() -> route('mantenimiento.show', ['taqManto' => $request->taqManto]) -> with('error', 'Problema eliminando actividad');
         }
     }
 

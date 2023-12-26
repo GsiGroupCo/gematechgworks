@@ -14,7 +14,7 @@ class mantenimientosController extends Controller
     {
         mantenimientos::create([
             'taqManto'     => uniqid(TRUE),
-            'nombre'       => $request -> Nombre,
+            'nombre'       => $request -> nombre,
             'descripcion'  => $request -> Descripcion,
             'tipe'         => $request -> Tipo,
         ]);
@@ -47,11 +47,17 @@ class mantenimientosController extends Controller
 
     public function update(Request $request)
     {
-        mantenimientos::where('taqManto','LIKE',$request -> taqManto)-> update([
-            'nombre'       => $request -> nombre,
-            'descripcion'  => $request -> descripcion,
-        ]);
-        return redirect()->route('mtto.show', ['taqManto' => $request->taqManto]) -> with('status', 'Mantenimiento Actualizado');
+        try {
+            dd($request);
+            mantenimientos::where('taqManto','LIKE',$request -> taqManto)-> update([
+                'nombre'       => $request -> nombre,
+                'descripcion'  => $request -> descripcion,
+            ]);
+            return redirect()->route('mantenimiento.show', ['taqManto' => $request->taqManto]) -> with('status', 'Mantenimiento Actualizado');
+        } catch (\Throwable $th) {
+            dd($th);
+            return redirect()->route('home') -> with('error', 'Problema encontrando mantenimiento'); 
+        }
     }
 
 }

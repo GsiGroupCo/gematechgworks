@@ -27,7 +27,6 @@ class MovActivosRequest extends FormRequest
             'taqActivos',
             'taqresponsable',
             'taqot',
-            'taqempresa',
             'estado',
             'ubicacionnueva',
             'descripcion',

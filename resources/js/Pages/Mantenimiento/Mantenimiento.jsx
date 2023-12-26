@@ -1,146 +1,118 @@
-import Modal from '@/Components/Panels/Modals/Modal'
-import ButtonMenu from '@/Components/UI/Activo/ButtonMenu'
-import Caracteristica_target from '@/Components/UI/Activo/Caracteristica_target'
-import MttoAppbar from '@/Components/UI/Mantenimiento/Appbar'
-import Panel_general from '@/Components/UI/Panel_general'
-import EditActMtto from '@/Components/forms/Mantenimiento/FormEditActividadMtto/FormEditActividadMtto'
-import EditMtto from '@/Components/forms/Mantenimiento/FormEditMtto/FormEditMtto'
-import { useForm } from '@inertiajs/react'
-import React, { useEffect, useState } from 'react'
-import { Toaster, toast } from 'sonner'
 
-export default function Mantenimiento({ Mtto, Responsables, status, error }) {
-
-  useEffect(() => {
-    if(status){
-      toast.success(status)
-    }
-  }, [status]);
-
-  useEffect(() => {
-    if(error){
-      toast.error(error)
-    }
-  }, [error]);
-  
-  const [Default, setDefault] = useState(false)
-
+import Modal from "@/Components/Panels/Modals/Modal";
+import Actions from "@/Components/UI/Actions";
+import ButtonMenu from "@/Components/UI/Activo/ButtonMenu";
+import Caracteristica_target from "@/Components/UI/Activo/Caracteristica_target";
+import Appbar from "@/Components/UI/Appbar";
+import PanelSection from "@/Components/UI/PanelSection";
+import CreateActividad from "@/Components/forms/Mantenimiento/Actividades/CreateActividades";
+import EditMantenimiento from "@/Components/forms/Mantenimiento/EditMantenimiento";
+import { useForm } from "@inertiajs/react";
+import { useState } from "react"; 
+ 
+const MttoPage= ({ Mtto, Responsables }) => {
+ 
   const { post, data } = useForm();
 
-  const [PanelActividades, setPanelActividades] = useState(true)
+  console.log(Mtto)
+
   const [ModalShow, setModalShow] = useState(false)
-  const [ActividadSelected, setActividadSelected] = useState({
-    actividad_id   :'',
-    nombre         :'',
-    sistema        :'',
-    componente     :'',
-    frecuencia     :'',
-    tipofrecuencia :'',
-    taqManto       :''
-  })
 
-  function ShowDefault(){
-    setPanelActividades(false)
-    setDefault(true)
+  const [CreateFormModal, setCreateFormModal] = useState(false)
+
+  const [AccionesModal, setAccionesModal] = useState(false) 
+  const [FormatosModal, setFormatosModal] = useState(false) 
+  const [ImageModal, setImageModal] = useState(false) 
+  const [ShowModal, setShowModal] = useState(false)
+
+  function ShowActions(){
+    setImageModal(false)
+    setFormatosModal(false)
+    setShowModal(true)
+    setAccionesModal(true)
+    ShowActionButtons()
+  }
+  
+  function ShowFormats(){
+    setImageModal(false)
+    setAccionesModal(false)
+    setShowModal(true)
+    setFormatosModal(true)
+  }
+  
+  function ShowImage(){
+    setAccionesModal(false)
+    setFormatosModal(false)
+    setShowModal(true)
+    setImageModal(true)
   }
 
-  function Edit(actividadData){
-    setModalShow(true)
-    setActividadSelected({
-      actividad_id   :actividadData.actividad_id,
-      nombre         :actividadData.nombre,
-      sistema        :actividadData.sistema,
-      componente     :actividadData.componente,
-      frecuencia     :actividadData.frecuencia,
-      tipofrecuencia :actividadData.tipofrecuencia,
-      taqManto       :actividadData.taqManto
-    })
+  const [AcctionsButtons, setAcctionsButtons]                     = useState(true) 
+  const [EditarMantenimientoPanel, setEditarMantenimientoPanel]   = useState(false) 
+  
+  function ShowActionButtons(){ 
+    setEditarMantenimientoPanel(false) 
+    setAcctionsButtons(true)
+  }
+ 
+  function ShowEditarMantenimientoPanel(){ 
+    setAcctionsButtons(false) 
+    setEditarMantenimientoPanel(true)
+  }
+ 
+  const Acciones = [{
+    "id"         : "1213522726",
+    "label"      : "Editar Mantenimiento",
+    "estate"     : 2,
+    "function"   : ShowEditarMantenimientoPanel,
+  }]
+
+  const [DefaultPanel, setDefaultPanel] = useState(false) 
+  const [ActividadesPanel, setActividadesPanel] = useState(true) 
+
+  function CloseAllPanels(){ 
+    setActividadesPanel(false) 
+    setDefaultPanel(true)
   }
 
-  function Delete(actividadData){
-    data.actividad_id = actividadData.actividad_id,
-    data.taqManto     = actividadData.taqManto,
-    post(`/actividades/mantenimiento/delete`)
-  }
-
-  function ShowPanelMttoCorrActivo(){
-    if(PanelActividades){
-      ShowDefault()
-    }else{
-      setDefault(false)
-      setPanelActividades(true)
-    }
+  function ShowActividades(){ 
+    setDefaultPanel(false) 
+    setActividadesPanel(true)
   }
 
   const Data = [{  
     "id"         : '623026548',
     "nombre"     : "DESCRIPCION",
     "value"      : Mtto[0] ? Mtto[0].descripcion : '',
-  },{  
-    "id"         : '47175832',
-    "nombre"     : "CATEGORIA",
-    "value"      : Mtto[0] ? Mtto[0].tipe : '',
   }]
 
-  const Buttons = [{
-      "id"         : '545051',
-      "label"      : "Actividades",
-      "Myfunction" : ShowPanelMttoCorrActivo,
-      "estado"     : PanelActividades
+  const Buttons = [{  
+    "id"         : '16256256',
+    "label"      : "Actividades",
+    "Myfunction" : ShowActividades,
+    "estado"     : ActividadesPanel
   }]
-
-  
-  const Actividades = [];
-  Mtto.forEach(Mtto => {
-    Mtto.actividades.forEach(data => {
-      Actividades.push({
-        actividad_id   : data.actividad_id,
-        nombre         : data.nombre,
-        sistema        : data.sistema,
-        componente     : data.componente,
-        frecuencia     : data.frecuencia,
-        tipofrecuencia : data.tipofrecuencia,
-        taqManto       : data.taqManto,
-      });
-    });
-  });
-
-  useEffect(() => {  
-    setActividadesFiltradas(Actividades)
-  }, [Mtto])
-  
-  const [ActividadesFiltradas, setActividadesFiltradas] = useState();
-  const FilterActividades = ( searchTerm ) => {
-    const filtered = Actividades.filter((data) => {
-        const actividad_id   = data.actividad_id.toLowerCase();
-        const nombre         = data.nombre.toLowerCase();
-        const sistema        = data.sistema.toLowerCase();
-        const componente     = data.componente.toLowerCase();
-        const frecuencia     = data.frecuencia.toLowerCase();
-        const tipofrecuencia = data.tipofrecuencia.toLowerCase();
-        const taqManto       = data.taqManto.toLowerCase();
-        return (
-          actividad_id.includes(searchTerm)   ||
-          nombre.includes(searchTerm)         ||
-          frecuencia.includes(searchTerm)     ||
-          componente.includes(searchTerm)     ||
-          sistema.includes(searchTerm)        ||
-          tipofrecuencia.includes(searchTerm) ||
-          taqManto.includes(searchTerm)         
-        );
-    });
-    setActividadesFiltradas(filtered);
-  };
+ 
+  const Panels = [{
+    "id"         : "6b4fe942b95bb902a15", 
+    "Tittle"     : "Actividades", 
+    "Data"       : Mtto[0].actividades, 
+    "State"      : ActividadesPanel,
+    "add"        : true
+  }]
 
   return (
-    <main className='w-full h-screen flex flex-col justify-start items-center justify-items-center'>
-      <MttoAppbar
-        nombre = {  Mtto[0].Nombre }
-        Mantenimiento = { Mtto }
-        Responsables = { Responsables }
+    <main className='w-full h-screen overflow-hidden  flex flex-col justify-start items-center '>
+      <Appbar 
+        Objeto = { Mtto[0] } 
+        ShowImage = { ShowImage } 
+        ShowActions = { ShowActions } 
+        ShowFormats = { ShowFormats }  
+        Taq = {`not_show`} 
+        urlImage = {`not_image`} 
       />
-      <div className='w-full h-auto  flex justify-center items-center justify-items-center gap-3'>
-        <div className='hidden md:flex flex-col justify-start items-start justify-items-center gap-3 w-[25%] px-4 py-2 h-full rounded-md bg-white '>
+      <div className="w-full h-full overflow-hidden overflow-y-auto flex flex-col lg:flex-row justify-start items-start">
+        <div className="w-full h-auto px-4 py-2 lg:w-[20%]  gap-2 flex flex-col justify-start items-center">
           {
             Data ? (
               Data.map( (data) => (
@@ -150,89 +122,88 @@ export default function Mantenimiento({ Mtto, Responsables, status, error }) {
                   value = { data.value }
                 />
               ))
-          ) : null
+            ) : null
           }
-        </div>
-        <div className='w-full h-full   flex justify-start items-center justify-items-center gap-3'>
-          <div className='hidden md:flex flex-col px-4 py-2 justify-start items-center justify-items-center gap-3 w-auto h-full  rounded-md '>
-            {
-              Buttons ? (
-                Buttons.map( (data) => (
-                  <ButtonMenu
-                    children={<></>}
-                    Myfunction = { data.Myfunction }
-                    label = { data.label }
-                    estado = { data.estado }
-                    key = { data.id } 
+          {
+            Mtto[0].caracteristicas ? (
+                Mtto[0].caracteristicas.map( (data) => (
+                  <Caracteristica_target
+                    name = { data.nombre }
+                    key = { data.taqotro }
+                    value = { data.value }
                   />
                 ))
-              ) : null
-            }
-          </div>
-          <div className='w-full h-full'>
-            {
-              Default ? (
-                  <div className='w-full h-full px-4 py-2 flex  justify-center items-center justify-items-center '>
-                      
-                  </div> 
-              ) : null
-            }
-            {
-              PanelActividades ? (
-                <Panel_general FunctionfilterData = { FilterActividades } key='12314292526'>
-                  <div key={`54564651`} className='w-full h-[50px] flex justify-between items-center border border-black bg-[#385449] text-white font-semibold  px-4 py-2'>
-                    <span className='w-1/4 h-full flex justify-center items-center'>
-                      Nombre
-                    </span>
-                    <span className='w-1/4 h-full flex justify-center items-center'>
-                      Frecuencia
-                    </span>
-                    <span className='w-1/4 h-full flex justify-center items-center'>
-                      Tipo
-                    </span>
-                    <span className='w-1/4 h-full flex justify-center items-center'>
-                      Acciones
-                    </span>
-                  </div>
-                  {
-                      ActividadesFiltradas ? (
-                          ActividadesFiltradas.reverse().map( (data) => (
-                            <div key = { data.taactividad_id } className='w-full h-auto flex justify-between items-center border border-black cursor-pointer  hover:bg-gray-800 hover:text-white px-4 py-2'>
-                              <span className='w-1/4 h-full flex justify-center items-center'>
-                                { data.nombre }
-                              </span>
-                              <span className='w-1/4 h-full flex justify-center items-center'>
-                                { data.frecuencia }
-                              </span>
-                              <span className='w-1/4 h-full flex justify-center items-center'>
-                                { data.tipofrecuencia }
-                              </span>
-                              <div className='w-1/4 h-full  flex justify-end items-center gap-1'>
-                                <span onClick = { () => Edit(data) } className='w-auto h-[50px] px-4 py-2 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-yellow-500 hover:bg-yellow-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
-                                  Editar  
-                                </span>
-                                <span onClick = { () => Delete(data) } className='w-auto h-[50px] px-4 py-2 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-red-500 hover:bg-red-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
-                                  Eliminar
-                                </span>
-                              </div>
-                            </div>
-                          ))
-                      ) : null
-                  }
-                </Panel_general>
-              ) : null
-            }
-          </div>
+            ) : null
+          }
+        </div>
+        <div className='hidden h-auto px-4 py-2 lg:w-auto  gap-2 lg:flex flex-col justify-start items-center'>
+          {
+            Buttons ? (
+              Buttons.map( (data) => (
+                <ButtonMenu
+                  Myfunction = { data.Myfunction }
+                  label = { data.label }
+                  estado = { data.estado }
+                  key = { data.id } 
+                />
+              ))
+            ) : null
+          }
+        </div>
+        <div className='w-full h-full gap-2 flex flex-col justify-start items-center'>
+          {
+            Panels ? Panels.map((Constructor) => (
+              <PanelSection key = { Constructor.id } Values = { Constructor } ShowModal = { () => setCreateFormModal(true) } />
+            )) : null 
+          } 
         </div>
       </div>
       <Modal
-        isVisible = { ModalShow }
-        onClose   = { () => setModalShow(false) }
-        tittle    = {`Acciones de mantenimiento`}
+        isVisible = { ShowModal }
+        onClose = { () => setShowModal(false) }
+        tittle = {`Opciones`}
       >
-        <EditActMtto Actividad = { ActividadSelected } onClose = { () => setModalShow(false) } />
+        {
+          AccionesModal ? (
+            <Actions 
+              Acctions = { AcctionsButtons }
+              Acciones = { Acciones } 
+              key = {`a300c473056b301c`}
+            >
+              
+              {
+                EditarMantenimientoPanel ? (
+                  <EditMantenimiento Mtto = { Mtto } onClose = { () => setShowModal(false) } />
+                ) : null
+              }
+            </Actions>
+          ) : null
+        }
+        {
+          FormatosModal ? (
+            <>
+            
+            </>
+          ) : null
+        }   
       </Modal>
-      <Toaster richColors position='top-center'/>
+      <Modal
+        isVisible = { CreateFormModal }
+        onClose = { () => setCreateFormModal(false) }
+        tittle = {`Acciones`}
+      >
+        {
+          ActividadesPanel ? (
+            <CreateActividad
+              Mantenimiento = { Mtto[0] }
+              onClose = { () => setCreateFormModal(false) }
+            />
+          ) : null
+        }
+      </Modal>       
     </main>
   )
 }
+
+
+export default MttoPage;

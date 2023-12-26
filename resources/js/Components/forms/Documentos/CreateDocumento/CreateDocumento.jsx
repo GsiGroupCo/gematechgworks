@@ -40,7 +40,7 @@ const CreateDocumento = ({ Taq, route, onClose }) =>  {
       onSubmit = { formik.handleSubmit }
       className = " w-[500px] md:w-[650px] h-full flex flex-col justify-center items-start justify-items-center px-8 pt-2 pb-8 gap-3 "
       method = "POST"
-      enctype="multipart/form-data"
+      encType="multipart/form-data"
     >
       <h3 className='font-bold'>
         Subiendo Archivo

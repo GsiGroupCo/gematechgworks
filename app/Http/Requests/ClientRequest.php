@@ -24,7 +24,6 @@ class ClientRequest extends FormRequest
     public function rules()
     {
         return [
-            'taqempresa' => 'required','unique:clientes',
             'nombre'     => 'required',
         ];
     }
@@ -32,8 +31,6 @@ class ClientRequest extends FormRequest
     public function messages()
     {
         return [
-            'taqempresa.required' => 'Taq de empresa requerido',
-            'taqempresa.unique' => 'Ya se encuentra registrada una empresa con ese Taq',
             'nombre.required' => 'El nombre de la empresa es requerido',
         ];
     }

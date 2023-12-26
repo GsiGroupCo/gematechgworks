@@ -1,156 +1,200 @@
-import PanelCertificaciones from '@/Components/Panels/Activos/Certificaciones/P_certificaciones' 
-import Modal from '@/Components/Panels/Modals/Modal'
-import ButtonMenu from '@/Components/UI/Activo/ButtonMenu'
-import Caracteristica_target from '@/Components/UI/Activo/Caracteristica_target'
-import Actions from '@/Components/UI/Componente/Actions'
-import Appbar from '@/Components/UI/Componente/Appbar'
-import Panel_general from '@/Components/UI/Panel_general'
-import React, { useEffect, useState } from 'react'
-import { Toaster, toast } from 'sonner'
+import Modal from "@/Components/Panels/Modals/Modal";
+import Actions from "@/Components/UI/Actions";
+import ButtonMenu from "@/Components/UI/Activo/ButtonMenu";
+import Caracteristica_target from "@/Components/UI/Activo/Caracteristica_target";
+import Appbar from "@/Components/UI/Appbar";
+import PanelSection from "@/Components/UI/PanelSection";
+import AsignarActivo from "@/Components/forms/Activo/AsignarActivo";
+import ListCaracteristica from "@/Components/forms/Caracteristicas/ListCaracteristica"; 
+import CreateCertificacion from "@/Components/forms/Certificaciones/CreateCertificacion";
+import ClonarComponente from "@/Components/forms/Componente/ClonarComponente";
+import EditComponente from "@/Components/forms/Componente/EditComponente";
+import CreateDocumento from "@/Components/forms/Documentos/CreateDocumento";
+import { useState } from "react";
 
-export default function Componente({ ComponentesData, status, error }) {
-   
-  useEffect(() => {
-    if(status){
-      toast.success(status)
-    }
-  }, [status]);
+const ActivoPage= ({ ComponentesData, Categorias, Activos }) => {
+  
+  const [CreateFormModal, setCreateFormModal] = useState(false)
+  
+  const [AccionesModal, setAccionesModal] = useState(false) 
+  const [FormatosModal, setFormatosModal] = useState(false) 
+  const [ImageModal, setImageModal] = useState(false) 
+  const [ShowModal, setShowModal] = useState(false)
 
-  useEffect(() => {
-    if(error){
-      toast.error(error)
-    }
-  }, [error]);
-
-  const [Default, setDefault]                                               = useState(true)
-  const [DocumentosPanel,           setDocumentosPanel]                     = useState(false)
-  const [DocumentosPanelEliminados, setDocumentosPanelEliminados]           = useState(false)
-  const [CertificacionesPanel,      setCertificacionesPanel]                = useState(false)
-  const [CertificacionesEliminadosPanel,setCertificacionesEliminadosPanel]  = useState(false)
-  const [HistorialPanel,            setHistorialPanel]                      = useState(false)
-  const [MttoCorrectivos,           setMttoCorrectivos]                     = useState(false)
-  const [MttoPreventivos,           setMttoPreventivos]                     = useState(false)
-
-  const [ModalActions, setModalActions] = useState(false)
-  const [ModalFormats, setModalFormats] = useState(false)
-  const [ModalDeleteDoc, setModalDeleteDoc] = useState(false)
-
-  function ShowDefault(){
-    setDocumentosPanel(false)
-    setCertificacionesPanel(false)
-    setHistorialPanel(false)
-    setMttoCorrectivos(false)
-    setMttoPreventivos(false)
-    setDocumentosPanelEliminados(false)
-    setCertificacionesEliminadosPanel(false)
-    setDefault(true)
+  function ShowActions(){
+    setImageModal(false)
+    setFormatosModal(false)
+    setShowModal(true)
+    setAccionesModal(true)
+    ShowActionButtons()
+  }
+  
+  function ShowFormats(){
+    setImageModal(false)
+    setAccionesModal(false)
+    setShowModal(true)
+    setFormatosModal(true)
+  }
+  
+  function ShowImage(){
+    setAccionesModal(false)
+    setFormatosModal(false)
+    setShowModal(true)
+    setImageModal(true)
   }
 
-  function ShowActividades(){
-    if(HistorialPanel){
-      ShowDefault()
-    }else{
-      setDefault(false)
-      setDocumentosPanel(false)
-      setCertificacionesPanel(false)
-      setMttoCorrectivos(false)
-      setDocumentosPanelEliminados(false)
-      setMttoPreventivos(false)
-      setCertificacionesEliminadosPanel(false)
-      setHistorialPanel(true)
-    }
-  }  
+  const [AcctionsButtons, setAcctionsButtons]                       = useState(true)
+  
+  const [EditarCaracteristicaState, setEditarCaracteristicaState]   = useState(false)
+  const [EditarComponenteState, setEditarComponenteState]           = useState(false)
+  const [ClonarComponenteState, setClonarComponenteState]           = useState(false) 
+ 
+  function ShowActionButtons(){ 
+    setEditarCaracteristicaState(false)
+    setEditarComponenteState(false)
+    setClonarComponenteState(false) 
+    setAcctionsButtons(true)
+  } 
+    
+  function ShowFormEditCaracteristicas(){ 
+    setEditarComponenteState(false)
+    setClonarComponenteState(false) 
+    setAcctionsButtons(false) 
+    setEditarCaracteristicaState(true)
+  }
 
-  function ShowDocumentos(){
-    if(DocumentosPanel){
+  function ShowFormEditComponente(){ 
+    setClonarComponenteState(false) 
+    setAcctionsButtons(false) 
+    setEditarCaracteristicaState(false)
+    setEditarComponenteState(true)
+  }
+
+  function ShowFormClonarComponente(){  
+    setAcctionsButtons(false) 
+    setEditarCaracteristicaState(false)
+    setEditarComponenteState(false)
+    setClonarComponenteState(true)
+  }
+
+  const Acciones = [{
+      "id"         : "296215696",
+      "label"      : "Editar Caracteristica",
+      "estate"     : 2,
+      "function"   : ShowFormEditCaracteristicas,
+  },{
+      "id"         : "1213522726",
+      "label"      : "Editar Componente",
+      "estate"     : 2,
+      "function"   : ShowFormEditComponente,
+  },{
+      "id"         : "571701126",
+      "label"      : "Clonar Componente",
+      "estate"     : 2,
+      "function"   : ShowFormClonarComponente,
+  }]
+ 
+  const [MantenimientosPanel, setMantenimientosPanel] = useState(true) 
+  const [DocumentosPanel, setDocumentosPanel] = useState(false)
+  const [DocumentosEliminadosPanel, setDocumentosEliminadosPanel] = useState(false)
+  const [CertificacionesPanel, setCertificacionesPanel] = useState(false)
+  const [CertificacionesEliminadosPanel, setCertificacionesEliminadosPanel] = useState(false)
+  const [ComponentesPanel, setComponentesPanel] = useState(false)
+  const [ActivosPanel, setActivosPanel] = useState(false) 
+     
+  function ShowDefault(){
+    setMantenimientosPanel(false)
+    setDocumentosPanel(false)
+    setDocumentosEliminadosPanel(false) 
+    setCertificacionesPanel(false)
+    setCertificacionesEliminadosPanel(false)
+    setComponentesPanel(false)
+    setActivosPanel(false)  
+  }
+  
+  function ShowMantenimientos() {
+    if(MantenimientosPanel){
+      ShowDefault()
+    }else{      
+      setDocumentosPanel(false)
+      setDocumentosEliminadosPanel(false) 
+      setCertificacionesPanel(false)
+      setCertificacionesEliminadosPanel(false)
+      setComponentesPanel(false)
+      setActivosPanel(false) 
+      setMantenimientosPanel(true)
+    }
+  }
+
+  function ShowDocumentos() {
+    if(DocumentosPanel){      
       ShowDefault()
     }else{
-      setDefault(false)
+      setMantenimientosPanel(false)
+      setDocumentosEliminadosPanel(false) 
       setCertificacionesPanel(false)
-      setMttoCorrectivos(false)
-      setDocumentosPanelEliminados(false)
-      setMttoPreventivos(false)
       setCertificacionesEliminadosPanel(false)
-      setHistorialPanel(false)
+      setComponentesPanel(false)
+      setActivosPanel(false) 
       setDocumentosPanel(true)
     }
   }
-  
-  function ShowDocumentosEliminados(){
-    if(DocumentosPanelEliminados){
+
+  function ShowDocumentosEliminados() {
+    if(DocumentosEliminadosPanel){
       ShowDefault()
     }else{
-      setDefault(false)
-      setCertificacionesPanel(false)
-      setMttoCorrectivos(false)
-      setMttoPreventivos(false)
-      setCertificacionesEliminadosPanel(false)
-      setHistorialPanel(false)
-      setDocumentosPanelEliminados(false)
+      setMantenimientosPanel(false)
       setDocumentosPanel(false)
-      setDocumentosPanelEliminados(true)
+      setCertificacionesPanel(false)
+      setCertificacionesEliminadosPanel(false)
+      setComponentesPanel(false)
+      setActivosPanel(false) 
+      setDocumentosEliminadosPanel(true) 
     }
   }
 
-  function ShowCertificaciones(){
+  function ShowCertificaciones() {
     if(CertificacionesPanel){
       ShowDefault()
     }else{
-      setDefault(false)
-      setMttoCorrectivos(false)
-      setMttoPreventivos(false)
-      setHistorialPanel(false)
-      setDocumentosPanelEliminados(false)
-      setCertificacionesEliminadosPanel(false)
+      setMantenimientosPanel(false)
       setDocumentosPanel(false)
+      setDocumentosEliminadosPanel(false) 
+      setCertificacionesEliminadosPanel(false)
+      setComponentesPanel(false)
+      setActivosPanel(false) 
       setCertificacionesPanel(true)
     }
-  }  
+  }
 
-  function ShowCertificacionesEliminadas(){
+  function ShowCertificacionesEliminadas() {
     if(CertificacionesEliminadosPanel){
       ShowDefault()
     }else{
-      setDefault(false)
-      setMttoCorrectivos(false)
-      setMttoPreventivos(false)
-      setHistorialPanel(false)
-      setDocumentosPanelEliminados(false)
+      setMantenimientosPanel(false)
       setDocumentosPanel(false)
+      setDocumentosEliminadosPanel(false) 
+      setComponentesPanel(false)
+      setActivosPanel(false) 
       setCertificacionesPanel(false)
       setCertificacionesEliminadosPanel(true)
     }
-  }  
-
-  function ShowMttoPrev(){
-    if(MttoPreventivos){
+  }
+ 
+  function ShowActivos() {
+    if(ActivosPanel){
       ShowDefault()
     }else{
-      setDefault(false)
-      setCertificacionesPanel(false)
-      setMttoCorrectivos(false)
-      setMttoPreventivos(false)
+      setMantenimientosPanel(false)
       setDocumentosPanel(false)
-      setDocumentosPanelEliminados(false)
-      setCertificacionesEliminadosPanel(false)
-      setMttoPreventivos(true)
-    }
-  } 
-  
-  function ShowMttoCorr(){
-    if(MttoCorrectivos){
-      ShowDefault()
-    }else{
-      setDefault(false)
+      setDocumentosEliminadosPanel(false) 
       setCertificacionesPanel(false)
-      setMttoPreventivos(false)
-      setDocumentosPanelEliminados(false)
       setCertificacionesEliminadosPanel(false)
-      setDocumentosPanel(false)
-      setHistorialPanel(false)
-      setMttoCorrectivos(true)
+      setComponentesPanel(false)
+      setActivosPanel(true) 
     }
-  } 
+  }
 
   const Data = [{  
     "id"         : '109678',
@@ -159,7 +203,7 @@ export default function Componente({ ComponentesData, status, error }) {
   },{  
     "id"         : '6218340',
     "nombre"     : "EMPRESA",
-    "value"      : 'Gworks Services',
+    "value"      : 'GWORKS SERVICES',
   },{  
     "id"         : '5204759',
     "nombre"     : "CATEGORIA",
@@ -167,173 +211,90 @@ export default function Componente({ ComponentesData, status, error }) {
   }]
 
   const Buttons = [{
-      "id"         : '8768676',
-      "label"      : "Historial de Actividad",
-      "Myfunction" : ShowActividades,
-      "estado"     : HistorialPanel
-    },{  
-      "id"         : '6431574',
-      "label"      : "Documentos",
-      "Myfunction" : ShowDocumentos,
-      "estado"     : DocumentosPanel
-    },{  
-      "id"         : '643152374',
-      "label"      : "Documentos Eliminados",
-      "Myfunction" : ShowDocumentosEliminados,
-      "estado"     : DocumentosPanelEliminados
-    },{
-      "id"         : '6281203',
-      "label"      : "Certificaciones",
-      "Myfunction" : ShowCertificaciones,
-      "estado"     : CertificacionesPanel
-    },{
-      "id"         : '628103',
-      "label"      : "Certificaciones Eliminadas",
-      "Myfunction" : ShowCertificacionesEliminadas,
-      "estado"     : CertificacionesEliminadosPanel
-    },{
-      "id"         : '6046348',
-      "label"      : "MTTO Correctivos",
-      "Myfunction" : ShowMttoCorr,
-      "estado"     : MttoCorrectivos
-    },{
-      "id"         : '6876693',
-      "label"      : "MTTO Preventivos",
-      "Myfunction" : ShowMttoPrev,
-      "estado"     : MttoPreventivos
+    "id"         : '95531561',
+    "label"      : "Activos",
+    "Myfunction" : ShowActivos,
+    "estado"     : ActivosPanel
+  },{  
+    "id"         : '16256256',
+    "label"      : "Mantenimiento",
+    "Myfunction" : ShowMantenimientos,
+    "estado"     : MantenimientosPanel
+  },{
+    "id"         : '030963498',
+    "label"      : "Documentos",
+    "Myfunction" : ShowDocumentos,
+    "estado"     : DocumentosPanel
+  },{
+    "id"         : '79235457',
+    "label"      : "Documentos Eliminados",
+    "Myfunction" : ShowDocumentosEliminados,
+    "estado"     : DocumentosEliminadosPanel
+  },{
+    "id"         : '8842172',
+    "label"      : "Certificaciones",
+    "Myfunction" : ShowCertificaciones,
+    "estado"     : CertificacionesPanel
+  },{
+    "id"         : '73286369',
+    "label"      : "Certificaciones Eliminados",
+    "Myfunction" : ShowCertificacionesEliminadas,
+    "estado"     : CertificacionesEliminadosPanel
+  }]
+ 
+  const Panels = [{
+    "id"         : "6b4fe94b95bb902a15", 
+    "Tittle"     : "Mantenimientos", 
+    "Data"       : ComponentesData[0].mantenimientos, 
+    "State"      : MantenimientosPanel,
+    "add"        : true
+  },
+  {
+    "id"         : "feddc0dab45263a21a", 
+    "Tittle"     : "Documentos", 
+    "Data"       : ComponentesData[0].documentos, 
+    "State"      : DocumentosPanel,
+    "add"        : true
+  },
+  {
+    "id"         : "8acfc6e23005040812", 
+    "Tittle"     : "Documentos Eliminados", 
+    "Data"       : ComponentesData[0].documentos__eliminados, 
+    "State"      : DocumentosEliminadosPanel,
+    "add"        : false
+  },
+  {
+    "id"         : "be83a6a6312252cfa2ef", 
+    "Tittle"     : "Certificaciones", 
+    "Data"       : ComponentesData[0].certificaciones, 
+    "State"      : CertificacionesPanel,
+    "add"        : true
+  },{
+    "id"         : "be83a623a63252cfa2ef", 
+    "Tittle"     : "Certificaciones Eliminadas", 
+    "Data"       : ComponentesData[0].certificaciones__eliminadas, 
+    "State"      : CertificacionesEliminadosPanel,
+    "add"        : false
+  },{
+    "id"         : "be8354a6a63252cfa2ef", 
+    "Tittle"     : "Activos", 
+    "Data"       : ComponentesData[0].activos, 
+    "State"      : ActivosPanel,
+    "add"        : true
   }]
 
-  const DocumentosData = [];
-  ComponentesData.forEach(Componente => {
-    Componente.documentos.forEach(documentos => {
-      DocumentosData.push({
-        taqComponentes : documentos.taqComponentes,
-        taqDoc : documentos.taqDoc,
-        nombre: documentos.nombre,
-        DocURL: documentos.DocURL,
-        created_at: documentos.created_at,
-        updated_at: documentos.updated_at,
-      });
-    });
-  });
-
-  useEffect(() => {  
-    setDocumentosFiltrados(DocumentosData)
-  }, [ComponentesData])
-  
-  const [DocumentosFiltrados, setDocumentosFiltrados] = useState();
-  const FiltradoDocumentos = ( searchTerm ) => {
-    const filtered = DocumentosData.filter((data) => {
-        const taqComponentes  = data.taqComponentes.toLowerCase();
-        const taqDoc          = data.taqDoc.toLowerCase();
-        const nombre          = data.nombre.toLowerCase();
-        const DocURL          = data.DocURL.toLowerCase();
-        const created_at      = data.created_at.toLowerCase();
-        const updated_at      = data.updated_at.toLowerCase();
-        return (
-            taqComponentes.includes(searchTerm) ||
-            taqDoc.includes(searchTerm)         ||
-            nombre.includes(searchTerm)         ||
-            DocURL.includes(searchTerm)         ||
-            created_at.includes(searchTerm)     ||
-            updated_at.includes(searchTerm) 
-        );
-    });
-    setDocumentosFiltrados(filtered);
-  };
-
-  const DocumentosEliminadosData = [];
-  ComponentesData.forEach(Componente => {
-    Componente.documentos__eliminados.forEach(documentos => {
-      DocumentosEliminadosData.push({
-        taqComponentes : documentos.taqComponentes,
-        taqDoc : documentos.taqDoc,
-        nombre: documentos.nombre,
-        DocURL: documentos.DocURL,
-        created_at: documentos.created_at,
-        updated_at: documentos.updated_at,
-      });
-    });
-  });
-
-  useEffect(() => {  
-    setDocumentosEliminiadosFiltrados(DocumentosEliminadosData)
-  }, [ComponentesData])
-  
-  const [DocumentosEliminiadosFiltrados, setDocumentosEliminiadosFiltrados] = useState();
-  const FiltradoDocumentosEliminados = ( searchTerm ) => {
-    const filtered = DocumentosData.filter((data) => {
-        const taqComponentes  = data.taqComponentes.toLowerCase();
-        const taqDoc          = data.taqDoc.toLowerCase();
-        const nombre          = data.nombre.toLowerCase();
-        const DocURL          = data.DocURL.toLowerCase();
-        const created_at      = data.created_at.toLowerCase();
-        const updated_at      = data.updated_at.toLowerCase();
-        return (
-            taqComponentes.includes(searchTerm) ||
-            taqDoc.includes(searchTerm)         ||
-            nombre.includes(searchTerm)         ||
-            DocURL.includes(searchTerm)         ||
-            created_at.includes(searchTerm)     ||
-            updated_at.includes(searchTerm) 
-        );
-    });
-    setDocumentosEliminiadosFiltrados(filtered);
-  };
-
-  const Actividades = [];
-  ComponentesData.forEach(Componente => {
-    Componente.actividades.forEach(documentos => {
-      Actividades.push({
-        taqComponentes : documentos.taqComponentes,
-        taqDoc : documentos.taqDoc,
-        nombre: documentos.nombre,
-        DocURL: documentos.DocURL,
-        created_at: documentos.created_at,
-        updated_at: documentos.updated_at,
-      });
-    });
-  });
-
-  useEffect(() => {  
-    setActividadesFiltradas(Actividades)
-  }, [ComponentesData])
-  
-  const [ActividadesFiltradas, setActividadesFiltradas] = useState();
-  const FiltradoActividades = ( searchTerm ) => {
-    const filtered = DocumentosData.filter((data) => {
-        const taqComponentes  = data.taqComponentes.toLowerCase();
-        const taqDoc          = data.taqDoc.toLowerCase();
-        const nombre          = data.nombre.toLowerCase();
-        const DocURL          = data.DocURL.toLowerCase();
-        const created_at      = data.created_at.toLowerCase();
-        const updated_at      = data.updated_at.toLowerCase();
-        return (
-            taqComponentes.includes(searchTerm) ||
-            taqDoc.includes(searchTerm)         ||
-            nombre.includes(searchTerm)         ||
-            DocURL.includes(searchTerm)         ||
-            created_at.includes(searchTerm)     ||
-            updated_at.includes(searchTerm) 
-        );
-    });
-    setActividadesFiltradas(filtered);
-  };
-  
   return (
-    <main className='w-full h-screen flex flex-col justify-start items-center justify-items-center'>
-        <Appbar
-            Acciones={
-              <Actions
-               
-              />
-            }
-            Componente={ComponentesData}
-            formatos={<></>}
-            key={`ActionMenu`}
-        />
-        <div className='w-full h-auto  flex justify-center items-center justify-items-center gap-3'>
-        <div className='hidden md:flex flex-col justify-start items-start justify-items-center gap-3 w-[25%] px-4 py-2 h-full rounded-md bg-white '>
+    <main className='w-full h-screen overflow-hidden  flex flex-col justify-start items-center '>
+      <Appbar 
+        Objeto = { ComponentesData[0] } 
+        ShowImage = { ShowImage } 
+        ShowActions = { ShowActions } 
+        ShowFormats = { ShowFormats }  
+        Taq = { ComponentesData[0].taqComponente } 
+        urlImage = {` https://gworks.gematech.co/storage/Componentes/${ComponentesData[0].taqComponente}/${ComponentesData[0].urlImage}`} 
+      />
+      <div className="w-full h-full overflow-hidden overflow-y-auto flex flex-col lg:flex-row justify-start items-start">
+        <div className="w-full h-auto px-4 py-2 lg:w-[20%]  gap-2 flex flex-col justify-start items-center">
           {
             Data ? (
               Data.map( (data) => (
@@ -357,95 +318,125 @@ export default function Componente({ ComponentesData, status, error }) {
             ) : null
           }
         </div>
-        <div className='w-full h-full   flex justify-start items-center justify-items-center gap-3'>
-          <div className='hidden md:flex flex-col px-4 py-2 justify-start items-center justify-items-center gap-3 w-auto h-full  rounded-md '>
-            {
-              Buttons ? (
-                Buttons.map( (data) => (
-                  <ButtonMenu
-                    children={<></>}
-                    Myfunction = { data.Myfunction }
-                    label = { data.label }
-                    estado = { data.estado }
-                    key = { data.id } 
-                  />
-                ))
-              ) : null
-            }
-          </div>
-          <div className='w-full h-full'>
-            {
-              Default ? (
-                  <div className='w-full h-full px-4 py-2 flex  justify-center items-center justify-items-center '>
-                      
-                  </div> 
-              ) : null
-            } 
-            {
-              DocumentosPanel ? (
-                <Panel_general FunctionfilterData = { FiltradoDocumentos } key={`120398`} >
-                  {
-                      DocumentosFiltrados ? (
-                          DocumentosFiltrados.reverse().map( (data) => (
-                            <div key = { data.taqDoc } className='w-full h-auto flex justify-between items-center border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                              <div className='w-1/2  flex justify-start items-center h-full'>
-                                { data.nombre }
-                              </div>
-                              <div className='w-1/2  flex justify-end items-center h-full gap-3'>
-                                <div className='w-auto h-full bg-green-500 px-4 py-2  text-white hover:bg-green-800 hover:border-white transition duration-700 ease-in-out cursor-pointer'>
-                                  Ver
-                                </div>
-                                <div className='w-auto h-full bg-red-500 px-4 py-2  text-white hover:bg-red-800 hover:border-white transition duration-700 ease-in-out cursor-pointer'>
-                                  Eliminar
-                                </div>
-                              </div>
-                            </div>
-                          ))
-                      ) : null
-                  } 
-                </Panel_general>
-              ) : null
-            }
-            {
-              DocumentosPanelEliminados ? (
-                <Panel_general FunctionfilterData = { FiltradoDocumentosEliminados } key={`3230558`}>
-                  {
-                      DocumentosEliminiadosFiltrados ? (
-                          DocumentosEliminiadosFiltrados.reverse().map( (data) => (
-                            <div key = { data.taqDoc } className='w-full h-auto flex justify-between items-center border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                              <div className='w-1/2  flex justify-start items-center h-full'>
-                                { data.nombreDocumento }
-                              </div>
-                              <div className='w-1/2  flex justify-end items-center h-full gap-3'>
-                                { data.responsable }
-                              </div>
-                            </div> 
-                          ))
-                      ) : null
-                  }
-                </Panel_general>
-              ) : null
-            }
-            {
-              HistorialPanel ? (
-                <Panel_general FunctionfilterData = { FiltradoActividades } key = {`23136366`}>
-                  {
-                      ActividadesFiltradas ? (
-                          ActividadesFiltradas.reverse().map( (data) => (
-                            <div className='w-full h-[50px] flex justify-between items-center border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                              <span> { data.taqot } </span>
-                              <span> { data.activo.nombre } </span>
-                            </div>
-                          ))
-                      ) : null
-                  }
-                </Panel_general>
-              ) : null
-            }
-          </div>
+        <div className='w-full h-auto px-4 py-2 lg:w-auto  gap-2 flex flex-col justify-start items-center'>
+          {
+            Buttons ? (
+              Buttons.map( (data) => (
+                <ButtonMenu 
+                  Myfunction = { data.Myfunction }
+                  label = { data.label }
+                  estado = { data.estado }
+                  key = { data.id } 
+                />
+              ))
+            ) : null
+          }
+        </div>
+        <div className='w-full h-full gap-2 flex flex-col justify-start items-center'>
+          {
+            Panels ? Panels.map((Constructor) => (
+              <PanelSection key={Constructor.id} Values = {Constructor} ShowModal = { () => setCreateFormModal(true) } />
+            )) : null 
+          }
         </div>
       </div>
-      <Toaster richColors position='top-center'/>
+      <Modal
+        isVisible = { ShowModal }
+        onClose = { () => setShowModal(false) }
+        tittle = {`Opciones`}
+      >
+        {
+          ImageModal ? (
+              ComponentesData[0].urlImage != 'default-image.jpg' ? (  
+                <img src={`https://gworks.gematech.co/storage/Activos/${ComponentesData[0].taqComponente}/${ComponentesData[0].urlImage}`} alt={``} className = 'max-w-[300px] sm:max-w-[650px] md:max-w-[780px] max-h-[800px] object-fill ' loading="lazy"/>
+              ) : (
+                <img src={`https://gworks.gematech.co/storage/${ComponentesData[0].urlImage}`} alt={``} className = ' max-w-[800px] max-h-[800px] object-fill ' loading="lazy"/>
+              )
+          ) : null   
+        }
+        {
+          AccionesModal ? (
+            <Actions 
+              Acctions = { AcctionsButtons }
+              Acciones = { Acciones } 
+              key = {`a300c473056b301c`}
+            >
+              <>
+                {
+                  EditarCaracteristicaState  ? (
+                    <ListCaracteristica
+                      Caracteristicas = { ComponentesData[0].caracteristicas }
+                      onClose={() => setShowModal(false)}
+                      DeleteRoute = {`/caracteristica/activo/delete`}
+                      EditRoute = {`/caracteristica/activo/update`}
+                    />
+                  ) : null
+                }
+                {
+                  EditarComponenteState  ? (
+                    <EditComponente
+                      Componente = { ComponentesData[0] }
+                      onClose = {() => setShowModal(false)}
+                    />
+                  ) : null
+                }
+                {
+                  ClonarComponenteState  ? (
+                    <ClonarComponente
+                      Componente = { ComponentesData[0] } 
+                      Categorias = { Categorias } 
+                      onClose    = {() => setShowModal(false)}
+                    />
+                  ) : null
+                }
+              </>
+            </Actions>
+          ) : null
+        }
+        {
+          FormatosModal ? (
+            <>
+            
+            </>
+          ) : null
+        }   
+      </Modal> 
+      <Modal
+        isVisible = { CreateFormModal }
+        onClose = { () => setCreateFormModal(false) }
+        tittle = {`Acciones`}
+      >
+        {
+          ActivosPanel ? (
+            <AsignarActivo
+              Activos = { Activos }
+              Taq = { ComponentesData[0].taqComponente } 
+              onClose = { () => setCreateFormModal(false) }
+            />
+          ) : null
+        }
+        {
+          DocumentosPanel ? (
+            <CreateDocumento
+              Taq = { ComponentesData[0].taqComponente }
+              onClose = { () => setCreateFormModal(false) }
+              route = {`/document/componente/`}
+            />
+          ) : null 
+        } 
+        {
+          CertificacionesPanel ? (
+            <CreateCertificacion
+              Taq = { ComponentesData[0].taqComponente }
+              route = {`/certificacion/componente/store`}
+              onClose = { () => setCreateFormModal(false) } 
+            />
+          ) : null 
+        } 
+      </Modal>
     </main>
   )
 }
+
+
+export default ActivoPage;

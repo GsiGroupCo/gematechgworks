@@ -1,7 +1,7 @@
  
 import FormAddOM from "@/Components/forms/Activo/FormAddOM/FormAddOM";
 import FormEditCaracteristica from "@/Components/forms/Caracteristicas/FormEditCaracteristica";
-import CaracteristicaList from "@/Components/forms/Caracteristicas/FormListCaracteristica";
+import CaracteristicaList from "@/Components/forms/Caracteristicas/ListCaracteristica/FormListCaracteristica";
 import FormCertificacion from "@/Components/forms/Certificaciones/FormCertificacion";
 import FormDocument from "@/Components/forms/Documentos/FormDocuments/FormDocuments";
 import { useState } from "react"; 

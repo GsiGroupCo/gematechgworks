@@ -19,14 +19,12 @@ class OmsController extends Controller
        try { 
             $taqom = $request -> taqom;
             $om = count(om::where('taqom','LIKE',$taqom)->get());
-            $empresa = empresas::where('taqempresa','LIKE','56e6e4262cac')->get();
             if($om == 0)
             {
                 $estado     = 'EN PROCESO';
                 date_default_timezone_set("America/Bogota");
                 om::create([
                     'taqom'          => $taqom,
-                    'taqempresa'     => $empresa[0]['taqempresa'],
                     'taqresponsable' => $request -> taqresponsable,
                     'fechainicio'    => date('m-d-Y', time()),
                     'horainicio'     => date('h:i:s a', time()),
@@ -53,7 +51,7 @@ class OmsController extends Controller
             $exist = count(om::where('taqom','LIKE',$taqom)->get());
             $cargos = cargos::where('cargo','LIKE','COORDINADOR DE MANTENIMIENTO')->get();
             if( $exist === 1 ){
-                return Inertia::render('OM',[
+                return Inertia::render('Om',[
                     'data' => om::with(
                         'Activos.Activos',
                         'Movimientos',
@@ -65,8 +63,6 @@ class OmsController extends Controller
                         ' empresa',
                         'Activos.Activos',
                     ) -> where('taqom', 'LIKE', $taqom)->orderBy('taqom','desc')->paginate(10),
-                    'Empresas' => empresas::all(), 
-                    'ResponsablesOM' => responsable::where([['taqempresa','LIKE','GSI'],['id_cargo','LIKE',$cargos[0]['id_cargo']],['estado','LIKE','VIGENTE']])->get(), 
                     'Responsables' => responsable::where('estado','LIKE','VIGENTE')->get(),
                     'Activos' => activos::all(),
                     'status'  => session('status'),

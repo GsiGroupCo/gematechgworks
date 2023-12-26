@@ -1,13 +1,12 @@
 import Modal from '@/Components/Panels/Modals/Modal'
 import CardGeneral from '@/Components/UI/CartaGeneral'
 import CategoriaAppbar from '@/Components/UI/Categorias/Appbar' 
-import CreateCategoria from '@/Components/forms/Categoria/CreateCategoria'
-import CreateCateoria from '@/Components/forms/Categoria/CreateCategoria'
+import CreateCategoria from '@/Components/forms/Categoria/CreateCategoria' 
 import EditCategoria from '@/Components/forms/Categoria/EditCategoria'
 import { useState } from 'react'
 
 export default function TipoActivo({ TiposActivo }) {
-
+  
   const [ActionModal, setActionModal] = useState(false)
 
   const [AccionesState, setAccionesState] = useState(true)
@@ -103,12 +102,12 @@ export default function TipoActivo({ TiposActivo }) {
           }
           {
             EditCategoriaState ? (
-              <EditCategoria onClose = {() => setActionModal(false)} route = {`edit/`} />
+              <EditCategoria Taq = { TiposActivo[0].id_tipo } onClose = {() => setActionModal(false)} route = {`/categorias/activo/updated`} />
             ) : null
           }
           {
             CreateCategoriaState ? (
-              <CreateCategoria onClose = {() => setActionModal(false)} key = {`7ebed8e41432a4289e`} />
+              <CreateCategoria onClose = {() => setActionModal(false)} route={`categorias/activo/store`} key = {`7ebed8e41432a4289e`} />
             ) : null
           }
       </Modal>

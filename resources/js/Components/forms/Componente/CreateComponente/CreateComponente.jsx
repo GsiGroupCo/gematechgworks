@@ -19,6 +19,7 @@ const CreateComponente = ({ onClose, Tipos }) =>  {
       data.serial      = formValue.serial,
       data.horasuso    = formValue.horasuso,
       data.Image       = file
+      console.log(data);
       post('/componente/store')
       onClose()
     }

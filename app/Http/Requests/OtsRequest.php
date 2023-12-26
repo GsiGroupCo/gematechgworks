@@ -24,7 +24,6 @@ class omsRequest extends FormRequest
     public function rules()
     {
         return [
-            'taqempresa'    => 'required',
             'tipo'          => 'required',
             'clasot'        => 'required',
             'prioridad'     => 'required',

@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { initialValue, validationSchema } from './CreateActivo.form';
 import { useForm } from '@inertiajs/react'
 
-const CreateActivo = ({ onClose, Empresa, Tipos }) =>  {
+const CreateActivo = ({ onClose, Tipos }) =>  {
 
   const { data, post } = useForm()
   const [file, setFile] = useState();

@@ -11,7 +11,6 @@ class om extends Model
 
     protected $fillable = [
         'taqom'         ,
-        'taqempresa'    ,
         'taqresponsable',
         'fechainicio'   ,
         'horainicio'    ,
@@ -50,10 +49,6 @@ class om extends Model
 
     public function Requerimiento(){
         return $this->hasMany(requerimientos::class, 'taqom', 'taqom');
-    }
-
-    public function  empresa(){
-        return $this->belongsTo(empresas::class, 'taqempresa', 'taqempresa');
     }
 
     public function Activos(){

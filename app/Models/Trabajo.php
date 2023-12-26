@@ -12,7 +12,6 @@ class Trabajo extends Model
     protected $fillable = [
         'taqtrabajo',
         'taqresponsable',
-        'taqempresa',
         'taqom',
         'nombre',
         'descripcion',

@@ -14,6 +14,7 @@ class activos extends Model
         'id_tipo', 
         'nombre',
         'descripcion',
+        'estado',
         'serial', 
         'horasuso',
         'urlImage',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\activos;
 use App\Models\componentes;
 use App\Models\tipos_componentes;
  
@@ -40,6 +41,7 @@ class ComponentesController extends Controller
                     'nombre'        => $request -> nombre,
                     'descripcion'   => $request -> descripcion,
                     'serial'        => $request -> serial,
+                    'estado'        => 'VIGENTE',
                     'horasuso'      => $request -> horasuso,
                     'urlImage'      => $filename,
                 ]);
@@ -51,13 +53,13 @@ class ComponentesController extends Controller
                     'nombre'        => $request -> nombre,
                     'descripcion'   => $request -> descripcion,
                     'serial'        => $request -> serial,
+                    'estado'        => 'VIGENTE',
                     'horasuso'      => $request -> horasuso,
                     'urlImage'      => 'default-image.jpg',
                 ]);
                 return redirect()->route('componentes.show', [ 'componentes' => $taqComponente ]) -> with('status', 'Componente Registrado Correctamente');
             }
-        } catch (\Throwable $th) {
-            
+        } catch (\Throwable $th) { 
             return redirect()->route('home') -> with('error', 'Problema Registrando Componente');
         }
     }
@@ -84,6 +86,8 @@ class ComponentesController extends Controller
                         'Mttos_Preventivos.Actividades',
                         'Mttos_Preventivos.Documentos',
                     )->where('taqComponente','LIKE', $taqComponente)->get(),
+                    'Categorias' => tipos_componentes::all(),
+                    'Activos' => activos::all(),
                     'status' => session('status'),
                     'error'  => session('error')
                 ]); 
@@ -91,7 +95,6 @@ class ComponentesController extends Controller
                 return redirect()->route('home') -> with('error', 'Componente no encontrado');
             }
         } catch (\Throwable $th) {
-            
             return redirect()->route('home') -> with('error', 'Problema encontrando componente');
         }
     }

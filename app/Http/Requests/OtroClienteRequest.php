@@ -24,7 +24,6 @@ class OtroEmpresaRequest extends FormRequest
     public function rules()
     {
         return [
-            'taqempresa'          => 'required',
             'nombre'              => 'required',
             'value'               => 'required',
         ];
@@ -33,7 +32,6 @@ class OtroEmpresaRequest extends FormRequest
     public function messages()
     {
         return [
-            'taqempresa.required'   => 'Activo requerido',
             'nombre.required'       => 'Nombre requerido',
             'value.required'        => 'Valor requerido',
         ];

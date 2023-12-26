@@ -3,13 +3,13 @@ import Modal from '@/Components/Panels/Modals/Modal';
 import MenuAppbar from '@/Components/UI/MenuAppbar';
 import PanelSection from '@/Components/UI/PanelSection'; 
 import CreateActivo from '@/Components/forms/Activo/CreateActivo';
-import CreateCateoria from '@/Components/forms/Categoria/CreateCategoria'; 
+import CreateCategoria from '@/Components/forms/Categoria/CreateCategoria'; 
 import CreateComponente from '@/Components/forms/Componente/CreateComponente';
 import CreateDocumento from '@/Components/forms/Documentos/CreateDocumento';
-import CreateEmpresa from '@/Components/forms/Empresa/CreateEmpresa'; 
 import CreateMantenimiento from '@/Components/forms/Mantenimiento/CreateMantenimiento';
 import CreateOms from '@/Components/forms/Oms/CreateOms';
 import CreateResponsable from '@/Components/forms/Responsable/CreateResponsable';
+import CreateRigs from '@/Components/forms/Rigs/CreateRigs';
 import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
@@ -22,11 +22,10 @@ import { useEffect, useState } from 'react';
     Tipos_Componentes,
     Documentos,
     Cargos,
-    Empresas,
     Mantenimientos,
     Responsables,
-  }) => { 
-
+  }) => {
+     
     useEffect(() => {
         const storedPanelState = localStorage.getItem('PanelState');
         if(storedPanelState) {
@@ -49,9 +48,6 @@ import { useEffect, useState } from 'react';
           if(parsedPanelState.State === 'OmsPanel') {
             ShowOms();
           } 
-          if(parsedPanelState.State === 'EmpresasPanel') {
-            ShowEmpresa();
-          } 
           if(parsedPanelState.State === 'DocumentosPanel') {
             ShowDocumentos();
           } 
@@ -71,7 +67,6 @@ import { useEffect, useState } from 'react';
     const [ComponentesPanel, setComponentesPanel] = useState(false)
     const [OmsPanel, setOmsPanel] = useState(false)  
     const [DocumentosPanel, setDocumentosPanel] = useState(false)
-    const [EmpresasPanel, setEmpresasPanel] = useState(false)
     const [MantenimientosPanel, setMantenimientosPanel] = useState(false)
     const [ResponsablesPanel, setResponsablesPanel] = useState(false)
     const [RigsPanel, setRigsPanel] = useState(false)
@@ -83,7 +78,6 @@ import { useEffect, useState } from 'react';
         setComponentesPanel(false)
         setOmsPanel(false)
         setDocumentosPanel(false)
-        setEmpresasPanel(false)
         setMantenimientosPanel(false)
         setResponsablesPanel(false)
         setRigsPanel(false)
@@ -103,7 +97,6 @@ import { useEffect, useState } from 'react';
             setComponentesPanel(false)
             setOmsPanel(false)
             setDocumentosPanel(false)
-            setEmpresasPanel(false)
             setMantenimientosPanel(false)
             setResponsablesPanel(false)
             setCategoriasActivoPanel(false) 
@@ -124,7 +117,6 @@ import { useEffect, useState } from 'react';
             setComponentesPanel(false)
             setOmsPanel(false)
             setDocumentosPanel(false)
-            setEmpresasPanel(false)
             setMantenimientosPanel(false)
             setResponsablesPanel(false)
             setDefaultPanel(false)
@@ -144,8 +136,7 @@ import { useEffect, useState } from 'react';
             setActivosPanel(false)
             setComponentesPanel(false)
             setOmsPanel(false)
-            setDocumentosPanel(false)
-            setEmpresasPanel(false)
+            setDocumentosPanel(false)  
             setMantenimientosPanel(false)
             setResponsablesPanel(false)
             setDefaultPanel(false)
@@ -164,8 +155,7 @@ import { useEffect, useState } from 'react';
         }else{
             setComponentesPanel(false)
             setOmsPanel(false)
-            setDocumentosPanel(false)
-            setEmpresasPanel(false)
+            setDocumentosPanel(false)  
             setMantenimientosPanel(false)
             setResponsablesPanel(false)
             setDefaultPanel(false)
@@ -184,8 +174,7 @@ import { useEffect, useState } from 'react';
             ShowDefault()
           }else{
                 setComponentesPanel(false)
-                setDocumentosPanel(false)
-                setEmpresasPanel(false)
+                setDocumentosPanel(false)      
                 setMantenimientosPanel(false)
                 setResponsablesPanel(false)
                 setDefaultPanel(false)
@@ -200,27 +189,6 @@ import { useEffect, useState } from 'react';
           }
     }
   
-    function ShowEmpresa() {
-        if(EmpresasPanel){
-        ShowDefault()
-        }else{
-            setComponentesPanel(false)
-            setDocumentosPanel(false)
-            setMantenimientosPanel(false)
-            setResponsablesPanel(false)
-            setDefaultPanel(false)
-            setRigsPanel(false)
-            setCategoriasActivoPanel(false) 
-            setCategoriasComponentePanel(false)
-            setActivosPanel(false)
-            setOmsPanel(false)
-            setEmpresasPanel(true)
-            localStorage.setItem('PanelState', JSON.stringify({
-            State:'EmpresasPanel'
-            }));  
-        }
-    }
-  
     function ShowDocumentos() {
         if(DocumentosPanel){
           ShowDefault()
@@ -233,8 +201,7 @@ import { useEffect, useState } from 'react';
             setCategoriasActivoPanel(false) 
             setCategoriasComponentePanel(false)
             setActivosPanel(false)
-            setOmsPanel(false)
-            setEmpresasPanel(false)
+            setOmsPanel(false)  
             setDocumentosPanel(true)
             localStorage.setItem('PanelState', JSON.stringify({
               State:'DocumentosPanel'
@@ -253,8 +220,7 @@ import { useEffect, useState } from 'react';
             setCategoriasActivoPanel(false) 
             setCategoriasComponentePanel(false)
             setActivosPanel(false)
-            setOmsPanel(false)
-            setEmpresasPanel(false)
+            setOmsPanel(false)  
             setDocumentosPanel(false)
             setMantenimientosPanel(true)
             localStorage.setItem('PanelState', JSON.stringify({
@@ -273,8 +239,7 @@ import { useEffect, useState } from 'react';
             setCategoriasActivoPanel(false) 
             setCategoriasComponentePanel(false)
             setActivosPanel(false)
-            setOmsPanel(false)
-            setEmpresasPanel(false)
+            setOmsPanel(false)  
             setDocumentosPanel(false)
             setMantenimientosPanel(false)
             setResponsablesPanel(true)
@@ -293,8 +258,7 @@ import { useEffect, useState } from 'react';
             setCategoriasActivoPanel(false) 
             setCategoriasComponentePanel(false)
             setActivosPanel(false)
-            setOmsPanel(false)
-            setEmpresasPanel(false)
+            setOmsPanel(false)  
             setDocumentosPanel(false)
             setMantenimientosPanel(false)
             setResponsablesPanel(false)
@@ -330,12 +294,6 @@ import { useEffect, useState } from 'react';
             "cantidad"   : Componentes?.length > 0 ? Componentes?.length : '0',
             "Myfunction" : ShowComponentes,
             "estado"     : ComponentesPanel
-        },{
-            "id"         : '34258', 
-            "label"      : "Empresas",
-            "cantidad"   : Empresas?.length > 0 ? Empresas?.length : '0',
-            "Myfunction" : ShowEmpresa,
-            "estado"     : EmpresasPanel
         },{
             "id"         : '456465', 
             "label"      : "Rigs",
@@ -381,74 +339,76 @@ import { useEffect, useState } from 'react';
             "ExcelAction": null,
             "Data"       : Tipos_Activo, 
             "State"      : CategoriasActivoPanel,
+            "add"        : true,
         },
         {
             "id"         : "13d2d523a4a6", 
             "Tittle"     : "Categorias Componente",
             "ExcelAction": null,
             "Data"       : Tipos_Componentes, 
-            "State"      : CategoriasComponentePanel
+            "State"      : CategoriasComponentePanel,
+            "add"        : true,
         },
         {
             "id"         : "bb35e3728ef0", 
             "Tittle"     : "Activo",
             "ExcelAction": "/Download/activos",
             "Data"       : Activos, 
-            "State"      : ActivosPanel
+            "State"      : ActivosPanel,
+            "add"        : true,
         },
         {
             "id"         : "f21ff4cf82c1", 
             "Tittle"     : "Componente",
             "ExcelAction": "/Download/componentes",
             "Data"       : Componentes, 
-            "State"      : ComponentesPanel
-        },
-        {
-            "id"         : "96334918fb7d", 
-            "Tittle"     : "Empresa",
-            "ExcelAction": "/Download/clientes",
-            "Data"       : Empresas,
-            "State"      : EmpresasPanel
+            "State"      : ComponentesPanel,
+            "add"        : true,
         },
         {
             "id"         : "4abe7087a2bd", 
             "Tittle"     : "Rig",
             "ExcelAction": "/Download/rigs",
             "Data"       : Rigs, 
-            "State"      : RigsPanel
+            "State"      : RigsPanel,
+            "add"        : true,
         }, 
         {
             "id"         : "2e576d97ea68", 
             "Tittle"     : "Responsable",
             "ExcelAction": "/Download/responsables",
             "Data"       : Responsables, 
-            "State"      : ResponsablesPanel
+            "State"      : ResponsablesPanel,
+            "add"        : true,
         }, 
         {
             "id"         : "c5c06ae3d247", 
             "Tittle"     : "Mantenimiento",
             "ExcelAction": "/Download/mantenimientos",
             "Data"       : Mantenimientos, 
-            "State"      : MantenimientosPanel
+            "State"      : MantenimientosPanel,
+            "add"        : true,
         }, 
         {
             "id"         : "76b1ac64b527", 
             "Tittle"     : "Om",
             "ExcelAction": "/Download/oms",
             "Data"       : Oms, 
-            "State"      : OmsPanel
+            "State"      : OmsPanel,
+            "add"        : true,
         }, 
         {
             "id"         : "c74ca769b631", 
             "Tittle"     : "Documento",
             "ExcelAction": null,
             "Data"       : Documentos, 
-            "State"      : DocumentosPanel
+            "State"      : DocumentosPanel,
+            "add"        : true,
         }, 
     ]
       
     return (
-      <main className='w-full h-screen overflow-hidden bg-gray-800 flex flex-col xl:flex-row '>
+      <main className='w-full h-screen overflow-hidden bg-gray-200 flex flex-col xl:flex-row '>
         <MenuAppbar Buttons = { Buttons } Default = { ShowDefault } /> 
         <div className='w-full xl:w-[80%] h-full overflow-y-auto xl:p-4'>
              {
@@ -464,17 +424,17 @@ import { useEffect, useState } from 'react';
         >
           {
             ActivosPanel ? (
-              <CreateActivo Empresa = { Empresas } Tipos = { Tipos_Activo } onClose = { () => setShowModal(false) } />
+              <CreateActivo Tipos = { Tipos_Activo } onClose = { () => setShowModal(false) } />
             ) : null 
           }
           {
             CategoriasActivoPanel  ? (
-              <CreateCateoria onClose = { () => setShowModal(false) } route={`/categoria/create/activo`} key = {`d992f2f2cbd9d094be`} />
+              <CreateCategoria onClose = { () => setShowModal(false) } route={`/categorias/activo/store`} key = {`d992f2f2cbd9d094be`} />
             ) : null 
           }
           {
             CategoriasComponentePanel  ? (
-              <CreateCateoria onClose = { () => setShowModal(false) } route={`/categoria/create/componente`} key={`c0ef6ff5f88c81216b`}/>
+              <CreateCategoria onClose = { () => setShowModal(false) } route={`/categorias/componente/store`} key={`c0ef6ff5f88c81216b`}/>
             ) : null 
           }
           {
@@ -483,13 +443,8 @@ import { useEffect, useState } from 'react';
             ) : null 
           }
           {
-            EmpresasPanel  ? (
-              <CreateEmpresa onClose = { () => setShowModal(false) } key={`0d49a8bbf20be5f63e`} />
-            ) : null 
-          } 
-          {
             RigsPanel  ? (
-              <CreateEmpresa onClose = { () => setShowModal(false) } key={`a14476a7b0a1f82d62`} />
+              <CreateRigs onClose = { () => setShowModal(false) } key={`a14476a7b0a1f82d62`} />
             ) : null 
           }
           {
@@ -509,7 +464,7 @@ import { useEffect, useState } from 'react';
           }
           {
             DocumentosPanel ? (
-              <CreateDocumento route={``} Taq={``} onClose = { () => setShowModal(false) } key={`c53166671f945e794f`}/>
+              <CreateDocumento route={`/documents/store`} Taq={``} onClose = { () => setShowModal(false) } key={`c53166671f945e794f`}/>
             ) : null 
           }
         </Modal>

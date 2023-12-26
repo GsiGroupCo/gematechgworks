@@ -11,15 +11,16 @@ class TiposComponenteController extends Controller
 {
     public function store(Request $request)
     {   
-        try { 
+        try {
             $id_tipo = uniqid(TRUE);
             tipos_componentes::create([
                 'id_tipo'             => $id_tipo,
                 'nombre'              => $request -> nombre,
-                'taq_componente_base' => $request -> taq_componente_base,
+                'taq_componente_base' => $request -> taq,
             ]);
             return redirect()->route('home') -> with('status', 'Categoria de componente agregada correctamente');
         } catch (\Throwable $th) {
+            dd($th);
             return redirect()->route('home') -> with('error', 'Problema agregando la categoria');
         }
     }
@@ -43,14 +44,13 @@ class TiposComponenteController extends Controller
     }
 
     public function update(Request $request)
-    {
+    { 
         try {
-            tipos_componentes::where('id_tipo','LIKE',$request -> id_tipo)-> update([
-                'nombre'              => $request -> nombre,
-                'taq_componente_base' => $request -> taq_componente_base,
+            tipos_componentes::where('id_tipo','LIKE',$request -> Taq)-> update([
+                'nombre' => $request -> nombre
             ]);
-            return redirect()->route([ 'tipos.componente.show', [ 'type' => $request -> id_tipo ] ]) -> with('status', 'Categoria de componente editado correctamente');
-        } catch (\Throwable $th) {
+            return redirect()->route('categorias.componente.show', [ 'type' => $request -> Taq ]) -> with('status', 'Categoria de componente editado correctamente');
+        } catch (\Throwable $th) { 
             return redirect()->route('home') -> with('error', 'Problema actualizando la categoria');
         }
     }

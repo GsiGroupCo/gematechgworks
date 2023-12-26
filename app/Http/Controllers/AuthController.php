@@ -31,7 +31,6 @@ class AuthController extends Controller
             'Componentes'       => componentes::all(),
             'Documentos'        => docs::all(),
             'Cargos'            => cargos::all(),
-            'Empresas'          => empresas::all(),
             'Mantenimientos'    => mantenimientos::all(),
             'Responsables'      => responsable::with('cargo')->get(),
             'Rigs'              => rigs::all(),

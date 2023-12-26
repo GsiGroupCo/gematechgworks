@@ -12,6 +12,7 @@ class componentes extends Model
     protected $fillable = [
         'taqComponente',
         'id_tipo', 
+        'estado',
         'nombre',
         'descripcion',
         'serial',
