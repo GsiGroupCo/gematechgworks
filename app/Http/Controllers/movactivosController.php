@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\movimientos_x_activos; 
-
-use App\Http\Requests\MovActivosRequest;
+use App\Models\movimientos_x_activos;
+use Illuminate\Http\Request;
 
 class movactivosController extends Controller
 {
-    public function store(MovActivosRequest $request)
+    public function store(Request $request)
     {
         try {
             movimientos_x_activos::create([

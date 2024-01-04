@@ -13,13 +13,12 @@ const CreateComponente = ({ onClose, Tipos }) =>  {
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => { 
-      data.id_tipo     = formValue.id_tipo,
-      data.nombre      = formValue.nombre,
-      data.descripcion = formValue.descripcion,
-      data.serial      = formValue.serial,
-      data.horasuso    = formValue.horasuso,
-      data.Image       = file
-      console.log(data);
+      data.categoria_id  = formValue.categoria_id,
+      data.nombre        = formValue.nombre,
+      data.descripcion   = formValue.descripcion,
+      data.serial        = formValue.serial,
+      data.horasuso      = formValue.horasuso,
+      data.Image         = file
       post('/componente/store')
       onClose()
     }
@@ -51,8 +50,11 @@ const CreateComponente = ({ onClose, Tipos }) =>  {
               name="nombre"
               id="nombre"
               placeholder='ACUMULADOR SHENKAI'
-              value={formik.values.nombre}
-              onChange={formik.handleChange}
+              value={formik.values.nombre} 
+              onChange={(e) => {
+                  formik.handleChange(e);
+                  formik.setFieldValue('nombre', e.target.value.toUpperCase());
+              }}
               className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.nombre && formik.errors.nombre ? 'border-red-500' : 'border-black' }`}
             />
             {
@@ -74,8 +76,11 @@ const CreateComponente = ({ onClose, Tipos }) =>  {
               type="text"
               name="serial"
               id="serial"
-              value={formik.values.serial}
-              onChange={formik.handleChange}
+              value={formik.values.serial} 
+              onChange={(e) => {
+                formik.handleChange(e);
+                formik.setFieldValue('serial', e.target.value.toUpperCase());
+              }}
               className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.serial && formik.errors.serial ? 'border-red-500' : 'border-black' }`}
             />
             {
@@ -88,7 +93,7 @@ const CreateComponente = ({ onClose, Tipos }) =>  {
         <div className='w-full flex justify-center items-center gap-3'> 
           <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
             <div className='w-full h-auto flex gap-2 justify-start items-center'>
-              <label htmlFor="id_tipo" className='font-bold text-black'>
+              <label htmlFor="categoria_id" className='font-bold text-black'>
                 Tipo de Componente
               </label> 
               <span className='text-red-500 font-bold text-2xl'>
@@ -96,24 +101,24 @@ const CreateComponente = ({ onClose, Tipos }) =>  {
               </span>
             </div>
             <select 
-              name="id_tipo"
-              id="id_tipo"
-              value={formik.values.id_tipo}
+              name="categoria_id"
+              id="categoria_id"
+              value={formik.values.categoria_id}
               onChange={formik.handleChange}
-              className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.id_tipo && formik.errors.id_tipo ? 'border-red-500' : 'border-black' }`}
+              className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.categoria_id && formik.errors.categoria_id ? 'border-red-500' : 'border-black' }`}
             >
               <option value="" disabled>SELECCIONE UNA OPCION</option>
               {
                     Tipos ? (
                         Tipos.map((data) => (
-                            <option key={data.id_tipo} value={data.id_tipo}>{data.nombre}</option>
+                            <option key={data.categoria_id} value={data.categoria_id}>{data.nombre}</option>
                         ))
                     ) : null
                 }
             </select>
             {
-              formik.touched.id_tipo && formik.errors.id_tipo && (
-                <div className="text-red-500 font-bold">{formik.errors.id_tipo}</div>
+              formik.touched.categoria_id && formik.errors.categoria_id && (
+                <div className="text-red-500 font-bold">{formik.errors.categoria_id}</div>
               )
             }
           </div>
@@ -144,8 +149,11 @@ const CreateComponente = ({ onClose, Tipos }) =>  {
           <textarea 
             name="descripcion"
             id="descripcion"
-            value={formik.values.descripcion}
-            onChange={formik.handleChange}
+            value={formik.values.descripcion} 
+            onChange={(e) => {
+                formik.handleChange(e);
+                formik.setFieldValue('descripcion', e.target.value.toUpperCase());
+            }}
             className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.descripcion && formik.errors.descripcion ? 'border-red-500' : 'border-black' }`}
             placeholder="Escribe aquí"
           ></textarea>

@@ -1,540 +1,501 @@
+import Modal from "@/Components/Panels/Modals/Modal"
+import Actions from "@/Components/UI/Actions"
+import ButtonMenu from "@/Components/UI/Activo/ButtonMenu"  
+import Caracteristica_target from "@/Components/UI/Activo/Caracteristica_target"
+import AppbarOms from "@/Components/UI/Ots/Appbar" 
+import SearchInput from "@/Components/UI/Search"
+import CreateMantenimiento from "@/Components/forms/Mantenimiento/CreateMantenimiento"
+import { Link } from "@inertiajs/react"
+import { useEffect, useState } from "react"
 
-import React, {useEffect, useState } from 'react' 
-import Caracteristica_target from '@/Components/UI/Activo/Caracteristica_target';
-import ButtonMenu from '@/Components/UI/MenuButton';
-import Modal from '@/Components/Panels/Modals/Modal'; 
-import Panel_general from '@/Components/UI/Panel_general';
-import { Toaster, toast } from 'sonner';
-import ActivoIcon from '@/Components/Icons/activo';
-import { Link } from '@inertiajs/react';
-import DeleteDocument from '@/Components/forms/Oms/Documentos/FormDeleteDocuments/FormDeleteDocuments'; 
-import ActionsWork from '@/Components/UI/Ots/Trabajo/Actions';
+const OmsPage = ({ DataOms }) => {
 
-const OTpage = ({ data, error, status, Activos, Responsables, Empresas, ResponsablesOT }) => {
+  const [CreateFormModal, setCreateFormModal] = useState(false)
 
-  const nombresAreas = [];
+  const [AccionesModal, setAccionesModal] = useState(false) 
+  const [FormatosModal, setFormatosModal] = useState(false) 
+  const [ShowModal, setShowModal] = useState(false)
 
+  function ShowActions(){
+    setFormatosModal(false)
+    setShowModal(true)
+    setAccionesModal(true)
+    ShowActionButtons()
+  }
   
-  const [showMenu, setShowMenu] = useState(false);
-
-  for (let i = 0; i < data.data.length; i++) {
-    for (let j = 0; j < data.data[i].areas.length; j++) { 
-      for (let k = 0; k < data.data[i].areas[j].area.length; k++) {
-        nombresAreas.push(data.data[i].areas[j].area[k].nombre);
-      }
-    } 
+  function ShowFormats(){
+    setAccionesModal(false)
+    setShowModal(true)
+    setFormatosModal(true)
   }
 
-  useEffect(() => {
-    if(status){
-      toast.success(status)
-    }
-  }, [status]);
-
-  useEffect(() => {
-    if(error){
-      toast.error(error)
-    }
-  }, [error]);
+  const [AcctionsButtons, setAcctionsButtons] = useState(true) 
+  const [EditarOm, setEditarOm]               = useState(false)
+  const [FinalizarOm, setFinalizarOm]         = useState(false)
   
-
-  const [TrabajoSelectd, setTrabajoSelectd] = useState({
-    'taqtrabajo'     : "",
-    'taqresponsable' : "",
-    'taqot'          : "",
-    'descripcion'    : "",
-    'cantHoras'      : "",
-    'estado'         : "" 
-  })
-  const [ModalTrabajo, setModalTrabajo] = useState(false)
-  const [ModalActionWork, setModalActionWork] = useState(false)
-  
-  const [Default, setDefault] = useState(false)
-  const [Panel_Trabajos, setPanel_Trabajos] = useState(true)
-  const [Panel_Activos, setPanel_Activos] = useState(false)
-  const [Panel_Documentos, setPanel_Documentos] = useState(false)
-  const [Panel_Documentos_Eliminados, setPanel_Documentos_Eliminados] = useState(false)
-  const [ShowModalDocs, setShowModalDocs] = useState(false)
-  const [DeleteDocuments, setDeleteDocuments] = useState(false)
-  const [TaqDocument, setTaqDocument] = useState()
-  const [DocumentSelected, setDocumentSelected] = useState({
-   taqom:'',
-    taqDoc:'',
-    nombre:'',
-    DocURL:''
-  })
-
-  function ShowDocument(Document){
-    setDocumentSelected({
-     taqom:Document.taqot,
-      taqDoc:Document.taqDoc,
-      nombre:Document.nombre,
-      DocURL:Document.DocURL
-    })
-    setShowModalDocs(true)
+  function ShowActionButtons(){
+    setEditarOm(false)
+    setFinalizarOm(false) 
+    setAcctionsButtons(true)
+  }
+ 
+  function ShowFormEditOm(){ 
+    setFinalizarOm(false) 
+    setAcctionsButtons(false)
+    setEditarOm(true)
   }
 
-  function ShowDefault(){ 
-    setPanel_Trabajos(false)
-    setPanel_Activos(false)
-    setPanel_Documentos(false)
-    setPanel_Documentos_Eliminados(false)
-    setDefault(true)
+  function ShowFormFinalizarOm(){ 
+    setEditarOm(false)
+    setAcctionsButtons(false)
+    setFinalizarOm(true) 
   }
 
-  function ShowPanel_Trabajos() {
-    if(Panel_Trabajos){
+  const Acciones = [{
+      "id"         : "296215696",
+      "label"      : "Editar Orden de mantenimiento",
+      "estate"     : 2,
+      "function"   : ShowFormEditOm,
+  },{
+      "id"         : "1213522726",
+      "label"      : "Finalizar Orden de mantenimiento",
+      "estate"     : 1,
+      "function"   : ShowFormFinalizarOm,
+  }]
+  
+  const [ComponentesVinculadosPanel, setComponentesVinculadosPanel] = useState(true) 
+  const [DocumentosPanel, setDocumentosPanel]                       = useState(false)
+  const [DocumentosEliminadosPanel, setDocumentosEliminadosPanel]   = useState(false)
+  const [MantenimientosPanel, setMantenimientosPanel]               = useState(false) 
+     
+  function ShowDefault(){
+    setComponentesVinculadosPanel(false)
+    setDocumentosPanel(false)
+    setDocumentosEliminadosPanel(false) 
+    setMantenimientosPanel(false)
+  }
+  
+  function ShowComponentes() {
+    if(ComponentesVinculadosPanel){
       ShowDefault()
     }else{
-      setDefault(false)
-      setPanel_Activos(false)
-      setPanel_Documentos(false)
-      setPanel_Documentos_Eliminados(false)
-      setPanel_Trabajos(true)
+      setDocumentosPanel(false)
+      setDocumentosEliminadosPanel(false) 
+      setMantenimientosPanel(false)
+      setComponentesVinculadosPanel(true)
     }
   }
-  
-  const TrabajosData = [];
-  data.data.forEach(data => {
-    data.trabajos.forEach(data => {
-      TrabajosData.push({
-        taqtrabajo      :data.taqtrabajo,
-        taqresponsable  :data.taqresponsable,
-        responsable     :data.responsable.primernombre + ' ' + data.responsable.primerapellido,
-       taqom           :data.taqot,
-        descripcion     :data.descripcion,
-        cantHoras       :data.cantHoras,
-        estado          :data.estado,
-        created_at      :data.created_at,
+
+  function ShowDocumentos() {
+    if(DocumentosPanel){      
+      ShowDefault()
+    }else{
+      setDocumentosEliminadosPanel(false) 
+      setMantenimientosPanel(false)
+      setComponentesVinculadosPanel(false)
+      setDocumentosPanel(true)
+    }
+  }
+
+  function ShowDocumentosEliminados() {
+    if(DocumentosEliminadosPanel){
+      ShowDefault()
+    }else{
+      setMantenimientosPanel(false)
+      setComponentesVinculadosPanel(false)
+      setDocumentosPanel(false)
+      setDocumentosEliminadosPanel(true) 
+    }
+  }
+
+  function ShowMantenimientos() {
+    if(MantenimientosPanel){
+      ShowDefault()
+    }else{
+      setComponentesVinculadosPanel(false)
+      setDocumentosPanel(false)
+      setDocumentosEliminadosPanel(false) 
+      setMantenimientosPanel(true)
+    }
+  } 
+
+  const ComponentesData = [];
+  DataOms.forEach(Om => {  
+    Om.activos.historial.forEach(HistorialData => {
+      HistorialData.componente.forEach(ComponenteData => {
+        ComponentesData.push({
+          taqComponente : ComponenteData.taqComponente,
+          categoria_id  : ComponenteData.categoria_id,
+          nombre        : ComponenteData.nombre,
+          estado        : ComponenteData.estado,
+          descripcion   : ComponenteData.descripcion,
+          serial        : ComponenteData.serial,
+          horasuso      : ComponenteData.horasuso,
+        });
       });
     });
   });
-
-  useEffect(() => {  
-    setTrabajosDataFiltrados(TrabajosData)
-  }, [data])
   
-  const [TrabajosDataFiltrados, setTrabajosDataFiltrados] = useState();
-  const FilterTrabajos = ( searchTerm ) => {
-    const filtered = TrabajosData.filter((data) => {
-        const taqtrabajo       = data.taqtrabajo.toLowerCase();
-        const taqresponsable   = data.taqresponsable.toLowerCase();
-        consttaqom            = data.taqot.toLowerCase();
-        const descripcion      = data.descripcion.toLowerCase();
-        const cantHoras        = data.cantHoras.toLowerCase();
-        const estado           = data.estado.toLowerCase();
-        return (
-          taqtrabajo.includes(searchTerm)      ||
-          taqresponsable.includes(searchTerm)  ||
-         taqom.includes(searchTerm)           || 
-          descripcion.includes(searchTerm)     || 
-          cantHoras.includes(searchTerm)       || 
-          estado.includes(searchTerm)          
-        );
-    });
-    setTrabajosDataFiltrados(filtered);
-  };
-
-  const ActivosData = [];
-  data.data.forEach(data => {
-    data.activos.forEach(data => {
-      ActivosData.push({
-        taqActivos      :data.taqActivos,
-        nombre          :data.activos.nombre,
-        serial          :data.activos.serial,
-      });
-    });
-  });
-
-  useEffect(() => {  
-    setActivosDataFiltrados(ActivosData)
-  }, [data])
-  
-  const [ActivosDataFiltrados, setActivosDataFiltrados] = useState();
-  const FilterActivos = ( searchTerm ) => {
-    const filtered = ActivosData.filter((data) => {
-        const taqActivos  = data.taqActivos.toLowerCase();
-        const nombre      = data.nombre.toLowerCase();
-        const serial      = data.serial.toLowerCase();
-        return (
-          taqActivos.includes(searchTerm)  ||
-          nombre.includes(searchTerm)      || 
-          serial.includes(searchTerm)      
-        );
-    });
-    setActivosDataFiltrados(filtered);
-  };
-
   const DocumentosData = [];
-  data.data.forEach(data => {
-    data.documentos.forEach(data => {
+  DataOms.forEach(Om => { 
+    Om.documentos.forEach(DocumentosData => {
       DocumentosData.push({
-       taqom       :data.taqot,
-        taqDoc      :data.taqDoc,
-        nombre      :data.nombre,
-        DocURL      :data.DocURL,
+        taqom  : DocumentosData.taqom,
+        taqDoc : DocumentosData.taqDoc,
+        nombre : DocumentosData.nombre,
+        DocURL : DocumentosData.DocURL, 
       });
     });
-  });
-
-  useEffect(() => {  
-    setDocumentosDataFiltrados(DocumentosData)
-  }, [data])
-  
-  const [DocumentosDataFiltrados, setDocumentosDataFiltrados] = useState();
-  const FilterDocumentos = ( searchTerm ) => {
-    const filtered = DocumentosData.filter((data) => {
-        consttaqom     = data.taqot.toLowerCase();
-        const taqDoc    = data.taqDoc.toLowerCase();
-        const nombre    = data.nombre.toLowerCase();
-        const DocURL    = data.DocURL.toLowerCase();
-        return (
-          taqDoc.includes(searchTerm)    ||
-          nombre.includes(searchTerm)    ||
-         taqom.includes(searchTerm)     || 
-          DocURL.includes(searchTerm)  
-        );
-    });
-    setDocumentosDataFiltrados(filtered);
-  };
-  
+  }); 
 
   const DocumentosEliminadosData = [];
-  data.data.forEach(data => {
-    data.documentos__eliminados.forEach(data => {
+  DataOms.forEach(Om => { 
+    Om.documentos__eliminados.forEach(DocumentosEliminadosData => {
       DocumentosEliminadosData.push({
-        taqDeleteRegister :data.taqDeleteRegister,
-        taqDoc            :data.taqDoc,
-        nombreDocumento   :data.nombreDocumento,
-        taqresponsable    :data.taqresponsable,
-        responsable       :data.responsable.nombre,
+        taqDeleteRegister : DocumentosEliminadosData.taqDeleteRegister,
+        taqom             : DocumentosEliminadosData.taqom,
+        nombreDocumento   : DocumentosEliminadosData.nombreDocumento,
+        Responsable       : DocumentosEliminadosData.responsable.nombre, 
       });
     });
-  });
+  }); 
+
+  const MantenimientosData = [];
+  DataOms.forEach(Om => {  
+    Om.mantenimientos.forEach(MttoData => {
+      MantenimientosData.push({
+        taqmantenimiento  : MttoData.taqmantenimiento,
+        taqom             : MttoData.taqom,
+        Nombre            : MttoData.Nombre,
+        Descripcion       : MttoData.Descripcion, 
+        tipe              : MttoData.tipe
+      });
+    });
+  }); 
 
   useEffect(() => {  
-    setDocumentosEliminadosDataFiltrados(DocumentosEliminadosData)
-  }, [data])
+    setComponentesFiltrados(ComponentesData)
+    setDocumentosFiltrados(DocumentosData)
+    setDocumentosEliminadosFiltrados(DocumentosEliminadosData)
+    setMantenimientosFiltrados(MantenimientosData)
+  }, [DataOms])
   
-  const [DocumentosEliminadosDataFiltrados, setDocumentosEliminadosDataFiltrados] = useState();
-  const FilterDocumentosEliminados = ( searchTerm ) => {
-    const filtered = DocumentosEliminadosData.filter((data) => {
-        const taqDeleteRegister  = data.taqDeleteRegister .toLowerCase();
-        const taqDoc             = data.taqDoc .toLowerCase();
-        const nombreDocumento    = data.nombreDocumento.toLowerCase();
-        const taqresponsable     = data.taqresponsable.toLowerCase();
+  const [ComponentesFiltrados, setComponentesFiltrados] = useState();
+  const FiltroComponentes = ( searchTerm ) => {
+    const filtered = ComponentesData.filter((data) => { 
+        const taqComponente = data.taqComponente.toLowerCase();
+        const categoria_id  = data.categoria_id.toLowerCase();
+        const nombre        = data.nombre.toLowerCase();
+        const estado        = data.estado.toLowerCase();
+        const descripcion	  = data.descripcion.toLowerCase();
+        const serial        = data.serial.toLowerCase();
+        const horasuso      = data.horasuso.toLowerCase();
         return (
-          taqDoc.includes(searchTerm)             ||
-          taqDeleteRegister.includes(searchTerm)  ||
-          nombreDocumento.includes(searchTerm)    || 
-          taqresponsable.includes(searchTerm)            
+            taqComponente.includes(searchTerm)  ||
+            categoria_id.includes(searchTerm)   ||
+            nombre.includes(searchTerm)         ||
+            estado.includes(searchTerm)         ||
+            serial.includes(searchTerm)         ||
+            descripcion.includes(searchTerm)    ||
+            horasuso.includes(searchTerm)
         );
     });
-    setTrabajosDataFiltrados(filtered);
+    setComponentesFiltrados(filtered);
+  };
+
+  const [DocumentosFiltrados, setDocumentosFiltrados] = useState();
+  const FiltroDocumentos = ( searchTerm ) => {
+    const filtered = DocumentosData.filter((data) => { 
+        const  taqom   = DocumentosData.taqom.toLowerCase();
+        const  taqDoc  = DocumentosData.taqDoc.toLowerCase();
+        const  nombre  = DocumentosData.nombre.toLowerCase();
+        const  DocURL  = DocumentosData.DocURL.toLowerCase(); 
+        return (
+          taqom.includes(searchTerm)  ||
+          taqDoc.includes(searchTerm) ||
+          nombre.includes(searchTerm) ||
+          DocURL.includes(searchTerm)
+        );
+    });
+    setComponentesFiltrados(filtered);
+  };
+
+  const [DocumentosEliminadosFiltrados, setDocumentosEliminadosFiltrados] = useState();
+  const FiltroDocumentosEliminados = ( searchTerm ) => {
+    const filtered = DocumentosData.filter((data) => { 
+        const taqDeleteRegister = DocumentosEliminadosData.taqDeleteRegister.toLowerCase();
+        const taqom             = DocumentosEliminadosData.taqom.toLowerCase();
+        const nombreDocumento   = DocumentosEliminadosData.nombreDocumento.toLowerCase();
+        const Responsable       = DocumentosEliminadosData.responsable.nombre.toLowerCase();
+        return (
+          taqDeleteRegister.includes(searchTerm) ||
+          taqom.includes(searchTerm)             ||
+          nombreDocumento.includes(searchTerm)   ||
+          Responsable.includes(searchTerm)
+        );
+    });
+    setDocumentosEliminadosFiltrados(filtered);
+  };
+
+  const [MantenimientosFiltrados, setMantenimientosFiltrados] = useState();
+  const FiltroMantenimientos = ( searchTerm ) => {
+    const filtered = DocumentosData.filter((data) => {
+        const taqmantenimiento  =  MttoData.taqmantenimiento.toLowerCase();
+        const taqom             =  MttoData.taqom.toLowerCase();
+        const Nombre            =  MttoData.Nombre.toLowerCase();
+        const Descripcion       =  MttoData.Descripcion.toLowerCase(); 
+        const tipe              =  MttoData.tipe.toLowerCase();
+        return (
+          taqmantenimiento.includes(searchTerm) ||
+          taqom.includes(searchTerm)            ||
+          Nombre.includes(searchTerm)           ||
+          Descripcion.includes(searchTerm)      ||
+          tipe.includes(searchTerm)
+        );
+    });
+    FiltroMantenimientos(filtered);
   };
   
-
-
-  function ShowActivosPanel() {
-    if(Panel_Activos){
-      ShowDefault()
-    }else{
-      setDefault(false)
-      setPanel_Documentos(false)
-      setPanel_Documentos_Eliminados(false)
-      setPanel_Trabajos(false)
-      setPanel_Activos(true)
-    }
-  }
-
-  function ShowPanel_Documentos() {
-    if(Panel_Documentos){
-      ShowDefault()
-    }else{
-      setDefault(false)
-      setPanel_Documentos_Eliminados(false)
-      setPanel_Trabajos(false)
-      setPanel_Activos(false)
-      setPanel_Documentos(true)
-    }
-  }
-
-  function ShowPanel_Documentos_Eliminados(){
-    if(Panel_Documentos_Eliminados){
-      ShowDefault()
-  }else{
-    setDefault(false)
-    setPanel_Trabajos(false)
-    setPanel_Activos(false)
-    setPanel_Documentos(false)
-    setPanel_Documentos_Eliminados(true)
-  }
-  }
-
   const Data = [{  
-    "id"         : '6991098',
-    "nombre"     : "RESPONSABLE",
-    "value"      : data.data[0].responsable.primernombre + ' ' + data.data[0].responsable.primerapellido,
+    "id"         : '623026548',
+    "nombre"     : "Responsable",
+    "value"      : DataOms[0].responsable.nombre,
   },{  
-    "id"         : '2284348',
-    "nombre"     : "DESCRIPCION",
-    "value"      : data.data[0].descripcion ? data.data[0].descripcion : '',
+    "id"         : '807708498',
+    "nombre"     : "Descripcion",
+    "value"      : DataOms[0].descripcion,
   },{  
-    "id"         : '1812700',
-    "nombre"     : " empresa",
-    "value"      : data.data[0]. empresa.nombre ? data.data[0]. empresa.nombre : '',
+    "id"         : '173944',
+    "nombre"     : "ACTIVO",
+    "value"      : DataOms[0].activos.nombre,
   },{  
-    "id"         : '181272100',
-    "nombre"     : "CLASIFICACION",
-    "value"      : data.data[0].clasot,
-  },{  
-    "id"         : '3962184',
-    "nombre"     : "FECHA DE REGISTRO",
-    "value"      : data.data[0].created_at,
-  },{  
-    "id"         : '7530545',
-    "nombre"     : "FECHA DE INICIO",
-    "value"      : data.data[0].fechainicio,
-  },{  
-    "id"         : '4968949',
-    "nombre"     : "FECHA DE FINALIZACION",
-    "value"      : data.data[0].fechafin,
-  }]  
+    "id"         : '47175832',
+    "nombre"     : "Fecha Inicio",
+    "value"      : DataOms[0].fechainicio,
+  }]
 
-  const Buttons = [{
-    "id"         : '6667021365',
-    "label"      : "Activos Vinculados",
-    "Myfunction" : ShowActivosPanel,
-    "icon"       : <ActivoIcon color='#FFF' height='30px' width='30px'/>,
-    "estado"     : Panel_Activos
-  },{  
-    "id"         : '7779677',
-    "label"      : "Trabajos",
-    "icon"       : <OtsIcon color='#FFF' height='30px' width='30px'/>,
-    "Myfunction" : ShowPanel_Trabajos,
-    "estado"     : Panel_Trabajos
+  const Buttons = [{  
+    "id"         : '16256256',
+    "label"      : "Componentes",
+    "Myfunction" : ShowComponentes,
+    "estado"     : ComponentesVinculadosPanel
   },{
-    "id"         : '3740328',
+    "id"         : '030963498',
     "label"      : "Documentos",
-    "Myfunction" : ShowPanel_Documentos,
-    "icon"       : <OtsIcon color='#FFF' height='30px' width='30px'/>,
-    "estado"     : Panel_Documentos
+    "Myfunction" : ShowDocumentos,
+    "estado"     : DocumentosPanel
   },{
-      "id"         : '6667065',
-      "label"      : "Documentos Eliminados",
-      "Myfunction" : ShowPanel_Documentos_Eliminados,
-      "icon"       : <OtsIcon color='#FFF' height='30px' width='30px'/>,
-      "estado"     : Panel_Documentos_Eliminados
+    "id"         : '79235457',
+    "label"      : "Documentos Eliminados",
+    "Myfunction" : ShowDocumentosEliminados,
+    "estado"     : DocumentosEliminadosPanel
+  },{
+    "id"         : '8842172',
+    "label"      : "Mantenimientos",
+    "Myfunction" : ShowMantenimientos,
+    "estado"     : MantenimientosPanel
+  }]
+ 
+  const Panels = [{
+    "id"         : "6b4fe94b95bb902a15", 
+    "Tittle"     : "Componentes", 
+    "Data"       : "", 
+    "State"      : ComponentesVinculadosPanel,
+    "add"        : true
+  },
+  {
+    "id"         : "feddc0dab45263a21a", 
+    "Tittle"     : "Documentos", 
+    "Data"       : "", 
+    "State"      : DocumentosPanel,
+    "add"        : true
+  },
+  {
+    "id"         : "8acfc6e23005040812", 
+    "Tittle"     : "Documentos Eliminados", 
+    "Data"       : "", 
+    "State"      : DocumentosEliminadosPanel,
+    "add"        : false
+  },
+  {
+    "id"         : "be83a6a6312252cfa2ef", 
+    "Tittle"     : "Actividades Mantenimientos", 
+    "Data"       : DataOms[0].mantenimientos, 
+    "State"      : MantenimientosPanel,
+    "add"        : true
   }]
 
   return (
-    <main className='w-full h-screen flex flex-col justify-start items-start justify-items-center'>
-      <OtsAppbar
-        Responsables = { Responsables }
-        ResponsablesOT = { ResponsablesOT } 
-        Activos = { Activos }
-        ot = { data } 
-        empresa = { data.data[0]. empresa.nombre ? data.data[0]. empresa.nombre : '' }
-        key = { data.data[0].taqot }
-        estado = { data.data[0].estado }
-        Empresas = { Empresas }
+    <main className='w-full h-screen overflow-hidden  flex flex-col justify-start items-center '>
+      <AppbarOms
+        Objeto = { DataOms[0] }  
+        ShowActions = { ShowActions } 
+        ShowFormats = { ShowFormats }  
       />
-      <div className='w-full h-auto  flex justify-start items-center justify-items-center gap-3'>
-        <div key={`3215451`} className='hidden w-[25%] md:flex flex-col justify-start items-start justify-items-center gap-3  px-4 py-2 h-full rounded-md bg-white '>
+      <div className="w-full h-full overflow-hidden overflow-y-auto flex flex-col lg:flex-row justify-start items-start">
+        <div className="w-full h-auto px-4 py-2 lg:w-[20%]  gap-2 flex flex-col justify-start items-center">
           {
             Data ? (
-              Data.map( (data) => (
+              Data.map((data) => (
                 <Caracteristica_target
-                  name = { data.nombre }
-                  key = { data.id }
+                  key   = { data.id }
+                  name  = { data.nombre }
                   value = { data.value }
                 />
               ))
             ) : null
           }
-          {nombresAreas.map((nombre, index) => (
-            <Caracteristica_target
-            name = {`Area Responsable`}
-            key = { index }
-            value = { nombre }
-          />
-          ))}
+        </div>
+        <div className='hidden h-auto px-4 py-2 lg:w-auto  gap-2 lg:flex flex-col justify-start items-center'>
           {
-            data.data[0].areas ? (
-                data.data[0].areas.map( (data) => (
-                  <Caracteristica_target
-                    name = { data.nombre }
-                    key = { data.id }
-                    value = { data.value }
-                  />
-                ))
+            Buttons ? (
+              Buttons.map((data) => (
+                <ButtonMenu 
+                  Myfunction = { data.Myfunction }
+                  label = { data.label }
+                  estado = { data.estado }
+                  key = { data.id } 
+                />
+              ))
             ) : null
           }
         </div>
-        <div className='w-full h-full   flex justify-start items-center justify-items-center gap-3'>
-          <div className='hidden md:flex flex-col px-4 py-2 justify-start items-center justify-items-center gap-3 w-auto h-full  rounded-md '>
-            {
-              Buttons ? (
-                Buttons.map( (data) => (
-                  <ButtonMenu
-                    Myfunction = { data.Myfunction }
-                    label = { data.label }
-                    estado = { data.estado }
-                    key = { data.id } 
-                  >
-                    { data.icon }
-                  </ButtonMenu>
-                ))
-              ) : null
-            }
-          </div>
-          <div className='w-full h-full'>
-            {
-              Default ? 
-                  <div className='w-full h-full px-4 py-2 flex flex-col justify-start items-center justify-items-center '>
-                      
+        <div className='w-full h-full gap-2 flex flex-col justify-start items-center'> 
+          {
+            ComponentesVinculadosPanel ? (
+              <div key = {`ComponentesSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroComponentes } />
+                  <div onClick = { ShowModal } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nuevo componente
                   </div>
-              : null
-            }
-            {
-              Panel_Activos ? (
-                <Panel_general FunctionfilterData = { FilterActivos } key = '50111238'>
+                  <a href={`download/componentes`} className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Descargar Listado de componentes
+                  </a>
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
                   {
-                      ActivosDataFiltrados ? (
-                          ActivosDataFiltrados.map((data) => (
-                            <Link href={`/activo/${data.taqActivos}`} key = {data.taqActivos} className='w-full h-auto flex justify-between items-center border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                              <div className='w-auto flex flex-col justify-center items-start h-full'>
-                                <span className='font-semibold'> Activo: </span>
-                                <span>{ data.nombre }</span>
-                              </div>
-                              <div className='w-auto flex  flex-col justify-center items-start h-full'>
-                                <span className='font-semibold'>Serial:</span>
-                                <span>{ data.serial }</span>
-                              </div>
-                            </Link>
-                          ))
-                      ) : null
+                    ComponentesFiltrados ? (
+                      ComponentesFiltrados.map((data) => (
+                        <Link key={data.taqComponente} href={`/componente/${data.taqComponente}`} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                          { data.nombre }
+                        </Link>
+                      ))
+                    ) : null
                   }
-                </Panel_general>
-              ): null
-            }  
-            {
-              Panel_Trabajos ? (
-                <Panel_general FunctionfilterData = { FilterTrabajos } key = '50118'>
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            DocumentosPanel ? (
+              <div key = {`DocumentosSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroDocumentos } />
+                  <div onClick = { ShowModal } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nuevo Documento
+                  </div> 
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
                   { 
-                      TrabajosDataFiltrados ? (
-                        TrabajosDataFiltrados.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).reverse()
-                          .map((data) => (
-                            <div key={data.taqtrabajo} className='w-full h-auto flex justify-between gap-3 items-center border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                              <div className='w-full   h-full flex justify-start items-center '>
-                                {data.descripcion}
-                              </div>
-                              <div className='w-1/4   h-auto flex justify-around items-center gap-3'>
-                                <div className='w-1/2 h-full flex justify-start items-center'>
-                                  {data.responsable}
-                                </div>
-                                <button onClick={() => {
-                                  setModalActionWork(true)
-                                  setTrabajoSelectd({
-                                    cantHoras:     data.cantHoras,
-                                    descripcion:   data.descripcion,
-                                    estado:        data.estado,
-                                   taqom:         data.taqot,
-                                    taqresponsable:data.taqresponsable,
-                                    taqtrabajo:    data.taqtrabajo
-                                  })
-                                }} className='w-1/2 h-auto px-4 py-2 bg-green-500 hover:bg-green-800 text-white transition duration-700 ease-in-out rounded-md'>
-                                  Acciones
-                                </button> 
-                              </div>
-                            </div>
-                          ))
-                      ) : null
+                    DocumentosFiltrados ? (
+                      DocumentosFiltrados.map((data) => (
+                        <div key={data.taqDoc} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                          { data.nombre }
+                        </div>
+                      ))
+                    ) : null
                   }
-                  <Modal
-                    isVisible={ModalActionWork}
-                    onClose={ () => setModalActionWork(false) }
-                    tittle={`Acciones de trabajo`}
-                  >
-                    <ActionsWork Responsables={Responsables} Trabajo={TrabajoSelectd}  onClose={ () => setModalActionWork(false) } />
-                  </Modal> 
-                </Panel_general>
-              ): null
-            }  
-            {
-              Panel_Documentos ? (
-                <Panel_general FunctionfilterData = { FilterDocumentos } key = {`501128`}>
-                  {
-                      DocumentosDataFiltrados ? (
-                          DocumentosDataFiltrados.map((data) => (
-                            <div key = { data.taqDoc } className='w-full h-auto flex justify-between items-center border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                              <div className='w-1/2  flex justify-start items-center h-full'>
-                                { data.nombre }
-                              </div>
-                              <div className='w-1/2  flex justify-end items-center h-full gap-3'>
-                                <div onClick={ () => ShowDocument(data) } className='w-auto h-full bg-green-500 px-4 py-2  text-white hover:bg-green-800 hover:border-white transition duration-700 ease-in-out cursor-pointer'>
-                                  Ver
-                                </div>
-                                <div onClick = { () => {
-                                    setTaqDocument(data.taqDoc)
-                                    setDeleteDocuments(true)
-                                  }}
-                                className='w-auto h-full bg-red-500 px-4 py-2  text-white hover:bg-red-800 hover:border-white transition duration-700 ease-in-out cursor-pointer'>
-                                  Eliminar
-                                </div>
-                              </div>
-                            </div>
-                          ))
-                      ) : null
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            DocumentosEliminadosPanel ? (
+              <div key = {`DocumentosEliminadosSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroDocumentosEliminados } /> 
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    DocumentosEliminadosFiltrados ? (
+                      DocumentosEliminadosFiltrados.map((data) => (
+                        <div key={data.taqDoc} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                          { data.nombre }
+                        </div>
+                      ))
+                    ) : null
                   }
-                  <Modal
-                    isVisible = { DeleteDocuments }
-                    onClose   = { () => setDeleteDocuments(false) }
-                    tittle    = {`ADVERTENCIA`}
-                  >
-                    <DeleteDocument 
-                      onClose = { () => setDeleteDocuments(false) }
-                      taqDoc  = { TaqDocument }
-                    />
-                  </Modal>
-                </Panel_general>
-              ): null
-            } 
-            {
-              Panel_Documentos_Eliminados ? (
-                <Panel_general FunctionfilterData = { FilterDocumentosEliminados } key = {`501231128`}>
-                  {
-                      DocumentosEliminadosDataFiltrados ? (
-                          DocumentosEliminadosDataFiltrados.map((data) => (
-                            <div key = { data.taqDoc } className='w-full h-auto flex justify-between items-center border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                              <div className='w-1/2  flex justify-start items-center h-full'>
-                                { data.nombreDocumento }
-                              </div>
-                              <div className='w-1/2  flex justify-end items-center h-full'>
-                                { data.responsable }
-                              </div>
-                            </div>
-                          ))
-                      ) : null
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            MantenimientosPanel ? (
+              <div key = {`MttoSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroMantenimientos } /> 
+                  <div onClick = { ShowModal } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nuevo Mtto
+                  </div> 
+                </div>                
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    MantenimientosFiltrados ? (
+                      MantenimientosFiltrados.map((data) => (
+                        <div key={data.taqmantenimiento} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                          { data.nombre }
+                        </div>
+                      ))
+                    ) : null
                   }
-                </Panel_general>
-              ): null
-            }             
-          </div>
+                </div>
+              </div>
+            ) : null
+          }
         </div>
       </div>
       <Modal
-        isVisible = { ShowModalDocs }
-        onClose = { () => setShowModalDocs(false) }
-        tittle = {DocumentSelected.nombre} 
+        isVisible = { ShowModal }
+        onClose = { () => setShowModal(false) }
+        tittle = {`Opciones`}
       >
-        <div className='w-[900px] h-[800px]'>
-          <embed src={`https://gworks.gematech.co/storage/Oms/${DocumentSelected.DocURL}`} type="application/pdf" className='w-full h-full' />
-        </div>
+        {
+          AccionesModal ? (
+            <Actions 
+              Acctions = { AcctionsButtons }
+              Acciones = { Acciones } 
+              key = {`a300c473056b301c`}
+            >
+              
+            </Actions>
+          ) : null
+        }
+        {
+          FormatosModal ? (
+            <>
+            
+            </>
+          ) : null
+        }   
       </Modal>
-      <Toaster richColors position='top-center'/>
+      <Modal
+        isVisible = { CreateFormModal }
+        onClose = { () => setCreateFormModal(false) }
+        tittle = {`Acciones`}
+      >
+        {
+          MantenimientosPanel ? (
+            <CreateMantenimiento
+              onClose = { () => setShowModal(false) }
+              taqom   = { DataOms[0].taqom }
+            />
+          ) : null
+        }
+      </Modal>       
     </main>
   )
 }
 
-export default OTpage;
+
+export default OmsPage ;

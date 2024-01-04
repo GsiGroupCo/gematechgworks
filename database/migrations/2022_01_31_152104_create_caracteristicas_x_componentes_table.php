@@ -9,7 +9,7 @@ class CreateCaracteristicasXComponentesTable extends Migration
     public function up()
     {
         Schema::create('caracteristicas_x_componentes', function (Blueprint $table) {
-            $table->string('taqotro')->unique();
+            $table->string('taq_caracteristica')->unique();
             $table->string('taqComponente');
             $table->string('nombre');
             $table->string('value');

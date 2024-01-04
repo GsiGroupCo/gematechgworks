@@ -8,13 +8,10 @@ use Inertia\Inertia;
 
 use App\Models\activos; 
 use App\Models\om;
-use App\Models\area;
+use App\Models\categorias_activo;
 use App\Models\componentes;
-use App\Models\empresas;
-use App\Models\mantenimientos; 
 use App\Models\responsable;
 use App\Models\rigs;
-use App\Models\tipos_activo;
  
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image; 
@@ -25,14 +22,14 @@ class ActivosController extends Controller
  
     public function store(Request $request)
     {
-        try { 
+        try {   
             $taqActivo  = '';
-            $countTypes = count(activos::where('id_tipo','LIKE',$request -> id_tipo)->get());
-            $tipe       = tipos_activo::where('id_tipo','LIKE',$request -> id_tipo)->get();
+            $countTypes = count(activos::where('categoria_id','LIKE',$request -> categoria_id)->get());
+            $tipe = categorias_activo::where('categoria_id','LIKE',$request -> categoria_id)->get(); 
             if($countTypes<9){ 
-                $taqActivo  = $tipe[0]['taq_activo_base'].'GW'.'_0'.$countTypes+1; 
+                $taqActivo  = $tipe[0]['taq'].'GW'.'_0'.$countTypes+1; 
             }elseif( $countTypes >= 9 && $countTypes <= 99 ){
-                $taqActivo  = $tipe[0]['taq_activo_base'].'GW'.'_'.$countTypes+1;
+                $taqActivo  = $tipe[0]['taq'].'GW'.'_'.$countTypes+1;
             }
             $image = $request->file('Image');
             if ($image != null) { 
@@ -44,32 +41,19 @@ class ActivosController extends Controller
                     Storage::disk('public')->makeDirectory($rutaDestino, 0777, true, true);
                 }
                 Storage::disk('public')->put($rutaArchivo, $compressedImage->stream());
-                activos::create([
-                    'taqActivos' => $taqActivo, 
-                    'id_tipo' => $request->id_tipo,
-                    'nombre' => $request->nombre,
-                    'descripcion' => $request->descripcion,
-                    'serial' => $request->serial, 
-                    'horasuso' => $request->horasuso,
-                    'estado'   => 'VIGENTE',
-                    'urlImage' => $filename,
-                ]); 
-                return redirect()->route('activos.show', ['activos' => $taqActivo])->with('status', 'Activo Registrado Correctamente');
-            } else { 
-                activos::create([
-                    'taqActivos' => $taqActivo, 
-                    'id_tipo' => $request->id_tipo,
-                    'nombre' => $request->nombre,
-                    'descripcion' => $request->descripcion, 
-                    'modelo' => $request->modelo,
-                    'serial' => $request->serial,
-                    'estado'   => 'VIGENTE',
-                    'horas_uso' => $request->horas_uso,
-                    'urlImage' => "default-image.jpg",
-                ]);
-                return redirect()->route('activos.show', ['activos' => $taqActivo])->with('status', 'Activo Registrado Correctamente');
-            }
-        } catch (\Throwable $th) { 
+            } 
+            activos::create([
+                'taqActivos'   => $taqActivo, 
+                'categoria_id' => $request->categoria_id,
+                'nombre'       => $request->nombre,
+                'descripcion'  => $request->descripcion,
+                'serial'       => $request->serial, 
+                'horasuso'     => $request->horasuso,
+                'estado'       => 'VIGENTE',
+                'urlImage'     => $image!= null ? $filename : 'default-image.jpg',
+            ]); 
+            return redirect()->route('activos.show', ['activos' => $taqActivo])->with('status', 'Activo Registrado Correctamente');
+        } catch (\Throwable $th) {
             return redirect()->route('home')->with('error', 'Problema Registrando Activo');
         }
     }
@@ -82,30 +66,29 @@ class ActivosController extends Controller
             if( $exist === 1 ){  
                 return Inertia::render('Activo',[
                     "Activo" => activos::with(
-                        'Tipo',
-                        'Mantenimientos',
+                        'Categoria',
+                        'OrdenesMantenimiento.Responsable',
+                        'Historial.Componente',
+                        'Galeria',
+                        'Movimiento',
+                        'Caracteristicas',
                         'Documentos',
                         'Documentos_Eliminados',
                         'Certificaciones',
-                        'Certificaciones_Eliminadas',
-                        'Movimiento',
-                        'Mantenimientos_Preventivos',
-                        'Mantenimientos_Correctivos',
-                        'Componente'
+                        'Certificaciones_Eliminadas'
                     )->where('taqActivos','LIKE',$activo)->get(),
                     "Rigs" => rigs::all(),
                     "Activos" => activos::all(),
-                    "Areas" => area::all(),
                     "oms" => om::all(),
                     "Componentes" => componentes::all(),
-                    "Tipo" => tipos_activo::all(),
-                    "Responsables" => responsable::all(),
-                    "Mantenimientos" => mantenimientos::all(),
+                    "CategoriasActivo" => categorias_activo::all(),
+                    "Responsables" => responsable::all()
                 ]); 
             }else{
                 return redirect()->route('home') -> with('error', 'Activo no encontrado');
             }
-        } catch (\Throwable $th) {  
+        } catch (\Throwable $th) {
+            dd($th);
             return redirect()->route('home') -> with('error', 'Problema encontrando activo');
         }
         
@@ -125,23 +108,15 @@ class ActivosController extends Controller
                     Storage::disk('public')->delete($rutaArchivo);
                 }
                 Storage::disk('public')->put($rutaArchivo, $compressedImage->stream());
-                activos::where('taqActivos','LIKE',$request -> taqActivos)-> update([
-                    'nombre'       => $request -> nombre,
-                    'descripcion'  => $request -> descripcion,
-                    'serial'       => $request -> serial, 
-                    'horasuso'     => $request -> horasuso,
-                    'urlImage'     => $filename,
-                ]);
-                return redirect()->route('activos.show', ['activos' => $request->taqActivos]) -> with('status', 'Activo Editado Correctamente');
-            }else{ 
-                activos::where('taqActivos','LIKE',$request -> taqActivos)-> update([
-                    'nombre'       => $request -> nombre,
-                    'descripcion'  => $request -> descripcion,
-                    'serial'       => $request -> serial, 
-                    'horasuso'     => $request -> horasuso,
-                ]);
-                return redirect()->route('activos.show', ['activos' => $request->taqActivos]) -> with('status', 'Activo Editado Correctamente');
             }
+            activos::where('taqActivos','LIKE',$request -> taqActivos)-> update([
+                'nombre'       => $request -> nombre,
+                'descripcion'  => $request -> descripcion,
+                'serial'       => $request -> serial, 
+                'horasuso'     => $request -> horasuso,
+                'urlImage'     => $request -> File('Image') != null ? $filename : $activo[0]['urlImage'],
+            ]);
+            return redirect()->route('activos.show', ['activos' => $request->taqActivos]) -> with('status', 'Activo Editado Correctamente');
         } catch (\Throwable $th) {  
             return redirect()->route('activos.show', ['activos' => $request->taqActivos]) -> with('error', 'Problema  Editado Activo');
         }

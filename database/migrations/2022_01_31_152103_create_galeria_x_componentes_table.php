@@ -10,7 +10,7 @@ class CreateGaleriaXComponentesTable extends Migration
     public function up()
     {
         Schema::create('galeria_x_componentes', function (Blueprint $table) {
-            $table->string('id_foto')->unique();
+            $table->string('foto_id')->unique();
             $table->string('taqComponente');
             $table->string('Image');
             $table->timestamps();

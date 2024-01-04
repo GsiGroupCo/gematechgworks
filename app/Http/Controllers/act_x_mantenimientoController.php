@@ -18,12 +18,11 @@ class act_x_mantenimientoController extends Controller
                 'frecuencia'    => $request -> frecuencia,
                 'tipofrecuencia'=> $request -> tipofrecuencia,
                 'sistema'       => $request -> sistema,
-                'componente'    => $request -> componente,
+                'taqComponente' => $request -> taqComponente,
                 'taqManto'      => $request -> taqManto,
             ]);
             return redirect()->route('mantenimiento.show', ['taqManto' => $request->taqManto]) -> with('status', 'Actividad agregada');
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()->route('mantenimiento.show', ['taqManto' => $request->taqManto]) -> with('error', 'Problema agregando actividad');
         }
     }
@@ -32,10 +31,10 @@ class act_x_mantenimientoController extends Controller
     {
         try {
             act_x_mantenimiento::where('actividad_id','LIKE',$request -> actividad_id)-> update([
-                'nombre'       => $request -> nombre,
-                'frecuencia'   => $request -> frecuencia,
-                'sistema'      => $request -> sistema,
-                'componente'   => $request -> componente,
+                'nombre'        => $request -> nombre,
+                'frecuencia'    => $request -> frecuencia,
+                'sistema'       => $request -> sistema,
+                'taqComponente' => $request -> taqComponente,
             ]);
             return redirect()->route('mantenimiento.show', ['taqManto' => $request->taqManto]) -> with('status', 'Actividad actualizada');
         } catch (\Throwable $th) { 

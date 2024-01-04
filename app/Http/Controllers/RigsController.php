@@ -20,7 +20,6 @@ class RigsController extends Controller
             ]); 
             return redirect()->route('rigs.show', ['rigs' => $taqrig])->with('status', 'Rig Registrado correctamente');
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()->route('home')->with('error', 'Problema Registrando Rig');
         }
     }
@@ -31,7 +30,7 @@ class RigsController extends Controller
             $exist = count(rigs::where('taqrig','LIKE',$taqrig)->get());  
             if( $exist === 1 ){  
                 return Inertia::render('Rigs',[
-                    "Rig" => rigs::where('taqrig','LIKE',$taqrig)->get(),
+                    "Rig" => rigs::with('movimientos')->where('taqrig','LIKE',$taqrig)->get(),
                 ]); 
             }else{
                 return redirect()->route('home') -> with('error', 'Rig no encontrado');

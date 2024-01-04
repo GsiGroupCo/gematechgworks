@@ -11,17 +11,18 @@ class CreateActXMantenimientoTable extends Migration
     {
         Schema::create('act_x_mantenimiento', function (Blueprint $table) {
             $table->string('actividad_id')->unique();
+            $table->string('taqComponente');
             $table->string('nombre');
             $table->string('sistema');
-            $table->string('componente');
             $table->string('frecuencia');
             $table->string('tipofrecuencia');
-            $table->string('taqManto');
+            $table->string('taqmantenimiento');
             $table->timestamps();
         });
 
         Schema::table('act_x_mantenimiento', function (Blueprint $table) {
-            $table->foreign('taqManto')->references('taqManto')->on('mantenimientos');
+            $table->foreign('taqmantenimiento')->references('taqmantenimiento')->on('mantenimientos_x_oms');
+            $table->foreign('taqComponente')->references('taqComponente')->on('componentes');
         });
     }
 

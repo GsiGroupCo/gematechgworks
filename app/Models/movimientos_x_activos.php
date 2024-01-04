@@ -11,10 +11,9 @@ class movimientos_x_activos extends Model
     use HasFactory;
 
     protected $fillable = [
-        'taqmovactivs',
+        'taq_movimiento',
         'taqrig',
         'taqActivos',
-        'taqom',
         'fechaSalida',
         'fechaRetorno',
         'estado',
@@ -25,12 +24,8 @@ class movimientos_x_activos extends Model
         return $this->belongsTo(activos::class,'taqActivos', 'taqActivos');
     }
 
-    public function Om(){
-        return $this->belongsTo(om::class, 'taqot', 'taqot');
-    }
-
     public function Rig(){
-        return $this->belongsTo(rig::class, 'taqrig', 'taqrig');
+        return $this->belongsTo(rigs::class, 'taqrig', 'taqrig');
     }
 
 }

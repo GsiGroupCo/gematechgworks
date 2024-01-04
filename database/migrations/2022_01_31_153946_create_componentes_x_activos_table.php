@@ -12,6 +12,9 @@ class CreateComponentesXActivosTable extends Migration
             $table->string('taq_historial')->unique();
             $table->string('taqComponente');
             $table->string('taqActivos');
+            $table->string('estado');
+            $table->string('fecha_acople');
+            $table->string('fecha_desacople')->nullable();
             $table->timestamps();
         });
 

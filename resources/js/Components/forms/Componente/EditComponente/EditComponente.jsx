@@ -21,7 +21,6 @@ const EditComponente = ({ Componente, onClose }) =>  {
       data.horasuso    = formValue.Horas_Uso, 
       data.Image       = file 
       post('/componente/update')
-      console.log(data)
       onClose()
     }
   })
@@ -51,7 +50,10 @@ const EditComponente = ({ Componente, onClose }) =>  {
             name="Nombre"
             id="Nombre"
             value={formik.values.Nombre}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+                formik.handleChange(e);
+                formik.setFieldValue('Nombre', e.target.value.toUpperCase());
+            }}
             className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.Nombre && formik.errors.Nombre ? 'border-red-500' : 'border-black' }`}
           />
           {
@@ -74,8 +76,11 @@ const EditComponente = ({ Componente, onClose }) =>  {
               type="text"
               name="Serial"
               id="Serial"
-              value={formik.values.Serial}
-              onChange={formik.handleChange}
+              value={formik.values.Serial} 
+              onChange={(e) => {
+                  formik.handleChange(e);
+                  formik.setFieldValue('Serial', e.target.value.toUpperCase());
+              }}
               className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.Serial && formik.errors.Serial ? 'border-red-500' : 'border-black' }`}
             />
             {
@@ -115,8 +120,11 @@ const EditComponente = ({ Componente, onClose }) =>  {
           <textarea 
             name="Descripcion"
             id="Descripcion"
-            value={formik.values.Descripcion}
-            onChange={formik.handleChange}
+            value={formik.values.Descripcion}  
+            onChange={(e) => {
+                formik.handleChange(e);
+                formik.setFieldValue('Descripcion', e.target.value.toUpperCase());
+            }}
             className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.Descripcion && formik.errors.Descripcion ? 'border-red-500' : 'border-black' }`}
             placeholder="Escribe aquí"
           ></textarea>

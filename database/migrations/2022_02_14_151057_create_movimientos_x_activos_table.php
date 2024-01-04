@@ -9,10 +9,9 @@ class CreateMovimientosXActivosTable extends Migration
     public function up()
     {
         Schema::create('movimientos_x_activos', function (Blueprint $table) {
-            $table->string('taqmovactivs')->unique();
+            $table->string('taq_movimiento')->unique();
             $table->string('taqrig');
             $table->string('taqActivos');
-            $table->string('taqom');
             $table->string('fechaSalida');
             $table->string('fechaRetorno');
             $table->string('estado');
@@ -23,7 +22,6 @@ class CreateMovimientosXActivosTable extends Migration
         Schema::table('movimientos_x_activos', function (Blueprint $table) {
             $table->foreign('taqActivos')->references('taqActivos')->on('Activos');
             $table->foreign('taqrig')->references('taqrig')->on('rigs');
-            $table->foreign('taqom')->references('taqom')->on('oms');
         });
     }
     public function down()

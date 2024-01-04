@@ -9,6 +9,8 @@ class docs_x_responsables_eli extends Model
 {
     use HasFactory;
 
+    protected $table = 'docs_x_responsables_eli';
+
     protected $fillable = [
         'documento_eliminado_id',
         'documento_id',

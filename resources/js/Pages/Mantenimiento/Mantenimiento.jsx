@@ -10,11 +10,9 @@ import EditMantenimiento from "@/Components/forms/Mantenimiento/EditMantenimient
 import { useForm } from "@inertiajs/react";
 import { useState } from "react"; 
  
-const MttoPage= ({ Mtto, Responsables }) => {
+const MttoPage= ({ Mtto, Componentes }) => {
  
   const { post, data } = useForm();
-
-  console.log(Mtto)
 
   const [ModalShow, setModalShow] = useState(false)
 
@@ -196,6 +194,7 @@ const MttoPage= ({ Mtto, Responsables }) => {
           ActividadesPanel ? (
             <CreateActividad
               Mantenimiento = { Mtto[0] }
+              Componentes = { Componentes }
               onClose = { () => setCreateFormModal(false) }
             />
           ) : null

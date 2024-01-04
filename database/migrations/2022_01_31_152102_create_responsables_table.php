@@ -9,8 +9,7 @@ class CreateResponsablesTable extends Migration
 
     public function up()
     {
-        Schema::create('responsables', function (Blueprint $table) {
-            $table->id();
+        Schema::create('responsables', function (Blueprint $table) { 
             $table->string('taqresponsable')->unique();
             $table->string('cargo_id');
             $table->string('nombre');

@@ -38,7 +38,8 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => base_path('../../gworks.gematech.co/storage'),
+            'root' => storage_path('app'),
+            // 'root' => base_path('../../gworks.gematech.co/storage'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
@@ -70,7 +71,7 @@ return [
     */
 
     'links' => [
-        base_path('../../gworks.gematech.co/storage') => storage_path('public/storage'),
+        // base_path('../../gworks.gematech.co/storage') => storage_path('public/storage'),
     ],
 
 ];

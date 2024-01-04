@@ -41,7 +41,10 @@ const EditCategoria = ({ onClose, route, Taq }) =>  {
             id="nombre"
             placeholder='ACUMULADOR SHENKAI'
             value={formik.values.nombre}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+                formik.handleChange(e);
+                formik.setFieldValue('nombre', e.target.value.toUpperCase());
+            }}
             className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.nombre && formik.errors.nombre ? 'border-red-500' : 'border-black' }`}
           />
           {

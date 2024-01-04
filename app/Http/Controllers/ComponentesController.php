@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\activos;
+use App\Models\categoria_componentes;
 use App\Models\componentes;
 use App\Models\tipos_componentes;
  
@@ -18,8 +19,8 @@ class ComponentesController extends Controller
     {   
         try {
             $taqComponente  = '';
-            $countTypes = count(componentes::where('id_tipo','LIKE',$request -> id_tipo)->get());
-            $tipe       = tipos_componentes::where('id_tipo','LIKE',$request -> id_tipo)->get(); 
+            $countTypes = count(componentes::where('categoria_id','LIKE',$request -> categoria_id)->get());
+            $tipe       = categoria_componentes::where('categoria_id','LIKE',$request -> categoria_id)->get(); 
             if($countTypes<9){
                 $taqComponente  = $tipe[0]['taq_componente_base'].'GW'.'_0'.$countTypes+1;
             }elseif( $countTypes >= 9 && $countTypes <= 99 ){
@@ -37,7 +38,7 @@ class ComponentesController extends Controller
                 Storage::disk('public')->put($rutaArchivo, $compressedImage->stream());
                 componentes::create([
                     'taqComponente' => $taqComponente, 
-                    'id_tipo'       => $request -> id_tipo,
+                    'categoria_id'       => $request -> categoria_id,
                     'nombre'        => $request -> nombre,
                     'descripcion'   => $request -> descripcion,
                     'serial'        => $request -> serial,
@@ -49,7 +50,7 @@ class ComponentesController extends Controller
             }else{
                 componentes::create([
                     'taqComponente' => $taqComponente, 
-                    'id_tipo'       => $request -> id_tipo,
+                    'categoria_id'       => $request -> categoria_id,
                     'nombre'        => $request -> nombre,
                     'descripcion'   => $request -> descripcion,
                     'serial'        => $request -> serial,
@@ -60,10 +61,10 @@ class ComponentesController extends Controller
                 return redirect()->route('componentes.show', [ 'componentes' => $taqComponente ]) -> with('status', 'Componente Registrado Correctamente');
             }
         } catch (\Throwable $th) { 
+            dd($th);
             return redirect()->route('home') -> with('error', 'Problema Registrando Componente');
         }
     }
-
 
     public function show($taqComponente)
     {
@@ -72,24 +73,18 @@ class ComponentesController extends Controller
             if( $exist === 1 ){ 
                 return Inertia::render('Componente',[
                     'ComponentesData'  => componentes::with(
+                        'Historial_Activos.Activos',
+                        'Actividad_Mantenimiento',
+                        'Galeria', 
                         'Categoria',
-                        'Actividades', 
                         'Caracteristicas',
                         'Documentos',
                         'Documentos_Eliminados',
                         'Certificaciones',
-                        'Certificaciones_Eliminadas',
-                        'Mttos_Correctivos.Responsable',
-                        'Mttos_Correctivos.Actividades',
-                        'Mttos_Correctivos.Documentos',
-                        'Mttos_Preventivos.Responsable',
-                        'Mttos_Preventivos.Actividades',
-                        'Mttos_Preventivos.Documentos',
+                        'Certificaciones_Eliminadas'
                     )->where('taqComponente','LIKE', $taqComponente)->get(),
-                    'Categorias' => tipos_componentes::all(),
-                    'Activos' => activos::all(),
-                    'status' => session('status'),
-                    'error'  => session('error')
+                    'Categorias' => categoria_componentes::all(),
+                    'Activos' => activos::all(), 
                 ]); 
             }else{
                 return redirect()->route('home') -> with('error', 'Componente no encontrado');
@@ -98,7 +93,6 @@ class ComponentesController extends Controller
             return redirect()->route('home') -> with('error', 'Problema encontrando componente');
         }
     }
-
 
     public function update(Request $request)
     {

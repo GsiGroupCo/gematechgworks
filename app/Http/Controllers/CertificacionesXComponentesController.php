@@ -8,14 +8,13 @@ use App\Models\cert_x_activo_eli;
 use App\Models\cert_x_activo;
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 
-use Illuminate\Support\Facades\Storage;
 
-class CertificacionesXActivoController extends Controller
+class CertificacionesXComponentesController extends Controller
 {
     public function store(Request $request)
-    { 
+    {
         try {
             $certificacion = strtotime($request->fechacertificacion);
             if($request -> frecuencia=='3'){
@@ -30,16 +29,9 @@ class CertificacionesXActivoController extends Controller
                 $frecuencia = date('d-m-Y',strtotime($request->fechacertificacion."+ 120 months"));
             }
             for ($i = 1; $i <= $request -> CantImages; $i++) {
-                $documento = $request -> file('Image_'.$i); 
-                // $nombre = $documento -> getClientOriginalName();
-                // $documento->move("/home/gematech/public_html/storage/Activos/".$request->taqActivos."/Certificaciones",$nombre);
-                $nombre = $request->file('Image_'.$i)->getClientOriginalName();  
-                $rutaDestino = "Activo/Certificaciones/{$$request->taqActivos}";
-                $rutaArchivo = "Activo/Certificaciones/{$$request->taqActivos}/{$nombre}";
-                if (!Storage::disk('public')->exists($rutaDestino)) {
-                    Storage::disk('public')->makeDirectory($rutaDestino, 0777, true, true);
-                }
-                Storage::disk('public')->put($rutaArchivo, $documento);
+                $documento = $request -> file('Image_'.$i);
+                $nombre = $documento -> getClientOriginalName();
+                $documento->move("/home/gematech/public_html/storage/Activos/".$request->taqActivos."/Certificaciones",$nombre); 
                 cert_x_activo::create([
                     'taqActivos'       => $request->taqActivos,
                     'taqDoc'           => uniqid(TRUE),
@@ -52,7 +44,7 @@ class CertificacionesXActivoController extends Controller
             }
             return redirect() -> route('activos.show', ['activos' => $request->taqActivos]) -> with('status', 'Certificacion Registrada Correctamente');
         } catch (\Throwable $th) {
-            dd($th);
+            
             return redirect() -> route('activos.show', ['activos' => $request->taqActivos]) -> with('error', 'Problema Registrando Certificacion');
         }
     }

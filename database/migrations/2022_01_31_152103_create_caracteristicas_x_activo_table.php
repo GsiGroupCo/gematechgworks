@@ -10,7 +10,7 @@ class CreateCaracteristicasXActivoTable extends Migration
     public function up()
     {
         Schema::create('caracteristicas_x_activo', function (Blueprint $table) {
-            $table->string('taqotro')->unique();
+            $table->string('taq_caracteristica')->unique();
             $table->string('taqActivos');
             $table->string('nombre');
             $table->string('value');

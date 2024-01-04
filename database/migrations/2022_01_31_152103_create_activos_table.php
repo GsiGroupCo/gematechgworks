@@ -11,18 +11,18 @@ class CreateActivosTable extends Migration
     {
         Schema::create('activos', function (Blueprint $table) {
             $table->string('taqActivos')->unique(); 
-            $table->string('id_tipo');
+            $table->string('categoria_id');
             $table->string('nombre');
             $table->string('descripcion',500)->nullable();
+            $table->string('estado');
             $table->string('serial')->nullable();
             $table->string('horasuso')->nullable();
-            $table->string('estado');
             $table->string('urlImage')->nullable();
             $table->timestamps();
         });
 
         Schema::table('activos', function (Blueprint $table) { 
-            $table->foreign('id_tipo')->references('id_tipo')->on('tipos_activo');
+            $table->foreign('categoria_id')->references('categoria_id')->on('categorias_activo');
         });
     }
 

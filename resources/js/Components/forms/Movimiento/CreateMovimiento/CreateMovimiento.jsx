@@ -123,8 +123,11 @@ const CreateMovimiento = ({ Taq, onClose, Rigs, Oms }) =>  {
                     type="date" 
                     name="taqom"
                     id="taqom"
-                    value={formik.values.taqom}
-                    onChange={formik.handleChange} 
+                    value={formik.values.taqom}  
+                    onChange={(e) => {
+                        formik.handleChange(e);
+                        formik.setFieldValue('taqom', e.target.value.toUpperCase());
+                    }}
                     className = {`w-full h-auto px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.taqom && formik.errors.taqom ? 'border-red-500' : 'border-black' }`}
                 />
                 {
@@ -145,8 +148,11 @@ const CreateMovimiento = ({ Taq, onClose, Rigs, Oms }) =>  {
                 <textarea 
                     name="descripcion"
                     id="descripcion"
-                    value={formik.values.descripcion}
-                    onChange={formik.handleChange}
+                    value={formik.values.descripcion} 
+                    onChange={(e) => {
+                        formik.handleChange(e);
+                        formik.setFieldValue('descripcion', e.target.value.toUpperCase());
+                    }}
                     className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.descripcion && formik.errors.descripcion ? 'border-red-500' : 'border-black' }`}
                     placeholder="Escribe aquí"
                 ></textarea>

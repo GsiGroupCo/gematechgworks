@@ -3,7 +3,7 @@ import Actions from "@/Components/UI/Actions";
 import ButtonMenu from "@/Components/UI/Activo/ButtonMenu";
 import Caracteristica_target from "@/Components/UI/Activo/Caracteristica_target";
 import Appbar from "@/Components/UI/Appbar";
-import PanelSection from "@/Components/UI/PanelSection";
+import SearchInput from "@/Components/UI/Search";
 import CloneActivo from "@/Components/forms/Activo/CloneActivo";
 import EditActivo from "@/Components/forms/Activo/EditActivo"; 
 import ListCaracteristica from "@/Components/forms/Caracteristicas/ListCaracteristica"; 
@@ -13,10 +13,10 @@ import CreateDocumento from "@/Components/forms/Documentos/CreateDocumento";
 import CreateMantenimiento from "@/Components/forms/Mantenimiento/CreateMantenimiento";  
 import CreateMovimiento from "@/Components/forms/Movimiento/CreateMovimiento";
 import CreateOms from "@/Components/forms/Oms/CreateOms";
-import { useState } from "react"; 
+import { useEffect, useState } from "react"; 
  
-const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tipo, Responsables, Rigs, Mantenimientos, Componentes }) => {
- 
+const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Responsables, Rigs, Componentes }) => {
+
   const [CreateFormModal, setCreateFormModal] = useState(false)
 
   const [AccionesModal, setAccionesModal] = useState(false) 
@@ -29,7 +29,6 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
     setFormatosModal(false)
     setShowModal(true)
     setAccionesModal(true)
-    ShowActionButtons()
   }
   
   function ShowFormats(){
@@ -50,19 +49,12 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
   const [EditarCaracteristicaState, setEditarCaracteristicaState]   = useState(false)
   const [EditarActivoState, setEditarActivoState]                   = useState(false)
   const [ClonarActivoState, setClonarActivoState]                   = useState(false) 
-  
-  function ShowActionButtons(){
-    setClonarActivoState(false)
-    setEditarCaracteristicaState(false)
-    setEditarActivoState(false) 
-    setAcctionsButtons(true)
-  }
- 
+   
   function ShowFormEditCaracteristicas(){ 
     setClonarActivoState(false)
-    setEditarCaracteristicaState(false)
     setEditarActivoState(false) 
-    setAcctionsButtons(true)
+    setAcctionsButtons(false)
+    setEditarCaracteristicaState(true)
   }
 
   function ShowFormEditActivo(){ 
@@ -96,13 +88,13 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
       "function"   : ShowFormClonarActivo,
   }]
 
-  const [Default, setDefault] = useState(false)
-  const [MantenimientosPanel, setMantenimientosPanel] = useState(true) 
+  const [MantenimientosPanel, setMantenimientosPanel] = useState(false) 
   const [DocumentosPanel, setDocumentosPanel] = useState(false)
   const [DocumentosEliminadosPanel, setDocumentosEliminadosPanel] = useState(false)
   const [CertificacionesPanel, setCertificacionesPanel] = useState(false)
   const [CertificacionesEliminadosPanel, setCertificacionesEliminadosPanel] = useState(false)
   const [ComponentesPanel, setComponentesPanel] = useState(false)
+  const [GaleriaPanel, setGaleriaPanel] = useState(false)
   const [MovimientosPanel, setMovimientosPanel] = useState(false) 
      
   function ShowDefault(){
@@ -112,8 +104,8 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
     setCertificacionesPanel(false)
     setCertificacionesEliminadosPanel(false)
     setComponentesPanel(false)
-    setMovimientosPanel(false) 
-    setDefault(true)
+    setGaleriaPanel(false)
+    setMovimientosPanel(false)
   }
   
   function ShowMantenimientos() {
@@ -125,8 +117,8 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
       setCertificacionesPanel(false)
       setCertificacionesEliminadosPanel(false)
       setComponentesPanel(false)
-      setMovimientosPanel(false) 
-      setDefault(false)
+      setGaleriaPanel(false)
+      setMovimientosPanel(false)
       setMantenimientosPanel(true)
     }
   }
@@ -135,13 +127,14 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
     if(DocumentosPanel){      
       ShowDefault()
     }else{
-      setMantenimientosPanel(false)
+      setGaleriaPanel(false)
+      setMovimientosPanel(false) 
       setDocumentosEliminadosPanel(false) 
       setCertificacionesPanel(false)
       setCertificacionesEliminadosPanel(false)
       setComponentesPanel(false)
       setMovimientosPanel(false) 
-      setDefault(false)
+      setMantenimientosPanel(false)
       setDocumentosPanel(true)
     }
   }
@@ -150,13 +143,14 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
     if(DocumentosEliminadosPanel){
       ShowDefault()
     }else{
-      setMantenimientosPanel(false)
+      setGaleriaPanel(false)
+      setMovimientosPanel(false) 
       setDocumentosPanel(false)
       setCertificacionesPanel(false)
       setCertificacionesEliminadosPanel(false)
       setComponentesPanel(false)
       setMovimientosPanel(false) 
-      setDefault(false)
+      setMantenimientosPanel(false)
       setDocumentosEliminadosPanel(true) 
     }
   }
@@ -165,13 +159,14 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
     if(CertificacionesPanel){
       ShowDefault()
     }else{
-      setMantenimientosPanel(false)
+      setGaleriaPanel(false)
+      setMovimientosPanel(false) 
       setDocumentosPanel(false)
       setDocumentosEliminadosPanel(false) 
       setCertificacionesEliminadosPanel(false)
       setComponentesPanel(false)
       setMovimientosPanel(false) 
-      setDefault(false)
+      setMantenimientosPanel(false)
       setCertificacionesPanel(true)
     }
   }
@@ -180,12 +175,13 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
     if(CertificacionesEliminadosPanel){
       ShowDefault()
     }else{
-      setMantenimientosPanel(false)
+      setGaleriaPanel(false)
+      setMovimientosPanel(false) 
       setDocumentosPanel(false)
       setDocumentosEliminadosPanel(false) 
       setComponentesPanel(false)
       setMovimientosPanel(false) 
-      setDefault(false)
+      setMantenimientosPanel(false)
       setCertificacionesPanel(false)
       setCertificacionesEliminadosPanel(true)
     }
@@ -195,11 +191,12 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
     if(ComponentesPanel){
       ShowDefault()
     }else{
-      setMantenimientosPanel(false)
+      setGaleriaPanel(false)
+      setMovimientosPanel(false) 
       setDocumentosPanel(false)
       setDocumentosEliminadosPanel(false) 
       setMovimientosPanel(false) 
-      setDefault(false)
+      setMantenimientosPanel(false)
       setCertificacionesPanel(false)
       setCertificacionesEliminadosPanel(false)
       setComponentesPanel(true)
@@ -209,15 +206,30 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
   function ShowMovimientos() {
     if(MovimientosPanel){
       ShowDefault()
-    }else{
-      setMantenimientosPanel(false)
+    }else{      
       setDocumentosPanel(false)
       setDocumentosEliminadosPanel(false) 
-      setDefault(false)
       setCertificacionesPanel(false)
       setCertificacionesEliminadosPanel(false)
       setComponentesPanel(false)
-      setMovimientosPanel(true) 
+      setGaleriaPanel(false)
+      setMantenimientosPanel(false)
+      setMovimientosPanel(true)
+    }
+  }
+
+  function ShowGaleria(){
+    if(GaleriaPanel){
+      ShowDefault()
+    }else{
+      setDocumentosPanel(false)
+      setDocumentosEliminadosPanel(false) 
+      setMantenimientosPanel(false)
+      setCertificacionesPanel(false)
+      setCertificacionesEliminadosPanel(false)
+      setComponentesPanel(false)
+      setMovimientosPanel(false) 
+      setGaleriaPanel(true)
     }
   }
 
@@ -236,7 +248,7 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
   },{  
     "id"         : '47175832',
     "nombre"     : "CATEGORIA",
-    "value"      : Activo[0] ? Activo[0].tipo.nombre : '',
+    "value"      : Activo[0] ? Activo[0].categoria.nombre : '',
   }]
 
   const Buttons = [{  
@@ -274,54 +286,310 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
     "label"      : "Componentes",
     "Myfunction" : ShowComponentes,
     "estado"     : ComponentesPanel
+  },{
+    "id"         : '80287512389',
+    "label"      : "Galeria",
+    "Myfunction" : ShowGaleria,
+    "estado"     : GaleriaPanel
   }]
  
-  const Panels = [{
-    "id"         : "6b4fe94b95bb902a15", 
-    "Tittle"     : "Mantenimientos", 
-    "Data"       : Activo[0].mantenimientos, 
-    "State"      : MantenimientosPanel,
-    "add"        : true
-  },
-  {
-    "id"         : "feddc0dab45263a21a", 
-    "Tittle"     : "Documentos", 
-    "Data"       : Activo[0].documentos, 
-    "State"      : DocumentosPanel,
-    "add"        : true
-  },
-  {
-    "id"         : "8acfc6e23005040812", 
-    "Tittle"     : "Documentos Eliminados", 
-    "Data"       : Activo[0].documentos__eliminados, 
-    "State"      : DocumentosEliminadosPanel,
-    "add"        : false
-  },
-  {
-    "id"         : "be83a6a6312252cfa2ef", 
-    "Tittle"     : "Certificaciones", 
-    "Data"       : Activo[0].certificaciones, 
-    "State"      : CertificacionesPanel,
-    "add"        : true
-  },{
-    "id"         : "be83a623a63252cfa2ef", 
-    "Tittle"     : "Certificaciones Eliminadas", 
-    "Data"       : Activo[0].certificaciones__eliminadas, 
-    "State"      : CertificacionesEliminadosPanel,
-    "add"        : false
-  },{
-    "id"         : "be8354a6a63252cfa2ef", 
-    "Tittle"     : "Componentes", 
-    "Data"       : Activos[0].componente, 
-    "State"      : ComponentesPanel,
-    "add"        : true
-  },{
-    "id"         : "be83a6aasd63252cfa2ef", 
-    "Tittle"     : "Movimientos", 
-    "Data"       : Activos[0].movimiento, 
-    "State"      : MovimientosPanel,
-    "add"        : true
-  }]
+  const MantenimientosData = [];
+  Activo.forEach(ActivoData => {
+    ActivoData.ordenes_mantenimiento.forEach(MantenimientoData => {
+      MantenimientosData.push({
+        taqom          : MantenimientoData.taqom,
+        taqActivos     : MantenimientoData.taqActivos,
+        fechainicio    : MantenimientoData.fechainicio,
+        horainicio     : MantenimientoData.horainicio,
+        fechafin       : MantenimientoData.fechafin,
+        horafin        : MantenimientoData.horafin,
+        tipo           : MantenimientoData.tipo,
+        prioridad      : MantenimientoData.prioridad,
+        estado         : MantenimientoData.estado,
+        descripcion    : MantenimientoData.descripcion,
+        created_at     : MantenimientoData.created_at,
+        updated_at     : MantenimientoData.updated_at,
+      });
+    });
+  });
+
+  const DocumentosData = [];
+  Activo.forEach(ActivoData => { 
+    ActivoData.documentos.forEach(Data => {
+      DocumentosData.push({
+        taqActivos : Data.taqActivos,
+        taqDoc     : Data.taqDoc,
+        nombre     : Data.nombre,
+        DocURL     : Data.DocURL, 
+      });
+    });
+  }); 
+
+  const DocumentosEliminadosData = [];
+  Activo.forEach(ActivoData => {
+    ActivoData.documentos__eliminados.forEach(Data => {
+      DocumentosEliminadosData.push({
+        taqDeleteRegister : Data.taqDeleteRegister,
+        taqActivos        : Data.taqActivos,
+        nombreDocumento   : Data.nombreDocumento,
+        Responsable       : Data.taqresponsable, 
+      });
+    });
+  }); 
+
+  const CertificacionesData = [];
+  Activo.forEach(ActivoData => { 
+    ActivoData.certificaciones.forEach(CertificacionesData => {
+      CertificacionesData.push({
+        taqActivos       : CertificacionesData.taqActivos,
+        taqDoc           : CertificacionesData.taqDoc,
+        nombre           : CertificacionesData.nombre,
+        fechacertificion : CertificacionesData.fechacertificion, 
+        frecuencia       : CertificacionesData.frecuencia,
+        estado           : CertificacionesData.estado,
+        DocURL           : CertificacionesData.DocURL, 
+      });
+    });
+  }); 
+
+  const CertificacionesEliminadasData = [];
+  Activo.forEach(ActivoData => { 
+    ActivoData.certificaciones.forEach(CertificacionesEliminadasData => {
+      CertificacionesEliminadasData.push({
+        taqDeleteRegister  : CertificacionesEliminadasData.taqDeleteRegister,
+        taqActivos         : CertificacionesEliminadasData.taqActivos,
+        nombreDocumento    : CertificacionesEliminadasData.nombreDocumento,
+        Responsable        : CertificacionesEliminadasData.taqresponsable,  
+      });
+    });
+  });
+
+  const MovimientosData = [];
+  Activo.forEach(ActivosData => {  
+    ActivosData.movimiento.forEach(MovimientosData => {
+      MovimientosData.push({
+        taq_movimiento : MovimientosData.taq_movimiento,
+        taqrig         : MovimientosData.taqrig,
+        taqActivos     : MovimientosData.taqActivos,
+        fechaSalida    : MovimientosData.fechaSalida, 
+        fechaRetorno   : MovimientosData.fechaRetorno,
+        estado         : MovimientosData.estado,
+        descripcion    : MovimientosData.descripcion,
+      });
+    });
+  }); 
+
+  const ComponentesData = [];
+  Activo.forEach(ActivosData => { 
+    ActivosData.historial.forEach(HistorialData => {
+      HistorialData.componente.forEach(ComponenteData => {
+        ComponentesData.push({
+          taqComponente: ComponenteData.taqComponente,
+          categoria_id: ComponenteData.categoria_id,
+          nombre: ComponenteData.nombre,
+          estado: ComponenteData.estado,
+          descripcion: ComponenteData.descripcion,
+          serial: ComponenteData.serial,
+          horasuso: ComponenteData.horasuso,
+          urlImage: ComponenteData.urlImage,
+        });
+      });
+    });
+  });
+
+  const GaleriaData = [];
+  Activo.forEach(ActivosData => {  
+    ActivosData.galeria.forEach(MovimientosData => {
+      MovimientosData.push({
+        foto_id    : MovimientosData.foto_id,
+        taqActivos : MovimientosData.taqActivos,
+        Image      : MovimientosData.Image, 
+      });
+    });
+  }); 
+
+  useEffect(() => {  
+    setGaleriaFiltrados(GaleriaData)
+    setCertificacionesFiltradas(CertificacionesData)
+    setDocumentosFiltrados(DocumentosData)
+    setDocumentosEliminadosFiltrados(DocumentosEliminadosData)
+    setComponentesFiltrados(ComponentesData)
+    setMantenimientosFiltrados(MantenimientosData)
+  }, [Activo])
+
+  const [MantenimientosFiltrados, setMantenimientosFiltrados] = useState();
+  const FiltroMantenimiento = ( searchTerm ) => {
+    const filtered = MantenimientosData.filter((data) => { 
+        const taqom         = DocumentosData.taqom.toLowerCase();
+        const taqActivos    = DocumentosData.taqActivos.toLowerCase();
+        const fechainicio   = DocumentosData.fechainicio.toLowerCase();
+        const horainicio    = DocumentosData.horainicio.toLowerCase();
+        const fechafin      = DocumentosData.fechafin.toLowerCase();
+        const horafin       = DocumentosData.horafin.toLowerCase();
+        const tipo          = DocumentosData.tipo.toLowerCase();
+        const prioridad     = DocumentosData.prioridad.toLowerCase();
+        const estado        = DocumentosData.estado.toLowerCase();
+        const descripcion   = DocumentosData.descripcion.toLowerCase(); 
+        return (
+            taqom.includes(searchTerm)       ||
+            taqActivos.includes(searchTerm)  ||
+            fechainicio.includes(searchTerm) ||
+            horainicio.includes(searchTerm)  ||
+            fechafin.includes(searchTerm)    ||
+            horafin.includes(searchTerm)     || 
+            tipo.includes(searchTerm)        ||        
+            prioridad.includes(searchTerm)   ||
+            estado.includes(searchTerm)      ||
+            descripcion.includes(searchTerm)
+        );
+    });
+    setMantenimientosFiltrados(filtered);
+  };
+
+  const [DocumentosFiltrados, setDocumentosFiltrados] = useState();
+  const FiltroDocumentos = ( searchTerm ) => {
+    const filtered = MantenimientosData.filter((data) => {
+        const taqActivos = DocumentosData.taqActivos.toLowerCase();
+        const taqDoc     = DocumentosData.taqDoc.toLowerCase();
+        const nombre     = DocumentosData.nombre.toLowerCase();
+        const DocURL     = DocumentosData.DocURL.toLowerCase(); 
+        return (
+            taqDoc.includes(searchTerm)       ||
+            taqActivos.includes(searchTerm)  ||
+            nombre.includes(searchTerm) || 
+            DocURL.includes(searchTerm)    
+        );
+    });
+    setDocumentosFiltrados(filtered);
+  };
+
+  const [DocumentosEliminadosFiltrados, setDocumentosEliminadosFiltrados] = useState();
+  const FiltroDocumentosEliminados = ( searchTerm ) => {
+    const filtered = DocumentosEliminadosData.filter((data) => {
+        const taqDeleteRegister = data.taqDeleteRegister.toLowerCase()
+        const taqActivos        = data.taqActivos.toLowerCase()
+        const nombreDocumento   = data.nombreDocumento.toLowerCase()
+        const Responsable       = data.taqresponsable.toLowerCase() 
+        return (
+            taqDeleteRegister.includes(searchTerm) ||
+            taqActivos.includes(searchTerm)        ||
+            nombreDocumento.includes(searchTerm)   || 
+            Responsable.includes(searchTerm)    
+        );
+    });
+    setDocumentosEliminadosFiltrados(filtered);
+  };
+
+  const [CertificacionesFiltradas, setCertificacionesFiltradas] = useState();
+  const FiltroCertificaciones = ( searchTerm ) => {
+    const filtered = MantenimientosData.filter((data) => {
+        const taqActivos       = CertificacionesData.taqActivos.toLowerCase();
+        const taqDoc           = CertificacionesData.taqDoc.toLowerCase();
+        const nombre           = CertificacionesData.nombre.toLowerCase();
+        const fechacertificion = CertificacionesData.fechacertificion.toLowerCase(); 
+        const frecuencia       = CertificacionesData.frecuencia.toLowerCase();
+        const estado           = CertificacionesData.estado.toLowerCase();
+        const DocURL           = CertificacionesData.DocURL.toLowerCase();
+        return (
+            taqDoc.includes(searchTerm)           ||
+            taqActivos.includes(searchTerm)       ||
+            nombre.includes(searchTerm)           || 
+            DocURL.includes(searchTerm)           ||
+            fechacertificion.includes(searchTerm) ||
+            estado.includes(searchTerm)           ||
+            frecuencia.includes(searchTerm)    
+        );
+    });
+    setCertificacionesFiltradas(filtered);
+  };
+
+  const [CertificacionesEliminadasFiltradas, setCertificacionesEliminadasFiltradas] = useState();
+  const FiltroCertificacionesEliminadas = ( searchTerm ) => {
+    const filtered = MantenimientosData.filter((data) => {
+        const taqDeleteRegister  = CertificacionesEliminadasData.taqDeleteRegister.toLowerCase();
+        const taqActivos         = CertificacionesEliminadasData.taqActivos.toLowerCase();
+        const nombreDocumento    = CertificacionesEliminadasData.nombreDocumento.toLowerCase();
+        const Responsable        = CertificacionesEliminadasData.taqresponsable.toLowerCase();  
+        return (
+            taqDeleteRegister.includes(searchTerm) ||
+            taqActivos.includes(searchTerm)        ||
+            nombreDocumento.includes(searchTerm)   || 
+            Responsable.includes(searchTerm)
+        );
+    });
+    setCertificacionesEliminadasFiltradas(filtered);
+  };
+
+  
+  const [MovimientosFiltrados, setMovimientosFiltrados] = useState();
+  const FiltroMovimientos = ( searchTerm ) => {
+    const filtered = MantenimientosData.filter((data) => { 
+        const taq_movimiento = MovimientosData.taq_movimiento.toLowerCase();
+        const taqrig         = MovimientosData.taqrig.toLowerCase();
+        const taqActivos     = MovimientosData.taqActivos.toLowerCase();
+        const fechaSalida    = MovimientosData.fechaSalida.toLowerCase(); 
+        const fechaRetorno   = MovimientosData.fechaRetorno.toLowerCase();
+        const estado         = MovimientosData.estado.toLowerCase();
+        const descripcion    = MovimientosData.descripcion.toLowerCase(); 
+        return (
+            taq_movimiento.includes(searchTerm) ||
+            taqActivos.includes(searchTerm)     ||
+            taqrig.includes(searchTerm)         || 
+            fechaSalida.includes(searchTerm)    ||
+            fechaRetorno.includes(searchTerm)   || 
+            estado.includes(searchTerm)         ||
+            descripcion.includes(searchTerm)       
+        );
+    });
+    setMovimientosFiltrados(filtered);
+  };
+
+  const [ComponentesFiltrados, setComponentesFiltrados] = useState();
+  const FiltrarComponentes = ( searchTerm ) => {
+    const filtered = ComponentesData.filter((Data) => {  
+        const taqComponente = Data.taqComponente.toLowerCase();
+        const categoria_id  = Data.categoria_id.toLowerCase();
+        const nombre        = Data.nombre.toLowerCase(); 
+        const estado        = Data.estado.toLowerCase();
+        const descripcion   = Data.descripcion.toLowerCase();
+        const serial        = Data.serial.toLowerCase();
+        const horasuso      = Data.horasuso.toLowerCase(); 
+        const urlImage      = Data.urlImage
+        return (
+            taqComponente.includes(searchTerm) ||
+            categoria_id.includes(searchTerm)  ||
+            nombre.includes(searchTerm)        ||
+            estado.includes(searchTerm)        ||
+            descripcion.includes(searchTerm)   ||
+            serial.includes(searchTerm)        ||
+            horasuso.includes(searchTerm)      ||
+            urlImage.includes(searchTerm)                
+        );
+    });
+    setComponentesFiltrados(filtered);
+  };
+  
+
+  const [GaleriaFiltrados, setGaleriaFiltrados] = useState();
+  const FiltrarGaleria = ( searchTerm ) => {
+    const filtered = GaleriaData.filter((data) => { 
+        const foto_id        = MovimientosData.foto_id.toLowerCase();
+        const taqActivos     = MovimientosData.taqActivos.toLowerCase();
+        const Image          = MovimientosData.Image.toLowerCase(); 
+        return (
+            foto_id.includes(searchTerm)    ||
+            taqActivos.includes(searchTerm) ||
+            Image.includes(searchTerm)               
+        );
+    });
+    setGaleriaFiltrados(filtered);
+  };
+  
+  Componentes
+  
+  const ComponentesFree = Componentes.filter(
+    (ComponentesLibres) => ComponentesLibres.estado === "SIN ASIGNAR"
+  );
 
   return (
     <main className='w-full h-screen overflow-hidden  flex flex-col justify-start items-center '>
@@ -374,10 +642,184 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
         </div>
         <div className='w-full h-full gap-2 flex flex-col justify-start items-center'>
           {
-            Panels ? Panels.map((Constructor) => (
-              <PanelSection key = { Constructor.id } Values = { Constructor } ShowModal = { () => setCreateFormModal(true) } />
-            )) : null 
+            MantenimientosPanel ? (
+              <div key = {`MantenimientoSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroMantenimiento } />
+                  <div onClick = { () => setCreateFormModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nuevo Mantenimiento
+                  </div> 
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    MantenimientosFiltrados ? (
+                      MantenimientosFiltrados.map((data) => (
+                        <div key = { data.taqom } className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                          
+                          Orden de Mtto : { data.taqom }
+                        </div>
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            DocumentosPanel ? (
+              <div key = {`MantenimientoSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroDocumentos } />
+                  <div onClick = { () => setCreateFormModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nuevo Documento
+                  </div> 
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    DocumentosFiltrados ? (
+                      DocumentosFiltrados.map((data) => (
+                        <div key = { data.taqDoc } className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                          { data.nombre }
+                        </div>
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            DocumentosEliminadosPanel ? (
+              <div key = {`MantenimientoSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroDocumentosEliminados } /> 
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    DocumentosEliminadosFiltrados ? (
+                      DocumentosEliminadosFiltrados.map((data) => (
+                        <div key = { data.taqDeleteRegister } className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                          { data.nombreDocumento }
+                        </div>
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            CertificacionesPanel ? (
+              <div key = {`MantenimientoSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroCertificaciones } />
+                  <div onClick = { () => setCreateFormModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nueva Certificacion
+                  </div> 
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    CertificacionesFiltradas ? (
+                      CertificacionesFiltradas.map((data) => (
+                        <div key = { data.taqDoc } className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                          { data.nombre }
+                        </div>
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            CertificacionesEliminadosPanel ? (
+              <div key = {`CertificacionesEliminadasSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroCertificacionesEliminadas } />
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    CertificacionesEliminadasFiltradas ? (
+                      CertificacionesEliminadasFiltradas.map((data) => (
+                        <div key = { data.taqDoc } className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                          { data.nombre }
+                        </div>
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
           } 
+          {
+            MovimientosPanel ? (
+              <div key = {`CertificacionesEliminadasSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroMovimientos } />
+                  <div onClick = { () => setCreateFormModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nuevo Movimiento
+                  </div>  
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    MovimientosFiltrados ? (
+                      MovimientosFiltrados.map((data) => (
+                        <div key = { data.taq_movimiento } className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                          { data.taqrig }
+                        </div>
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            ComponentesPanel ? (
+              <div key = {`ComponentesSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltrarComponentes } />
+                  <div onClick = { () => setCreateFormModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nuevo Componente
+                  </div> 
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    ComponentesFiltrados ? (
+                      ComponentesFiltrados.map((data) => (
+                        <div key = { data.taqom } className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                          { data.nombre }
+                        </div>
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            GaleriaPanel ? (
+              <div key = {`CertificacionesEliminadasSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltrarGaleria } />
+                  <div onClick = { () => setCreateFormModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nueva Imagen
+                  </div>
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    GaleriaFiltrados ? (
+                      GaleriaFiltrados.map((data) => (
+                        <div key = { data.foto_id } className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                          image
+                        </div>
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
         </div>
       </div>
       <Modal
@@ -406,7 +848,7 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
                   EditarCaracteristicaState  ? (
                     <ListCaracteristica
                       Caracteristicas = { Caracteristicas }
-                      onClose={() => setShowModal(false)}
+                      onClose = {() => setShowModal(false)}
                       DeleteRoute = {`caracteristica/activo/delete`}
                       EditRoute = {`caracteristica/activo/update`}
                     />
@@ -461,7 +903,7 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
             <CreateDocumento
               Taq = { Activo[0].taqActivos }
               onClose = { () => setCreateFormModal(false) }
-              route = {`/document/componente/`}
+              route = {`/document/activo/`}
             />
           ) : null 
         }
@@ -474,7 +916,7 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
           CertificacionesPanel ? (
             <CreateCertificacion
               Taq = { Activo[0].taqActivos }
-              route = {`/certificacion/componente/store`}
+              route = {`/certificacion/activos/store`}
               onClose={() => setCreateFormModal(false)} 
             />
           ) : null 
@@ -499,7 +941,7 @@ const ActivoPage= ({ Activo, Activos, Areas, Oms, Empresas, Caracteristicas, Tip
         {
           ComponentesPanel ? (
             <AsignarComponente
-              Componentes = { Componentes }
+              Componentes = { ComponentesFree }
               Taq = { Activos[0].taqActivos }
               onClose = { () => setCreateFormModal(false) }
             />

@@ -15,14 +15,10 @@ class RigsSeeder extends Seeder
         DB::table('rigs')->insert([
             [
                 'taqrig'     => '93b321722848',
-                'nombre'     => 'Base Gworks',
-                'longitud'   => '7.016562567249996', 
-                'latitud'    => '-73.8075242739638' 
+                'nombre'     => 'Base Gworks', 
             ],[
                 'taqrig'     => 'efb288f432a6',
-                'nombre'     => 'Base Gsi', 
-                'longitud'   => '7.016562567249996', 
-                'latitud'    => '-73.8075242739638' 
+                'nombre'     => 'Base Gsi',  
             ]
         ]);
     }

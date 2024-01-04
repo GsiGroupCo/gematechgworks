@@ -14,8 +14,7 @@ const CreateCategoria = ({ onClose, route }) =>  {
     validateOnChange: false,
     onSubmit: async (formValue) => {
       data.nombre        = formValue.nombre,
-      data.taq           = formValue.taq_activo_base, 
-      console.log(data)
+      data.taq           = formValue.taq, 
       post(route)
       onClose()
     }
@@ -42,7 +41,10 @@ const CreateCategoria = ({ onClose, route }) =>  {
             id="nombre"
             placeholder='ACUMULADOR SHENKAI'
             value={formik.values.nombre}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+                formik.handleChange(e);
+                formik.setFieldValue('nombre', e.target.value.toUpperCase());
+            }}
             className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.nombre && formik.errors.nombre ? 'border-red-500' : 'border-black' }`}
           />
           {
@@ -53,7 +55,7 @@ const CreateCategoria = ({ onClose, route }) =>  {
         </div>
         <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
           <div className='w-full h-auto flex gap-2 justify-start items-center'>
-            <label htmlFor="taq_activo_base" className='font-bold text-black'>
+            <label htmlFor="taq" className='font-bold text-black'>
               Taq
             </label> 
             <span className='text-red-500 font-bold text-2xl'>
@@ -62,15 +64,18 @@ const CreateCategoria = ({ onClose, route }) =>  {
           </div>
           <input 
             type="text"
-            name="taq_activo_base"
-            id="taq_activo_base" 
-            value={formik.values.taq_activo_base}
-            onChange={formik.handleChange}
-            className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.taq_activo_base && formik.errors.taq_activo_base ? 'border-red-500' : 'border-black' }`}
+            name="taq"
+            id="taq" 
+            value={formik.values.taq} 
+            onChange={(e) => {
+                formik.handleChange(e);
+                formik.setFieldValue('taq', e.target.value.toUpperCase());
+            }}
+            className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.taq && formik.errors.taq ? 'border-red-500' : 'border-black' }`}
           />
           {
-            formik.touched.taq_activo_base && formik.errors.taq_activo_base && (
-              <div className="text-red-500 font-bold">{formik.errors.taq_activo_base}</div>
+            formik.touched.taq && formik.errors.taq && (
+              <div className="text-red-500 font-bold">{formik.errors.taq}</div>
             )
           }
         </div>

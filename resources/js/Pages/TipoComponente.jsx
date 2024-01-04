@@ -6,10 +6,7 @@ import EditCategoria from '@/Components/forms/Categoria/EditCategoria'
 import React, { useState } from 'react'
 
 export default function TipoComponente({ Categoria }) {
-    
-
-  console.log(Categoria[0].id_tipo)
-
+  
   const [ActionModal, setActionModal] = useState(false)
 
   const [AccionesState, setAccionesState] = useState(true)

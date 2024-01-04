@@ -5,9 +5,7 @@ import Elemento_general from './ElementoGeneral';
 import { Link } from '@inertiajs/react';
 
 export default function PanelSection({ Values, ShowModal }) {
-  
-    console.log(Values)
-
+    
     useEffect(() => {
         setData(Values.Data)
     }, [Values.Data])
@@ -31,7 +29,7 @@ export default function PanelSection({ Values, ShowModal }) {
         <>
             { 
                 Values.State ? (
-                    <div className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'> 
+                    <div key = { Values.id } className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'> 
                         <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
                             <SearchInput SearchFunction = { Filter } />
                             {
@@ -52,9 +50,9 @@ export default function PanelSection({ Values, ShowModal }) {
                         <div className={`w-full h-full ${ Values.Tittle === 'Activo' || Values.Tittle === 'Componente' || Values.Tittle === 'Empresa' || Values.Tittle === 'Responsable' || Values.Tittle === 'Rig'  ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6' : 'flex flex-col justify-start items-center gap-2 py-1 px-4 ' } overflow-hidden overflow-y-auto`}>
                             {
                                 Data ? (
-                                    Data.map(( values ) => (
+                                    Data.reverse().map(( values ) => (
                                         Values.Tittle === 'Categorias Activo' ? (
-                                            <Elemento_general key = { values.id_tipo } link = {`categorias/activo/${values.id_tipo}`} >
+                                            <Elemento_general key = { values.categoria_id } link = {`categorias/activo/${values.categoria_id}`} >
                                                 <div className='w-full flex justify-between'>
                                                     <div>
                                                         {values.nombre}
@@ -76,22 +74,33 @@ export default function PanelSection({ Values, ShowModal }) {
                                                     { values.tipofrecuencia }
                                                 </span>
                                                 <div className='w-1/4 h-full  flex justify-end items-center gap-1'>
-                                                    <span onClick = { () => Edit(values.taqManto) } className='w-auto h-[50px] px-4 py-2 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-yellow-500 hover:bg-yellow-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
+                                                    <span onClick = { () => Edit(values.taqManto) } className='w-auto h-auto px-4 py-1 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-yellow-500 hover:bg-yellow-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
                                                     Editar  
                                                     </span>
-                                                    <span onClick = { () => Delete(values.taqManto) } className='w-auto h-[50px] px-4 py-2 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-red-500 hover:bg-red-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
+                                                    <span onClick = { () => Delete(values.taqManto) } className='w-auto h-auto px-4 py-1 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-red-500 hover:bg-red-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
                                                     Eliminar
                                                     </span>
                                                 </div>
                                             </div>
                                         ) : Values.Tittle === 'Categorias Componente' ? (
-                                            <Elemento_general key={values.id_tipo} link = {`/categorias/componente/${values.id_tipo}`} >
+                                            <Elemento_general key={values.categoria_id} link = {`/categorias/componente/${values.categoria_id}`} >
                                                 <div className='w-full flex justify-between'>
                                                     <div>
                                                         {values.nombre}
                                                     </div>
                                                     <div>
                                                         Componentes: { values ? values.componentes ? values.componentes.length : '0' : '0' }
+                                                    </div>
+                                                </div>
+                                            </Elemento_general>
+                                        ) : Values.Tittle === 'Cargo' ? (
+                                            <Elemento_general key={values.cargo_id} link = {`/cargo/${values.cargo_id}`} >
+                                                <div className='w-full flex justify-between'>
+                                                    <div>
+                                                        {values.cargo}
+                                                    </div>
+                                                    <div>
+                                                        Responsables: { values ? values.responsables ? values.responsables.length : '0' : '0' }
                                                     </div>
                                                 </div>
                                             </Elemento_general>
@@ -111,10 +120,10 @@ export default function PanelSection({ Values, ShowModal }) {
                                             />
                                         ) : Values.Tittle === 'Rig' ? (
                                             <CardGeneral
-                                                link = {`https://gworks.gematech.co/storage/Activos/${values.taqActivos}/${values.urlImage}`}
-                                                nombre={`${values.nombre} - SERIAL: ${values.serial}`}
-                                                route={`/activo/${values.taqActivos}`}
-                                                key={values.taqActivos}
+                                                link = {`https://gworks.gematech.co/storage/Rigs/${values.taqrig}/${values.urlImage}`}
+                                                nombre={`${values.nombre}`}
+                                                route={`/rig/${values.taqrig}`}
+                                                key={values.taqrig}
                                             />
                                         ) : Values.Tittle === 'Responsable' ? (
                                             <CardGeneral
@@ -124,10 +133,10 @@ export default function PanelSection({ Values, ShowModal }) {
                                                 key    = {values.taqresponsable}
                                             />
                                         ) : Values.Tittle === 'Mantenimiento' ? (
-                                            <Link href={`/mantenimiento/show/${values.taqManto}`} className='w-full h-auto flex justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                                            <Link key={Values.taqManto} href={`/mantenimiento/show/${values.taqManto}`} className='w-full h-auto bg-red-500 flex justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
                                                 <div className='w-full flex justify-between items-center'>
                                                     <div className='w-[80%] flex flex-col gap-3'>
-                                                        <span className='text-red-500 font-semibold'> { values.Nombre } </span>
+                                                        <span className='text-red-500 font-semibold'> { values.nombre } </span>
                                                         <span> { values.descripcion } </span>
                                                     </div>
                                                     <div className='w-[20%]'>
@@ -135,8 +144,20 @@ export default function PanelSection({ Values, ShowModal }) {
                                                     </div>
                                                 </div>
                                             </Link>
+                                        ) : Values.Tittle === 'Mantenimientos' ? (
+                                            <Link key={values.taqom} href={`/oms/${values.taqom}`} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                                                <div className='w-full flex flex-col sm:flex-row  justify-between sm:items-center items-start'>
+                                                    <div className='w-full sm:w-[80%] flex flex-col gap-3'>
+                                                        <span className={`${values.estado === 'EN PROCESO' ? 'text-red-500' : 'text-green-500' } font-semibold`}> { values.taqom } </span>
+                                                        <span> { values.descripcion } </span>
+                                                    </div>
+                                                    <div className='w-full sm:w-[20%]'>
+                                                        {values.responsable.nombre}
+                                                    </div>
+                                                </div>
+                                            </Link>
                                         ) : Values.Tittle === 'Om' ? (
-                                            <Link href={`/oms/${values.taqom}`} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                                            <Link key={values.taqom} href={`/oms/${values.taqom}`} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
                                                 <div className='w-full flex flex-col sm:flex-row  justify-between sm:items-center items-start'>
                                                     <div className='w-full sm:w-[80%] flex flex-col gap-3'>
                                                         <span className={`${values.estado === 'EN PROCESO' ? 'text-red-500' : 'text-green-500' } font-semibold`}> { values.taqom } </span>

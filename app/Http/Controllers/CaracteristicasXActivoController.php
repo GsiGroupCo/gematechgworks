@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\caracteristicas_x_activo;
-
 use Illuminate\Http\Request;
 
 class CaracteristicasXActivoController extends Controller
@@ -12,22 +10,21 @@ class CaracteristicasXActivoController extends Controller
     {
         try {
             caracteristicas_x_activo::create([
-                'taqotro'    => uniqid(TRUE),
-                'taqActivos' => $request -> taqActivos,
-                'nombre'     => $request -> nombre,
-                'value'      => $request -> value,
+                'taq_caracteristica' => uniqid(TRUE),
+                'taqActivos'         => $request -> taqActivos,
+                'nombre'             => $request -> nombre,
+                'value'              => $request -> value,
             ]);
             return redirect()->route('activos.show', ['activos' => $request->taqActivos]) -> with('status', 'Caracteristica Añadida exitosamente');
         } catch (\Throwable $th) {
             return redirect()->route('activos.show', ['activos' => $request->taqActivos]) -> with('error', 'Problemas Añadiendo la caracteristica');
         }
-
     }
 
     public function update(Request $request)
     {
         try {
-            caracteristicas_x_activo::where('taqotro','LIKE',$request ->taqomro) -> update([
+            caracteristicas_x_activo::where('taq_caracteristica','LIKE',$request ->taqomro) -> update([
                 'nombre'  => $request -> nombre,
                 'value'   => $request -> valor,
             ]);
@@ -38,10 +35,10 @@ class CaracteristicasXActivoController extends Controller
         }
     }
 
-    public function delete($taqActivos,$taqotro)
+    public function delete($taqActivos,$taq_caracteristica)
     {
         try {
-            caracteristicas_x_activo::where('taqotro','LIKE',$taqotro) -> delete();
+            caracteristicas_x_activo::where('taq_caracteristica','LIKE',$taq_caracteristica) -> delete();
             return redirect() -> route('activos.show', ['activos' => $taqActivos]) -> with('status', ' Caracteristica Eliminada ');       
         } catch (\Throwable $th) {
             return redirect() -> route('activos.show', ['activos' => $taqActivos]) -> with('error', 'Problemas Elimindo la caracteristica');

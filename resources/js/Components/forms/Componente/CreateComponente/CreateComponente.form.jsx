@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 
 export function initialValue() {
   return { 
-    id_tipo:    '',
+    categoria_id:    '',
     nombre:     '',
     descripcion:'',
     serial:     '',
@@ -13,7 +13,7 @@ export function initialValue() {
 
 export function validationSchema() {
   return Yup.object({ 
-    id_tipo: Yup.string().required('El Tipo es Obligatorio'),
+    categoria_id: Yup.string().required('El Tipo es Obligatorio'),
     nombre: Yup.string().required('El Nombre es requerido'),
     serial: Yup.string().required('El Serial es requerido'),
   });

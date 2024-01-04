@@ -12,19 +12,22 @@ class CreateOmsTable extends Migration
         Schema::create('oms', function (Blueprint $table) {
             $table->string('taqom')->unique(); 
             $table->string('taqresponsable');
+            $table->string('taqActivos');
             $table->string('fechainicio');
             $table->string('horainicio');
             $table->string('fechafin')->nullable();
             $table->string('horafin')->nullable();
             $table->string('tipo'); 
-            $table->string('descripcion',500)->nullable();
             $table->string('prioridad');
             $table->string('estado');
+            $table->string('descripcion',500)->nullable();
             $table->timestamps();
         });
 
         Schema::table('oms', function (Blueprint $table) {
             $table->foreign('taqresponsable')->references('taqresponsable')->on('responsables');
+            $table->foreign('taqActivos')->references('taqActivos')->on('activos');
+
         });
     }
 

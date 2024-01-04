@@ -12,7 +12,7 @@ class caracteristicas_x_componentes extends Model
     protected $table = 'caracteristicas_x_componentes'; 
 
     protected $fillable = [
-        'taqotro',
+        'taq_caracteristica',
         'taqComponente',
         'nombre',
         'value',

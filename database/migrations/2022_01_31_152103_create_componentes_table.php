@@ -11,7 +11,7 @@ class CreateComponentesTable extends Migration
     {
         Schema::create('componentes', function (Blueprint $table) {
             $table->string('taqComponente') -> unique(); 
-            $table->string('id_tipo');
+            $table->string('categoria_id');
             $table->string('nombre');
             $table->string('estado');
             $table->string('descripcion',500) -> nullable();
@@ -22,7 +22,7 @@ class CreateComponentesTable extends Migration
         });
 
         Schema::table('componentes', function (Blueprint $table) { 
-            $table->foreign('id_tipo')->references('id_tipo')->on('tipos_componentes');
+            $table->foreign('categoria_id')->references('categoria_id')->on('categoria_componentes');
         });
     }
 

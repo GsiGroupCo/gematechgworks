@@ -48,8 +48,11 @@ const EditActivo = ({ Activo, onClose }) =>  {
             type="text"
             name="Nombre"
             id="Nombre"
-            value={formik.values.Nombre}
-            onChange={formik.handleChange}
+            value={formik.values.Nombre} 
+            onChange={(e) => {
+              formik.handleChange(e);
+              formik.setFieldValue('Nombre', e.target.value.toUpperCase());
+            }}           
             className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.Nombre && formik.errors.Nombre ? 'border-red-500' : 'border-black' }`}
           />
           {
@@ -73,7 +76,10 @@ const EditActivo = ({ Activo, onClose }) =>  {
               name="Serial"
               id="Serial"
               value={formik.values.Serial}
-              onChange={formik.handleChange}
+              onChange={(e) => {
+                formik.handleChange(e);
+                formik.setFieldValue('Serial', e.target.value.toUpperCase());
+              }}
               className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.Serial && formik.errors.Serial ? 'border-red-500' : 'border-black' }`}
             />
             {
@@ -113,8 +119,11 @@ const EditActivo = ({ Activo, onClose }) =>  {
           <textarea 
             name="Descripcion"
             id="Descripcion"
-            value={formik.values.Descripcion}
-            onChange={formik.handleChange}
+            value={formik.values.Descripcion} 
+            onChange={(e) => {
+              formik.handleChange(e);
+              formik.setFieldValue('Descripcion', e.target.value.toUpperCase());
+            }}
             className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.Descripcion && formik.errors.Descripcion ? 'border-red-500' : 'border-black' }`}
             placeholder="Escribe aquí"
           ></textarea>

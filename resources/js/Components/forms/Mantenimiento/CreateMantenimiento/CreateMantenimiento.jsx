@@ -2,15 +2,14 @@ import { useFormik } from "formik";
 import { initialValue, validationSchema } from './CreateMantenimiento.form';
 import { useForm } from '@inertiajs/react'
 
-const CreateMantenimiento = ({ onClose }) =>  {
-  
+const CreateMantenimiento = ({ onClose, taqom }) =>  {
   const { data, post } = useForm()
-  
   const formik = useFormik({
     initialValues:initialValue(),
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
+      data.taqom       = taqom
       data.nombre      = formValue.nombre
       data.Descripcion = formValue.Descripcion
       data.Tipo        = formValue.Tipo
@@ -18,8 +17,6 @@ const CreateMantenimiento = ({ onClose }) =>  {
       onClose()
     }
   })
-
-  
   return (
     <form 
         onSubmit = { formik.handleSubmit }
@@ -42,8 +39,11 @@ const CreateMantenimiento = ({ onClose }) =>  {
                 type="text"
                 name="nombre"
                 id="nombre"
-                value={formik.values.nombre}
-                onChange={formik.handleChange}
+                value={formik.values.nombre} 
+                onChange={(e) => {
+                    formik.handleChange(e);
+                    formik.setFieldValue('nombre', e.target.value.toUpperCase());
+                }}
                 placeholder='MANTENIMIENTO A MOTOSOLDADOR'
                 className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.nombre && formik.errors.nombre ? 'border-red-500' : 'border-black' }`}
             />
@@ -66,8 +66,11 @@ const CreateMantenimiento = ({ onClose }) =>  {
                 type="text"
                 name="Descripcion"
                 id="Descripcion"
-                value={formik.values.Descripcion}
-                onChange={formik.handleChange}
+                value={formik.values.Descripcion} 
+                onChange={(e) => {
+                    formik.handleChange(e);
+                    formik.setFieldValue('Descripcion', e.target.value.toUpperCase());
+                }}
                 className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.Descripcion && formik.errors.Descripcion ? 'border-red-500' : 'border-black' }`}
             />
             {

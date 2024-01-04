@@ -48,8 +48,11 @@ const CreateRigs = ({ onClose }) =>  {
               type="text"
               name="Nombre"
               id="Nombre"
-              value={formik.values.Nombre}
-              onChange={formik.handleChange}
+              value={formik.values.Nombre} 
+              onChange={(e) => {
+                  formik.handleChange(e);
+                  formik.setFieldValue('Nombre', e.target.value.toUpperCase());
+              }}
               placeholder='GSI GROUP'
               className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.Nombre && formik.errors.Nombre ? 'border-red-500' : 'border-black' }`}
             />
@@ -72,8 +75,11 @@ const CreateRigs = ({ onClose }) =>  {
               type="text"
               name="Taq"
               id="Taq"
-              value={formik.values.Taq}
-              onChange={formik.handleChange}
+              value={formik.values.Taq} 
+              onChange={(e) => {
+                  formik.handleChange(e);
+                  formik.setFieldValue('Taq', e.target.value.toUpperCase());
+              }}
               placeholder='GSI'
               className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.Taq && formik.errors.Taq ? 'border-red-500' : 'border-black' }`}
             />

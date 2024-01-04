@@ -23,7 +23,7 @@ class activos_x_om extends Model
     }
 
     public function OM(){
-        return $this->hasMany(ot::class, 'taqom', 'taqom');
+        return $this->hasMany(om::class, 'taqom', 'taqom');
     }
 
 }

@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { initialValue, validationSchema } from './CreateActividades.form';
 import { useForm } from '@inertiajs/react'
 
-const CreateActividad = ({ onClose, Mantenimiento }) =>  {
+const CreateActividad = ({ onClose, Mantenimiento,Componentes }) =>  {
 
   const { data, post } = useForm()
   
@@ -48,8 +48,11 @@ const CreateActividad = ({ onClose, Mantenimiento }) =>  {
                   type="text"
                   name="nombre"
                   id="nombre"
-                  value={formik.values.nombre}
-                  onChange={formik.handleChange}
+                  value={formik.values.nombre} 
+                  onChange={(e) => {
+                      formik.handleChange(e);
+                      formik.setFieldValue('nombre', e.target.value.toUpperCase());
+                  }}
                   placeholder='INSPECCION VISUAL DE ACTIVO'
                   className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.nombre && formik.errors.nombre ? 'border-red-500' : 'border-black' }`}
               />
@@ -131,7 +134,7 @@ const CreateActividad = ({ onClose, Mantenimiento }) =>  {
                   )
               }
             </div>
-            <div className='w-1/2 '>
+            <div className='w-1/2'>
               <div className='w-full h-auto flex gap-2 justify-start items-center'>
                   <label htmlFor="componente" className='font-bold text-black'>
                     Componente
@@ -140,14 +143,24 @@ const CreateActividad = ({ onClose, Mantenimiento }) =>  {
                   *
                   </span>
               </div>
-              <input 
-                  type="text"
-                  name="componente"
-                  id="componente"
-                  value={formik.values.componente}
-                  onChange={formik.handleChange}
-                  className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.componente && formik.errors.componente ? 'border-red-500' : 'border-black' }`}
-              />
+              <select 
+                type="text"
+                name="componente"
+                id="componente"
+                value={formik.values.componente}
+                onChange={formik.handleChange}
+                placeholder='Ej: Sistema Electrico'
+                className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.componente && formik.errors.componente ? 'border-red-500' : 'border-black' }`}
+              >
+                <option value="" disabled> SELECCIONE UNA OPCION </option>
+                {
+                  Componentes ? (
+                    Componentes.map((data) => (
+                      <option> { data.nombre } - { data.serial } </option>
+                    ))
+                  ) : null
+                }
+              </select>
               {
                   formik.touched.componente && formik.errors.componente && (
                   <div className="text-red-500 font-bold">{formik.errors.componente}</div>

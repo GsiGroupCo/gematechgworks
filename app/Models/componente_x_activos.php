@@ -14,7 +14,10 @@ class componente_x_activos extends Model
     protected $fillable = [
         'taq_historial',
         'taqComponente',
-        'taqActivos'
+        'taqActivos',
+        'estado',
+        'fecha_acople',
+        'fecha_desacople'
     ];
 
 

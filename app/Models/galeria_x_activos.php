@@ -10,7 +10,7 @@ class galeria_x_activos extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id_foto',
+        'foto_id',
         'taqActivos',
         'Image'
     ]; 

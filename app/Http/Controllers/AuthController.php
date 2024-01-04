@@ -4,17 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\empresas; 
 use App\Models\responsable;
 use App\Models\mantenimientos;
 use App\Models\docs;
 use App\Models\activos;
 use App\Models\cargos;
+use App\Models\categoria_componentes;
+use App\Models\categorias_activo;
 use App\Models\componentes; 
 use App\Models\om;
 use App\Models\rigs;
-use App\Models\tipos_activo; 
-use App\Models\tipos_componentes;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,18 +23,15 @@ class AuthController extends Controller
 
     public function Home() {  
         return Inertia::render('Home',[ 
-            'Tipos_Activo'      => tipos_activo::with('Activos')->get(),
-            'Tipos_Componentes' => tipos_componentes::with('Componentes')->get(),
-            'Oms'               => om::with('Responsable')->get(),
-            'Activos'           => activos::all(),
-            'Componentes'       => componentes::all(),
-            'Documentos'        => docs::all(),
-            'Cargos'            => cargos::all(),
-            'Mantenimientos'    => mantenimientos::all(),
-            'Responsables'      => responsable::with('cargo')->get(),
-            'Rigs'              => rigs::all(),
-            'status'            => session('status'),
-            'error'             => session('error')
+            'CategoriasActivo'      => categorias_activo::with('Activos')->get(),
+            'CategoriasComponentes' => categoria_componentes::with('Componentes')->get(),
+            'Oms'                   => om::with('Responsable')->get(),
+            'Activos'               => activos::all(),
+            'Componentes'           => componentes::all(),
+            'Documentos'            => docs::all(),
+            'Cargos'                => cargos::all(), 
+            'Responsables'          => responsable::with('cargo')->get(),
+            'Rigs'                  => rigs::all()
         ]);
     }
     
@@ -44,10 +40,7 @@ class AuthController extends Controller
         if(auth()->check()){
             return redirect()->route('home');
         }else{
-            return Inertia::render('Auth/Login',[
-                'status'            => session('status'),
-                'error'             => session('error')
-            ]);
+            return Inertia::render('Auth/Login');
         }
     }
 

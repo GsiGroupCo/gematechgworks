@@ -16,8 +16,7 @@ const EditMantenimiento = ({ onClose, Mtto }) =>  {
       data.TaqManto    = Mtto[0].TaqManto
       data.nombre      = formValue.nombre
       data.descripcion = formValue.descripcion
-      data.Tipo        = formValue.Tipo
-      console.log(data)
+      data.Tipo        = formValue.Tipo 
       post('/mantenimiento/update')
       onClose();
     }
@@ -47,7 +46,10 @@ const EditMantenimiento = ({ onClose, Mtto }) =>  {
                 name="nombre"
                 id="nombre"
                 value={formik.values.nombre}
-                onChange={formik.handleChange}
+                onChange={(e) => {
+                    formik.handleChange(e);
+                    formik.setFieldValue('nombre', e.target.value.toUpperCase());
+                }}
                 placeholder='MANTENIMIENTO A MOTOSOLDADOR'
                 className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.nombre && formik.errors.nombre ? 'border-red-500' : 'border-black' }`}
             />
@@ -70,8 +72,11 @@ const EditMantenimiento = ({ onClose, Mtto }) =>  {
                 type="text"
                 name="descripcion"
                 id="descripcion"
-                value={formik.values.descripcion}
-                onChange={formik.handleChange}
+                value={formik.values.descripcion} 
+                onChange={(e) => {
+                    formik.handleChange(e);
+                    formik.setFieldValue('descripcion', e.target.value.toUpperCase());
+                }}
                 className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.descripcion && formik.errors.descripcion ? 'border-red-500' : 'border-black' }`}
             />
             {

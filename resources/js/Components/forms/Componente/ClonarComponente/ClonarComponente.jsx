@@ -56,7 +56,10 @@ const ClonarComponente = ({ Categorias, onClose, Componente }) =>  {
             id="Nombre"
             placeholder='ACUMULADOR SHENKAI'
             value={formik.values.Nombre}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+                formik.handleChange(e);
+                formik.setFieldValue('Nombre', e.target.value.toUpperCase());
+            }}
             className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.Nombre && formik.errors.Nombre ? 'border-red-500' : 'border-black' }`}
           />
           {
@@ -78,13 +81,16 @@ const ClonarComponente = ({ Categorias, onClose, Componente }) =>  {
             type="text"
             name="serial"
             id="serial"
-            value={formik.values.serial}
-            onChange={formik.handleChange}
-            className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.serial && formik.errors.serial ? 'border-red-500' : 'border-black' }`}
+            value={formik.values.Serial} 
+            onChange={(e) => {
+                formik.handleChange(e);
+                formik.setFieldValue('Serial', e.target.value.toUpperCase());
+            }}
+            className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.Serial && formik.errors.Serial ? 'border-red-500' : 'border-black' }`}
           />
           {
-            formik.touched.serial && formik.errors.serial && (
-              <div className="text-red-500 font-bold">{formik.errors.serial}</div>
+            formik.touched.Serial && formik.errors.Serial && (
+              <div className="text-red-500 font-bold">{formik.errors.Serial}</div>
             )
           }
         </div>
@@ -132,9 +138,9 @@ const ClonarComponente = ({ Categorias, onClose, Componente }) =>  {
             min={0}
             name="horasuso"
             id="horasuso"
-            value={formik.values.horasuso}
+            value={formik.values.Horas_Uso}
             onChange={formik.handleChange}
-            className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.horasuso && formik.errors.horasuso ? 'border-red-500' : 'border-black' }`}
+            className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.Horas_Uso && formik.errors.Horas_Uso ? 'border-red-500' : 'border-black' }`}
           />
         </div>
       </div>
@@ -148,9 +154,12 @@ const ClonarComponente = ({ Categorias, onClose, Componente }) =>  {
         <textarea 
           name="descripcion"
           id="descripcion"
-          value={formik.values.descripcion}
-          onChange={formik.handleChange}
-          className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.descripcion && formik.errors.descripcion ? 'border-red-500' : 'border-black' }`}
+          value={formik.values.Descripcion}
+          onChange={(e) => {
+            formik.handleChange(e);
+            formik.setFieldValue('descripcion', e.target.value.toUpperCase());
+          }}
+          className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.Descripcion && formik.errors.Descripcion ? 'border-red-500' : 'border-black' }`}
           placeholder="Escribe aquí"
         ></textarea>
       </div>
@@ -165,9 +174,9 @@ const ClonarComponente = ({ Categorias, onClose, Componente }) =>  {
           name="Image"
           type="file"
           accept="image/*"
-          value={formik.values.Image}
+          value={formik.values.Imagen}
           onChange={handleFileChange}
-          className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none  ${ formik.touched.Image && formik.errors.Image ? 'border-red-500' : 'border-black' }`} 
+          className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none  ${ formik.touched.Imagen && formik.errors.Imagen ? 'border-red-500' : 'border-black' }`} 
         />
         {file && (
           <div className='w-full h-[200px] flex justify-center'>

@@ -8,7 +8,7 @@ use App\Models\responsable;
 use Illuminate\Http\Request;
 
 use Inertia\Inertia;
-use Illuminate\Support\Facades\File;
+
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image; 
 
@@ -57,22 +57,18 @@ class ResponsablesController extends Controller
             if($exist === 1){
                 return Inertia::render('Responsable',[
                     'Responsable' => responsable::with(
+                        'Cargo',
+                        'Om',
                         'Documentos',
-                        'Trabajo.Om.empresa',
-                        'Mantenimiento_Correctivo_Activos.Activo',
-                        'Mantenimiento_Preventivos_Activos.Activo',
-                        'Actividades_Correctivas_Pendientes_Activos',
-                        'Actividades_Correctivas_Finalizadas_Activos'
+                        'DocumentosEliminados'
                     )->where('taqresponsable', 'LIKE', $taqresponsable)->get(),
                     'Cargos'        => cargos::all(),
-                    'Responsables'  => responsable::where('estado','LIKE','VIGENTE')->get(),
-                    'status'        => session('status'),
-                    'error'         => session('error')
+                    'Responsables'  => responsable::where('estado','LIKE','VIGENTE')->get()
                 ]);
             }else{
                 return redirect()->route('home') -> with('error', 'Responsable no encontrado');
             }
-        } catch (\Throwable $th) {
+        } catch (\Throwable $th) { 
             return redirect()->route('home') -> with('error', 'Problema encontrando responsable'); 
         }
     }

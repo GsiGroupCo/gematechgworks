@@ -47,8 +47,11 @@ const FormPanelEditCaracteristica = ({ onClose, Caracteristicas, route }) =>  {
             type="text"
             name="Nombre"
             id="Nombre"
-            value={formik.values.Nombre}
-            onChange={formik.handleChange}
+            value={formik.values.Nombre}  
+            onChange={(e) => {
+                formik.handleChange(e);
+                formik.setFieldValue('Nombre', e.target.value.toUpperCase());
+            }}
             placeholder='Ejemplo: Kilometraje'
             className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-black ${ formik.touched.Nombre && formik.errors.Nombre ? 'border-red-500' : 'border-black' }`}
           />

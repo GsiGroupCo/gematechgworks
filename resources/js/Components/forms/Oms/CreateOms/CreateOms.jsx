@@ -3,10 +3,11 @@ import { initialValue, validationSchema } from './CreateOms.form';
 import { useForm } from '@inertiajs/react'
 import { useState } from "react";
  
-const CreateOms  = ({ onClose, Responsables, LastOm }) =>  {
+const CreateOms  = ({ onClose, Responsables, LastOm, Activos }) =>  {
 
   const { data, post } = useForm() 
   const [filtro, setFiltro] = useState("");
+  const [filtroActivos, setFiltroActivos] = useState("");
 
   const formik = useFormik({
     initialValues:initialValue(LastOm),
@@ -14,6 +15,7 @@ const CreateOms  = ({ onClose, Responsables, LastOm }) =>  {
     validateOnChange: false,
     onSubmit: async (formValue) => {
       data.taqom           = formValue.taqom
+      data.taqActivos      = formValue.taqActivos
       data.taqresponsable  = formValue.Responsable
       data.descripcion     = formValue.Descripcion
       data.tipo            = formValue.Tipo
@@ -116,6 +118,45 @@ const CreateOms  = ({ onClose, Responsables, LastOm }) =>  {
           )
         }
       </div>
+      <div className='w-full h-auto flex-col justify-center items-center gap-3'>
+        <div className='w-full h-auto flex gap-2 justify-start items-center'>
+          <label htmlFor="taqActivos" className='font-bold text-black'>
+            Activo
+          </label> 
+          <span className='text-red-500 font-bold text-2xl'>
+            *
+          </span>
+        </div>            
+        <input 
+            type="text" 
+            value={filtroActivos} 
+            onChange={(e) => setFiltroActivos(e.target.value)} 
+            placeholder="Filtrar por nombre..."
+            className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+        <select id="taqActivos" name="taqActivos"  value = { formik.values.taqActivos } onChange = { formik.handleChange} className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ">
+          <option value = "" disabled>
+              POR FAVOR SELECCIONA UNA OPCION
+          </option>
+          {
+            Activos ? (
+              Activos.filter(data => data.nombre.includes(filtroActivos)).map((data) => (
+                <option 
+                  key = { data.taqActivos } 
+                  value = { data.taqActivos }
+                >
+                  { data.nombre } 
+                </option>
+                ))
+            ) : null
+          }
+        </select>
+        {
+          formik.touched.taqActivos && formik.errors.taqActivos && (
+            <div className="text-red-500 font-bold">{formik.errors.taqActivos}</div>
+          )
+        }
+      </div>
       <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
         <div className='w-full h-auto flex gap-2 justify-start items-center'>
           <label htmlFor="Descripcion" className='font-bold text-black'>
@@ -128,8 +169,11 @@ const CreateOms  = ({ onClose, Responsables, LastOm }) =>  {
         <textarea 
           name="Descripcion"
           id="Descripcion"
-          value={formik.values.Descripcion}
-          onChange={formik.handleChange}
+          value={formik.values.Descripcion}  
+          onChange={(e) => {
+              formik.handleChange(e);
+              formik.setFieldValue('Descripcion', e.target.value.toUpperCase());
+          }}
           className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.Descripcion && formik.errors.Descripcion ? 'border-red-500' : 'border-black' }`}
           placeholder="Escribe aquí"
         ></textarea>

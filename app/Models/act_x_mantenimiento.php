@@ -13,16 +13,20 @@ class act_x_mantenimiento extends Model
 
     protected $fillable = [
         'actividad_id',
+        'taqComponente',
         'nombre',
         'sistema',
-        'componente',
         'frecuencia',
-        'taqManto',
+        'taqmantenimiento',
         'tipofrecuencia'
     ];
 
     public function Mantenimiento(){
-        return $this->belongsTo(mantenimientos::class,'taqManto', 'taqManto');
+        return $this->belongsTo(mantenimientos_x_om::class,'taqmantenimiento', 'taqmantenimiento');
+    }
+
+    public function Componente(){
+        return $this->belongsTo(componentes::class,'taqComponente', 'taqComponente');
     }
 
 }

@@ -11,6 +11,7 @@ class om extends Model
 
     protected $fillable = [
         'taqom'         ,
+        'taqActivos'    ,
         'taqresponsable',
         'fechainicio'   ,
         'horainicio'    ,
@@ -22,9 +23,12 @@ class om extends Model
         'estado'        ,
     ];
 
-
-    public function Movimientos(){
-        return $this->hasMany(movimientos_x_activos::class, 'taqom', 'taqom');
+    public function Activos(){
+        return $this->belongsTo(activos::class, 'taqActivos', 'taqActivos');
+    }
+    
+    public function Responsable(){
+        return $this->belongsTo(responsable::class, 'taqresponsable', 'taqresponsable');
     }
     
     public function Documentos(){
@@ -33,31 +37,10 @@ class om extends Model
 
     public function Documentos_Eliminados(){
         return $this->hasMany(docs_x_om_eli::class, 'taqom', 'taqom');
+    } 
+    
+    public function Mantenimientos(){
+        return $this->hasMany(mantenimientos_x_om::class, 'taqom', 'taqom');
     }
-
-    public function Areas(){
-        return $this->hasMany(areas_x_om::class, 'taqom', 'taqom');
-    }
-
-    public function Trabajos(){
-        return $this->hasMany(Trabajo::class, 'taqom', 'taqom');
-     }
-
-    public function Responsable(){
-        return $this->belongsTo(responsable::class, 'taqresponsable', 'taqresponsable');
-    }
-
-    public function Requerimiento(){
-        return $this->hasMany(requerimientos::class, 'taqom', 'taqom');
-    }
-
-    public function Activos(){
-        return $this->hasMany(activos_x_om::class, 'taqom', 'taqom');
-    }
-
-    public function Componentes(){
-        return $this->hasMany(componente_x_activos::class, 'taqom', 'taqom');
-    }
-
-
+    
 }

@@ -10,7 +10,7 @@ class CreateGaleriaXActivosTable extends Migration
     public function up()
     {
         Schema::create('galeria_x_activos', function (Blueprint $table) {
-            $table->string('id_foto')->unique();
+            $table->string('foto_id')->unique();
             $table->string('taqActivos');
             $table->string('Image');
             $table->timestamps();
