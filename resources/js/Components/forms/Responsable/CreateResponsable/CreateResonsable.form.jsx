@@ -1,9 +1,9 @@
 import * as Yup from 'yup';
 
-export function initialValue() {
+export function initialValue(Cargo) { 
   return {
     nombre   :'',
-    cargo_id :'',
+    cargo_id : Cargo ? Cargo : '',
     urlImage :'',
   };
 }

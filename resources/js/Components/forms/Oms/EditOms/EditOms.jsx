@@ -1,26 +1,26 @@
 import { useFormik } from "formik";
-import { initialValue, validationSchema } from './CreateOms.form';
+import { initialValue, validationSchema } from './EditOms.form';
 import { useForm } from '@inertiajs/react'
 import { useState } from "react";
  
-const CreateOms  = ({ onClose, Responsables, LastOm, Activos }) =>  {
-
+const EditOms  = ({ onClose, Om, Responsables, Activos }) =>  {
+ 
   const { data, post } = useForm() 
   const [filtro, setFiltro] = useState("");
   const [filtroActivos, setFiltroActivos] = useState("");
 
   const formik = useFormik({
-    initialValues:initialValue(LastOm),
+    initialValues:initialValue(Om),
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      data.taqom           = formValue.taqom
-      data.taqActivos      = formValue.taqActivos
+      data.taqom           = Om.taqom 
       data.taqresponsable  = formValue.Responsable
       data.descripcion     = formValue.Descripcion
       data.tipo            = formValue.Tipo
       data.prioridad       = formValue.Prioridad 
-      post('/oms/store');
+      post('/oms/update');
+      console.log(data)
       onClose();
     }
   })
@@ -33,52 +33,7 @@ const CreateOms  = ({ onClose, Responsables, LastOm, Activos }) =>  {
     >
       <h3 className='font-bold'>
         Asignando Nueva OM
-      </h3>
-      <div className='w-full flex justify-center items-center gap-3'>
-        <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
-          <div className='w-full h-auto flex gap-2 justify-start items-center'>
-            <label htmlFor="LastOt" className='font-bold text-black'>
-              ULTIMA OM
-            </label> 
-            <span className='text-red-500 font-bold text-2xl'>
-              *
-            </span>
-          </div>
-          <input 
-            type="text"
-            disabled 
-            name="LastOt"
-            id="LastOt"
-            value={formik.values.LastOm}
-            className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-800 bg-gray-600 placeholder-white text-white cursor-not-allowed`}
-          /> 
-        </div>
-        <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
-          <div className='w-full h-auto flex gap-2 justify-start items-center'>
-            <label htmlFor="taqom" className='font-bold text-black'>
-              OM
-            </label> 
-            <span className='text-red-500 font-bold text-2xl'>
-              *
-            </span>
-          </div>
-          <input 
-            type="number"
-            min={0}
-            name="taqom"
-            id="taqom"
-            value={formik.values.taqom}
-            onChange={formik.handleChange}
-            placeholder='23001'
-            className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.taqom && formik.errors.taqom ? 'border-red-500' : 'border-black' }`}
-          />
-          {
-            formik.touched.taqom && formik.errors.taqom && (
-              <div className="text-red-500 font-bold">{formik.errors.taqom}</div>
-            )
-          }
-        </div>
-      </div>
+      </h3> 
       <div className='w-full h-auto flex-col justify-center items-center gap-3'>
         <div className='w-full h-auto flex gap-2 justify-start items-center'>
           <label htmlFor="Responsable" className='font-bold text-black'>
@@ -205,7 +160,13 @@ const CreateOms  = ({ onClose, Responsables, LastOm, Activos }) =>  {
             </option>
             <option>
               MTTO DISEÑO O MEJORA
-            </option> 
+            </option>
+            <option>
+              SERVICIO
+            </option>
+            <option>
+              FABRICACION
+            </option>
           </select>
           {
             formik.touched.Tipo && formik.errors.Tipo && (
@@ -246,4 +207,4 @@ const CreateOms  = ({ onClose, Responsables, LastOm, Activos }) =>  {
   )
 }
 
-export default CreateOms;
+export default EditOms;

@@ -1,17 +1,19 @@
-
 import Modal from '@/Components/Panels/Modals/Modal';
-import MenuAppbar from '@/Components/UI/MenuAppbar';
-import PanelSection from '@/Components/UI/PanelSection'; 
+import MenuAppbar from '@/Components/UI/MenuAppbar';  
+import SearchInput from '@/Components/UI/Search';
 import CreateActivo from '@/Components/forms/Activo/CreateActivo';
+import CreateCargo from '@/Components/forms/Cargos/CreateCargo';
 import CreateCategoria from '@/Components/forms/Categoria/CreateCategoria'; 
 import CreateComponente from '@/Components/forms/Componente/CreateComponente';
-import CreateDocumento from '@/Components/forms/Documentos/CreateDocumento';
-import CreateMantenimiento from '@/Components/forms/Mantenimiento/CreateMantenimiento';
+import CreateDocumento from '@/Components/forms/Documentos/CreateDocumento'; 
 import CreateOms from '@/Components/forms/Oms/CreateOms';
 import CreateResponsable from '@/Components/forms/Responsable/CreateResponsable';
 import CreateRigs from '@/Components/forms/Rigs/CreateRigs';
-import { router } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+
+
+import CardGeneral from '../Components/UI/CartaGeneral';
 
   const Dashboard = ({
     Activos,
@@ -334,90 +336,625 @@ import { useEffect, useState } from 'react';
         }
     ]
 
-    const Sections = [
-        {
-            "id"         : "13d2d523a2314a6", 
-            "Tittle"     : "Categorias Activo",
-            "ExcelAction": null,
-            "Data"       : CategoriasActivo, 
-            "State"      : CategoriasActivoPanel,
-            "add"        : true,
-        },
-        {
-            "id"         : "13d2d523a4a6", 
-            "Tittle"     : "Categorias Componente",
-            "ExcelAction": null,
-            "Data"       : CategoriasComponentes, 
-            "State"      : CategoriasComponentePanel,
-            "add"        : true,
-        },
-        {
-            "id"         : "bb35e3728ef0", 
-            "Tittle"     : "Activo",
-            "ExcelAction": "/Download/activos",
-            "Data"       : Activos, 
-            "State"      : ActivosPanel,
-            "add"        : true,
-        },
-        {
-            "id"         : "f21ff4cf82c1", 
-            "Tittle"     : "Componente",
-            "ExcelAction": "/Download/componentes",
-            "Data"       : Componentes, 
-            "State"      : ComponentesPanel,
-            "add"        : true,
-        },
-        {
-            "id"         : "4abe7087a2bd", 
-            "Tittle"     : "Rig",
-            "ExcelAction": "/Download/rigs",
-            "Data"       : Rigs, 
-            "State"      : RigsPanel,
-            "add"        : true,
-        }, 
-        {
-            "id"         : "2e5762d97ea68", 
-            "Tittle"     : "Cargo",
-            "ExcelAction": "",
-            "Data"       : Cargos, 
-            "State"      : CargosPanel,
-            "add"        : true,
-        },
-        {
-            "id"         : "2e576d97ea68", 
-            "Tittle"     : "Responsable",
-            "ExcelAction": "/Download/responsables",
-            "Data"       : Responsables, 
-            "State"      : ResponsablesPanel,
-            "add"        : true,
-        }, 
-        {
-            "id"         : "76b1ac64b527", 
-            "Tittle"     : "Om",
-            "ExcelAction": "/Download/oms",
-            "Data"       : Oms, 
-            "State"      : OmsPanel,
-            "add"        : true,
-        }, 
-        {
-            "id"         : "c74ca769b631", 
-            "Tittle"     : "Documento",
-            "ExcelAction": null,
-            "Data"       : Documentos, 
-            "State"      : DocumentosPanel,
-            "add"        : true,
-        }, 
-    ]
-      
+    const CategoriasActivoList = [];
+    CategoriasActivo.forEach(data => {  
+      CategoriasActivoList.push({
+        categoria_id : data.categoria_id,
+        nombre       : data.nombre,
+        taq          : data.taq, 
+        activos      : data.activos.length
+      });
+    });
+    
+    const CategoriasComponenteList = []; 
+    CategoriasComponentes.forEach(data => { 
+      CategoriasComponenteList.push({
+        categoria_id : data.categoria_id,
+        nombre       : data.nombre,
+        taq          : data.taq,
+        componentes  : data.componentes.length
+      }); 
+    });
+
+    const ActivosList = [];
+    Activos.forEach(data => { 
+      ActivosList.push({
+        taqActivos    : data.taqActivos,
+        categoria_id  : data.categoria_id,
+        nombre        : data.nombre, 
+        descripcion   : data.descripcion,
+        estado        : data.estado,
+        serial        : data.serial,
+        horasuso      : data.horasuso,
+        urlImage      : data.urlImage
+      });
+    });
+
+    const ComponentesList = [];
+    Componentes.forEach(data => { 
+      ComponentesList.push({
+        taqComponente : data.taqComponente,
+        categoria_id  : data.categoria_id,
+        nombre        : data.nombre, 
+        descripcion   : data.descripcion,
+        estado        : data.estado,
+        serial        : data.serial,
+        horasuso      : data.horasuso,
+        urlImage      : data.urlImage
+      });
+    });
+
+    const RigsList = [];
+    Rigs.forEach(data => { 
+      RigsList.push({
+        taqrig  : data.taqrig,
+        nombre  : data.nombre,
+      });
+    });
+
+    const CargosList = [];
+    Cargos.forEach(data => {  
+      CargosList.push({
+        cargo_id     : data.cargo_id ,
+        cargo        : data.cargo,
+        descripcion  : data.descripcion,
+        responsables : data.responsables.length
+      });
+    });
+
+    const ResponsablesList = [];
+    Responsables.forEach(data => { 
+      ResponsablesList.push({
+        taqresponsable : data.taqresponsable,
+        cargo_id       : data.cargo_id,
+        nombre         : data.nombre,
+        estado         : data.estado,
+        urlImage       : data.urlImage
+      });
+    });
+
+    const OmsList = [];
+    Oms.forEach(data => { 
+      OmsList.push({
+        taqom          : data.taqom,
+        taqresponsable : data.taqresponsable,
+        responsable    : data.responsable.nombre,
+        taqActivos     : data.taqActivos,
+        fechainicio    : data.fechainicio,
+        horainicio     : data.horainicio,
+        fechafin       : data.fechafin,
+        horafin        : data.horafin,
+        tipo           : data.tipo,
+        prioridad      : data.prioridad,
+        estado         : data.estado,
+        descripcion    : data.descripcion
+      });
+    });
+
+    const DocumentosList = [];
+    Documentos.forEach(data => { 
+      DocumentosList.push({
+        taqDoc : data.taqDoc,
+        nombre : data.nombre,
+        url    : data.url,
+      });
+    });
+        
+    useEffect(() => {  
+      setCategoriasActivoListFitltradas(CategoriasActivoList) 
+    }, [CategoriasActivo])
+    
+    useEffect(() => {   
+      setCategoriasComponenteListFitltradas(CategoriasComponenteList)
+    }, [CategoriasComponentes])
+    
+    useEffect(() => {   
+      setActivosFiltrados(ActivosList)
+    }, [Activos])
+    
+    useEffect(() => {   
+      setComponentesFiltrados(ComponentesList)
+    }, [Componentes])
+
+    useEffect(() => {   
+      setRigsFiltrados(RigsList)
+    }, [Rigs])
+    
+    useEffect(() => {   
+      setCargosFiltrados(CargosList)
+    }, [Cargos])
+    
+    useEffect(() => {   
+      setResponsablesFiltrados(ResponsablesList)
+    }, [Responsables])
+          
+    useEffect(() => {   
+      setOmsFiltradas(OmsList)
+    }, [Oms])
+
+    useEffect(() => {   
+      setDocumentosFiltrados(DocumentosList)
+    }, [Documentos])
+
+    const [CategoriasActivoListFitltradas, setCategoriasActivoListFitltradas] = useState();
+    const FiltroCategoriaActivo = ( searchTerm ) => {
+      const filtered = CategoriasActivoList.filter((data) => {  
+          const categoria_id = data.categoria_id.toLowerCase();
+          const nombre       = data.nombre.toLowerCase();
+          const Taq          = data.taq.toLowerCase();
+          const componentes  = data.componentes.toLowerCase();
+          return (
+            categoria_id.includes(searchTerm) ||
+            nombre.includes(searchTerm)       || 
+            Taq.includes(searchTerm)          ||
+            componentes.includes(searchTerm) 
+          );
+      });
+      setCategoriasActivoListFitltradas(filtered);
+    };
+
+    const [CategoriasComponenteListFitltradas, setCategoriasComponenteListFitltradas] = useState();
+    const FiltroCategoriaComponente = ( searchTerm ) => { 
+      const filtered = CategoriasComponenteList.filter((data) => {  
+          const categoria_id = data.categoria_id.toLowerCase();
+          const nombre       = data.nombre.toLowerCase();
+          const Taq          = data.taq.toLowerCase(); 
+          const activo       = data.activo.toLowerCase(); 
+          return (
+            categoria_id.includes(searchTerm) ||
+            nombre.includes(searchTerm)       || 
+            Taq.includes(searchTerm)          ||
+            activo.includes(searchTerm)
+          );
+      });
+      setCategoriasComponenteListFitltradas(filtered);
+    };
+
+    const [ActivosFiltrados, setActivosFiltrados] = useState();
+    const FiltroActivos = ( searchTerm ) => {
+      const filtered = ActivosList.filter((data) => {  
+          const taqActivos   = data.taqActivos.toLowerCase();
+          const categoria_id = data.categoria_id.toLowerCase();
+          const nombre       = data.nombre.toLowerCase(); 
+          const descripcion  = data.descripcion.toLowerCase();
+          const estado       = data.estado.toLowerCase();
+          const serial       = data.serial.toLowerCase();
+          const horasuso     = data.horasuso.toLowerCase();
+          const urlImage     = data.urlImage.toLowerCase();
+          return (
+            categoria_id.includes(searchTerm) ||
+            nombre.includes(searchTerm)       || 
+            taqActivos.includes(searchTerm)   || 
+            descripcion.includes(searchTerm)  || 
+            estado.includes(searchTerm)       || 
+            serial.includes(searchTerm)       || 
+            horasuso.includes(searchTerm)     ||
+            urlImage.includes(searchTerm) 
+          );
+      });
+      setActivosFiltrados(filtered);
+    };
+
+    const [ComponentesFiltrados, setComponentesFiltrados] = useState();
+    const FiltroComponentes = ( searchTerm ) => {
+      const filtered = ComponentesList.filter((data) => {  
+          const taqComponente = data.taqComponente.toLowerCase();
+          const categoria_id  = data.categoria_id.toLowerCase();
+          const nombre        = data.nombre.toLowerCase(); 
+          const descripcion   = data.descripcion.toLowerCase();
+          const estado        = data.estado.toLowerCase();
+          const serial        = data.serial.toLowerCase();
+          const horasuso      = data.horasuso.toLowerCase();
+          const urlImage      = data.urlImage.toLowerCase();
+          return (
+            categoria_id.includes(searchTerm)  ||
+            nombre.includes(searchTerm)        || 
+            taqComponente.includes(searchTerm) || 
+            descripcion.includes(searchTerm)   || 
+            estado.includes(searchTerm)        || 
+            serial.includes(searchTerm)        || 
+            horasuso.includes(searchTerm)      ||            
+            urlImage.includes(searchTerm)
+          );
+      });
+      setComponentesFiltrados(filtered);
+    };
+
+    const [RigsFiltrados, setRigsFiltrados] = useState();
+    const FiltroRigs = ( searchTerm ) => {
+      const filtered = RigsList.filter((data) => {
+          const taqrig  = data.taqrig.toLowerCase();
+          const nombre  = data.nombre.toLowerCase();
+          return (
+            taqrig.includes(searchTerm)   ||
+            nombre.includes(searchTerm)    
+          );
+      });
+      setRigsFiltrados(filtered);
+    };
+
+    const [CargosFiltrados, setCargosFiltrados] = useState();
+    const FiltroCargos = ( searchTerm ) => {
+      const filtered = CargosList.filter((data) => {
+          const taqrig  = data.taqrig.toLowerCase();
+          const nombre  = data.nombre.toLowerCase();
+          const responsables = data.responsables.toLowerCase();
+          return (
+            taqrig.includes(searchTerm)       ||
+            nombre.includes(searchTerm)       ||
+            responsables.includes(searchTerm)    
+          );
+      });
+      setCargosFiltrados(filtered);
+    };
+
+    const [ResponsablesFiltrados, setResponsablesFiltrados] = useState();
+    const FiltroResponsable = ( searchTerm ) => {
+      const filtered = ResponsablesList.filter((data) => {
+          const taqresponsable = data.taqresponsable.toLowerCase();
+          const cargo_id       = data.cargo_id.toLowerCase();
+          const nombre         = data.nombre.toLowerCase();
+          const estado         = data.estado.toLowerCase();
+          const urlImage       = data.urlImage.toLowerCase();
+          return (
+            taqresponsable.includes(searchTerm) ||
+            nombre.includes(searchTerm)         ||
+            cargo_id.includes(searchTerm)       ||
+            estado.includes(searchTerm)         ||
+            urlImage.includes(searchTerm)
+          );
+      });
+      setResponsablesFiltrados(filtered);
+    };
+
+    const [OmsFiltradas, setOmsFiltradas] = useState();
+    const FiltroOms = ( searchTerm ) => {
+      const filtered = OmsList.filter((data) => { 
+          const taqom          = data.taqom.toLowerCase(); 
+          const taqresponsable = data.taqresponsable.toLowerCase();
+          const responsable    = data.responsable.nombre.toLowerCase();
+          const taqActivos     = data.taqActivos.toLowerCase();
+          const fechainicio    = data.fechainicio.toLowerCase();
+          const horainicio     = data.horainicio.toLowerCase();
+          const fechafin       = data.fechafin.toLowerCase();
+          const horafin        = data.horafin.toLowerCase();
+          const tipo           = data.tipo.toLowerCase();
+          const prioridad      = data.prioridad.toLowerCase();
+          const estado         = data.estado.toLowerCase();
+          const descripcion    = data.descripcion.toLowerCase();
+          return (
+            taqom.includes(searchTerm)           ||
+            taqresponsable.includes(searchTerm)  ||
+            responsable.includes(searchTerm)     ||
+            taqActivos.includes(searchTerm)      ||
+            fechainicio.includes(searchTerm)     ||
+            horainicio.includes(searchTerm)      ||
+            fechafin.includes(searchTerm)        ||
+            horafin.includes(searchTerm)         ||
+            tipo.includes(searchTerm)            ||
+            prioridad.includes(searchTerm)       ||
+            estado.includes(searchTerm)          ||
+            descripcion.includes(searchTerm)
+          );
+      });
+      setOmsFiltradas(filtered);
+    };
+
+    const [DocumentosFiltrados, setDocumentosFiltrados] = useState();
+    const FiltroDocumentos = ( searchTerm ) => {
+      const filtered = DocumentosList.filter((data) => { 
+          const taqDoc = data.taqDoc.toLowerCase();
+          const nombre = data.nombre.toLowerCase();
+          const url    = data.url.toLowerCase();
+          return (
+            taqDoc.includes(searchTerm) ||
+            nombre.includes(searchTerm) ||
+            url.includes(searchTerm)       
+          );
+      });
+      setDocumentosFiltrados(filtered);
+    };
+    
     return (
       <main className='w-full h-screen overflow-hidden bg-gray-200 flex flex-col xl:flex-row '>
         <MenuAppbar Buttons = { Buttons } Default = { ShowDefault } /> 
-        <div className='w-full xl:w-[80%] h-full overflow-y-auto xl:p-4'>
-             {
-               Sections ?  Sections.map((Constructor) => (
-                <PanelSection key={Constructor.id} Values = {Constructor} ShowModal = { () => setShowModal(true) } />
-               )) : null 
-             }
+        <div className='w-full xl:w-[80%] h-full overflow-y-auto xl:p-4'> 
+          {
+            CategoriasActivoPanel ? (
+              <div key = {`CategoriaActivoPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroCategoriaActivo } />
+                  <div onClick = { () => setShowModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nueva Categoria de Activo
+                  </div> 
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    CategoriasActivoListFitltradas ? (
+                      CategoriasActivoListFitltradas.map((data) => (
+                        <Link key = { data.categoria_id } href={`categorias/activo/${data.categoria_id}`} className={`w-full h-auto cursor-pointer transition duration-700 ease-in-out px-4 py-2 bg-white font-bold text-black  rounded-md border border-[#385449] flex justify-between items-center gap-2`}>
+                          <div className='w-full flex justify-between'>
+                              <div>
+                                  {data.nombre}
+                              </div>
+                              <div>
+                                  Activos: { data.activos }
+                              </div>
+                          </div>
+                        </Link> 
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            CategoriasComponentePanel ? (
+              <div key = {`CategoriaComponentePanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroCategoriaComponente } />
+                  <div onClick = { () => setShowModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nueva Categoria de Componente
+                  </div> 
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    CategoriasComponenteListFitltradas ? (
+                      CategoriasComponenteListFitltradas.map((data) => (
+                        <Link key = { data.categoria_id } href={`/categorias/componente/${data.categoria_id}`} className={`w-full h-auto cursor-pointer transition duration-700 ease-in-out px-4 py-2 bg-white font-bold text-black  rounded-md border border-[#385449] flex justify-between items-center gap-2`}>
+                          <div className='w-full flex justify-between'>
+                              <div>
+                                  {data.nombre}
+                              </div>
+                              <div>
+                                  Componentes: { data.componentes }
+                              </div>
+                          </div>
+                        </Link> 
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            ActivosPanel ? (
+              <div key = {`ActivoPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroActivos } />
+                  <div onClick = { () => setShowModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nuevo Activo
+                  </div> 
+                </div>
+                <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6`}>
+                  { 
+                    ActivosFiltrados ? (
+                      ActivosFiltrados.map((data) => (
+                        <>
+                          {
+                            data.urlImage != 'default-image.jpg' ? (
+                              <CardGeneral
+                                link = {`https://gworks.gematech.co/storage/Activos/${data.taqActivos}/${data.urlImage}`}
+                                nombre={`${data.serial} ${data.nombre} `}
+                                route={`/activo/${data.taqActivos}`}
+                                key={data.taqActivos}
+                              />
+                            ) : (
+                              <CardGeneral
+                                link = {`https://gworks.gematech.co/storage/default-image.jpg`}
+                                nombre={`${data.serial} ${data.nombre} `}
+                                route={`/activo/${data.taqActivos}`}
+                                key={data.taqActivos}
+                              />
+                            ) 
+                          }
+                        </>
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            ComponentesPanel ? (
+              <div key = {`ComponentesPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroComponentes } />
+                  <div onClick = { () => setShowModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nuevo Componente
+                  </div> 
+                </div>
+                <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6`}>
+                  { 
+                    ComponentesFiltrados ? (
+                      ComponentesFiltrados.map((data) => (  
+                        <>
+                          {
+                            data.urlImage != 'default-image.jpg' ? (
+                              <CardGeneral
+                                link = {`https://gworks.gematech.co/storage/Componentes/${data.taqComponente}/${data.urlImage}`}
+                                nombre={`${data.nombre} - SERIAL: ${data.serial}`}
+                                route={`/componente/${data.taqComponente}`}
+                                key={data.taqComponente}
+                              />
+                            ) : (
+                              <CardGeneral
+                                link = {`https://gworks.gematech.co/storage/default-image.jpg`}
+                                nombre={`${data.nombre} - SERIAL: ${data.serial}`}
+                                route={`/componente/${data.taqComponente}`}
+                                key={data.taqComponente}
+                              />
+                            ) 
+                          }
+                        </>
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            RigsPanel ? (
+              <div key = {`RigsPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroRigs } />
+                  <div onClick = { () => setShowModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nuevo Rig
+                  </div> 
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    RigsFiltrados ? (
+                      RigsFiltrados.map((data) => (
+                        <Link key = { data.taqrig } href={`/rigs/show/${data.taqrig}`} className={`w-full h-auto cursor-pointer transition duration-700 ease-in-out px-4 py-2 bg-white font-bold text-black  rounded-md border border-[#385449] flex justify-between items-center gap-2`}>
+                          <div className='w-full flex justify-between'>
+                              <div>
+                                  { data.nombre }
+                              </div>
+                          </div>
+                        </Link>
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            CargosPanel ? (
+              <div key = {`CargosPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroCargos } />
+                  <div onClick = { () => setShowModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nuevo Cargo
+                  </div> 
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    CargosFiltrados ? (
+                      CargosFiltrados.map((data) => (
+                        <Link key = { data.cargo_id } href={`/cargo/show/${data.cargo_id}`} className={`w-full h-auto cursor-pointer transition duration-700 ease-in-out px-4 py-2 bg-white font-bold text-black  rounded-md border border-[#385449] flex justify-between items-center gap-2`}>
+                          <div className='w-full flex justify-between'>
+                              <div>
+                                  {data.cargo}
+                              </div>
+                              <div>
+                                  Responsables: { data.responsables }
+                              </div>
+                          </div>
+                        </Link>
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            ResponsablesPanel ? (
+              <div key = {`ResponsablesPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroResponsable } />
+                  <div onClick = { () => setShowModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nuevo Responsable
+                  </div> 
+                </div>
+                <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6`}>
+                  { 
+                    ResponsablesFiltrados ? (
+                      ResponsablesFiltrados.map((data) => ( 
+                        <>
+                          {
+                            data.urlImage != 'default-image.jpg' ? (
+                              <CardGeneral
+                                link   = {`https://gworks.gematech.co/storage/Responsables/${data.taqresponsable}/${data.Image}`}
+                                nombre = {`${data.nombre}`}
+                                route  = {`/responsables/${data.taqresponsable}`}
+                                key    = {data.taqresponsable}
+                              />
+                            ) : (
+                              <CardGeneral
+                                link = {`https://gworks.gematech.co/storage/default-image.jpg`}
+                                nombre = {`${data.nombre}`}
+                                route  = {`/responsables/${data.taqresponsable}`}
+                                key    = {data.taqresponsable}
+                              />
+                            ) 
+                          }
+                        </>
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            OmsPanel ? (
+              <div key = {`OmsPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroOms } />
+                  <div onClick = { () => setShowModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nueva OM
+                  </div> 
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    OmsFiltradas ? (
+                      OmsFiltradas.map((data) => (
+                        <Link key={data.taqom} href={`/oms/${data.taqom}`} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                          <div className='w-full flex flex-col sm:flex-row  justify-between sm:items-center items-start'>
+                              <div className='w-full sm:w-[80%] flex flex-col gap-3'>
+                                  <span className={`${data.estado === 'EN PROCESO' ? 'text-red-500' : 'text-green-500' } font-semibold`}> { data.taqom } </span>
+                                  <span> { data.descripcion } </span>
+                              </div>
+                              <div className='w-full sm:w-[20%] text-center'>
+                                  RESPONSABLE: { data.responsable }
+                              </div>
+                          </div>
+                        </Link>
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            DocumentosPanel ? (
+              <div key = {`DocumentosPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroDocumentos } />
+                  <div onClick = { () => setShowModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                    Agregar Nuevo Documento
+                  </div> 
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    DocumentosFiltrados ? (
+                      DocumentosFiltrados.map((data) => (
+                        <div key = { data.taqDoc }  className='w-full h-auto flex flex-col sm:flex-row gap-3 justify-between items-center border bg-white border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                          <span className='w-[90%] '> { data.nombre } </span>
+                          <div className='w-full sm:w-auto h-full flex flex-col sm:flex-row justify-center items-center gap-2'>
+                              <div className='w-full sm:w-auto max-h-[40px] h-full px-4 py-2 bg-green-600 hover:bg-green-800 text-white cursor-pointer border hover:border-white '>
+                                  Ver
+                              </div>
+                              <div className='w-full sm:w-auto max-h-[40px] h-full px-4 py-2 bg-red-600 hover:bg-red-800 text-white cursor-pointer border hover:border-white '>
+                                  Eliminar
+                              </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
         </div> 
         <Modal
             isVisible = { ShowModal }
@@ -431,9 +968,10 @@ import { useEffect, useState } from 'react';
           }
           {
             CargosPanel ? (
-              <>
-                cargos new
-              </>
+              <CreateCargo
+                Cargos = { Cargos }
+                onClose = { () => setShowModal(false) }
+              />
             ) : null 
           }
           {

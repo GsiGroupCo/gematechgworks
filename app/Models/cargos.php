@@ -10,16 +10,16 @@ class cargos extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id_cargo',
+        'cargo_id',
         'cargo',
         'descripcion',
     ];
 
     public function Responsables(){
-        return $this->hasMany(responsable::class,'id_cargo','id_cargo');
+        return $this->hasMany(responsable::class,'cargo_id','cargo_id');
     }
 
     public function Usuarios(){
-        return $this->hasMany(User::class,'id_cargo','id_cargo');
+        return $this->hasMany(User::class,'cargo_id','cargo_id');
     }
 }

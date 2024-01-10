@@ -4,14 +4,14 @@ import { useFormik } from "formik";
 import { initialValue, validationSchema } from './CreateResonsable.form';
 import { useForm } from '@inertiajs/react'
 
-const CreateResponsable = ({ onClose, Cargos }) =>  {
+const CreateResponsable = ({ onClose, Cargos, Cargo }) =>  {
 
   const { data, post } = useForm()
   const [filtro, setFiltro] = useState("");
   const [file, setFile] = useState();
   
   const formik = useFormik({
-    initialValues:initialValue(),
+    initialValues:initialValue(Cargo),
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
@@ -74,44 +74,48 @@ const CreateResponsable = ({ onClose, Cargos }) =>  {
               }
           </div>
         </div>
-        <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
-            <div className='w-full h-auto flex gap-2 justify-start items-center'>
-              <label htmlFor="cargo_id" className='font-bold text-black'>
-                Cargo
-              </label> 
-              <span className='text-red-500 font-bold text-2xl'>
-                *
-              </span>
-            </div>            
-            <input 
-                type="text" 
-                value={filtro} 
-                onChange={(e) => setFiltro(e.target.value)} 
-                placeholder="Filtrar por nombre ..."
-                className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-            <select 
-              name="cargo_id"
-              id="cargo_id"
-              value={formik.values.cargo_id}
-              onChange={formik.handleChange}
-              className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.cargo_id && formik.errors.cargo_id ? 'border-red-500' : 'border-black' }`}
-            >
-              <option value="" disabled>SELECCIONAR UNA OPCION</option>
+        {
+          Cargo ? null : (
+            <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
+              <div className='w-full h-auto flex gap-2 justify-start items-center'>
+                <label htmlFor="cargo_id" className='font-bold text-black'>
+                  Cargo
+                </label> 
+                <span className='text-red-500 font-bold text-2xl'>
+                  *
+                </span>
+              </div>            
+              <input 
+                  type="text" 
+                  value={filtro} 
+                  onChange={(e) => setFiltro(e.target.value)} 
+                  placeholder="Filtrar por nombre ..."
+                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+              <select 
+                name="cargo_id"
+                id="cargo_id"
+                value={formik.values.cargo_id}
+                onChange={formik.handleChange}
+                className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.cargo_id && formik.errors.cargo_id ? 'border-red-500' : 'border-black' }`}
+              >
+                <option value="" disabled>SELECCIONAR UNA OPCION</option>
+                {
+                  Cargos ? (
+                    Cargos.filter(data => data.cargo.includes(filtro)).map((data) => (
+                        <option value={data.cargo_id}> { data.cargo } </option>
+                      ))
+                  ) : null
+                }
+              </select>
               {
-                Cargos ? (
-                  Cargos.filter(data => data.cargo.includes(filtro)).map((data) => (
-                      <option value={data.cargo_id}> { data.cargo } </option>
-                    ))
-                ) : null
+                formik.touched.cargo_id && formik.errors.cargo_id && (
+                  <div className="text-red-500 font-bold">{formik.errors.cargo_id}</div>
+                )
               }
-            </select>
-            {
-              formik.touched.cargo_id && formik.errors.cargo_id && (
-                <div className="text-red-500 font-bold">{formik.errors.cargo_id}</div>
-              )
-            }
-          </div>  
+            </div>  
+          ) 
+        }
         <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
           <div className='w-full h-auto flex gap-2 justify-start items-center'>
             <label htmlFor="Image" className='font-bold text-black'>

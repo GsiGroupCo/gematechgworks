@@ -15,7 +15,7 @@ const AppbarOms = ({ Objeto, ShowActions, ShowFormats }) => {
             Objeto.estado.length > 0 ? <h3 className={`hidden sm:flex md:text-lg ${Objeto.estado === 'EN PROCESO' ? 'text-red-500' : 'text-green-500' } `}> { Objeto.estado } </h3> : null
           }
           {
-            Objeto.activos ? <Link href={`/activo/${Objeto.activos.taqActivos}`} className='hidden sm:flex md:text-lg '> { Objeto.activos.nombre } </Link> : null
+            Objeto.activos ? <Link href={`/activo/${Objeto.activos.taqActivos}`} className='hidden sm:flex md:text-lg hover:underline '> { Objeto.activos.nombre } </Link> : null
           }
         </div>
       </div>

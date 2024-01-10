@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
- 
+
 use App\Models\activos;
 use Illuminate\Http\Request;
 use App\Models\om;
@@ -54,8 +54,8 @@ class OmsController extends Controller
                         'Documentos_Eliminados',
                         'Mantenimientos.Actividades'
                     )->where('taqom', 'LIKE', $taqom)->get(),
-                    'Responsables' => responsable::where('estado','LIKE','VIGENTE')->get(),
-                    'Activos' => activos::all()
+                    'ResponsablesList' => responsable::where('estado','LIKE','VIGENTE')->get(),
+                    'ActivosList' => activos::all()
                 ]); 
             }else{
                 return redirect()->route('home') -> with('error', 'OM no encontrada');
@@ -86,26 +86,40 @@ class OmsController extends Controller
         }
     }
 
-    public function open($taqom)
+    public function open(Request $request)
     {
         try {
-            $exist = om::where('taqom','LIKE',$taqom)->get()->count();
+            $exist = om::where('taqom','LIKE',$request -> taqom)->get()->count();
             if($exist === 1){
                 date_default_timezone_set("America/Bogoma");
-                om::where('taqom','LIKE',$taqom)-> update( [
+                om::where('taqom','LIKE',$request -> taqom)-> update( [
                     'estado'   => 'EN PROCESO'
                 ]);    
-                return redirect()->route('oms.show',$taqom);
+                return redirect()->route('oms.show',$request -> taqom);
             }else{
                 return redirect()->route('home') -> with('error', 'Upss.. OM no encontrada '); 
             }
         } catch (\Throwable $th) { 
-            return redirect()->route('oms.show',['oms' => $taqom]) -> with('error', 'Upss.. Problema Abriendo OM '); 
+            return redirect()->route('oms.show',['oms' => $request -> taqom]) -> with('error', 'Upss.. Problema Abriendo OM '); 
         }
     }
 
     public function closed(Request $request)
     {
+        try {
+            $exist = om::where('taqom','LIKE',$request -> taqom)->get()->count();
+            if($exist === 1){
+                date_default_timezone_set("America/Bogoma");
+                om::where('taqom','LIKE',$request -> taqom)-> update( [
+                    'estado'   => 'FINALIZADO'
+                ]);    
+                return redirect()->route('oms.show',$request -> taqom);
+            }else{
+                return redirect()->route('home') -> with('error', 'Upss.. OM no encontrada '); 
+            }
+        } catch (\Throwable $th) { 
+            return redirect()->route('oms.show',['oms' => $request -> taqom]) -> with('error', 'Upss.. Problema Abriendo OM '); 
+        }
     }
     
 }

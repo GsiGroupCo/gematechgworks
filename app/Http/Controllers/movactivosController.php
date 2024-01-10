@@ -13,16 +13,14 @@ class movactivosController extends Controller
             movimientos_x_activos::create([
                 'taqmovactivs' => uniqid(TRUE),
                 'taqActivos'   => $request -> taqActivos,
-                'taqot'        => $request ->taqom, 
+                'taqrig'       => $request -> taqrig,
                 'fechaSalida'  => $request -> fechaSalida,
-                'fechaRetorno' => 'SIN RETORNAR',
-                'estado'       => 'EN PROCESO',
-                'ubicacion'    => $request -> ubicacion,
+                'fechaRetorno' => null,
+                'estado'       => 'SIN RETORNAR',
                 'descripcion'  => $request -> descripcion,
             ]);
             return redirect()->route('activos.show', ['activos' => $request -> taqActivos]) ->with('status', 'Movimiento Registrado');
-        } catch (\Throwable $th) {
-            
+        } catch (\Throwable $th) { 
             return redirect()->route('activos.show', ['activos' => $request -> taqActivos]) ->with('error', 'Problem Registrando Movimiento');
         }
     }

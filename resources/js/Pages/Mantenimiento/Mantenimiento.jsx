@@ -4,7 +4,6 @@ import Actions from "@/Components/UI/Actions";
 import ButtonMenu from "@/Components/UI/Activo/ButtonMenu";
 import Caracteristica_target from "@/Components/UI/Activo/Caracteristica_target";
 import Appbar from "@/Components/UI/Appbar";
-import PanelSection from "@/Components/UI/PanelSection";
 import CreateActividad from "@/Components/forms/Mantenimiento/Actividades/CreateActividades";
 import EditMantenimiento from "@/Components/forms/Mantenimiento/EditMantenimiento";
 import { useForm } from "@inertiajs/react";
@@ -149,11 +148,7 @@ const MttoPage= ({ Mtto, Componentes }) => {
           }
         </div>
         <div className='w-full h-full gap-2 flex flex-col justify-start items-center'>
-          {
-            Panels ? Panels.map((Constructor) => (
-              <PanelSection key = { Constructor.id } Values = { Constructor } ShowModal = { () => setCreateFormModal(true) } />
-            )) : null 
-          } 
+          
         </div>
       </div>
       <Modal

@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\cargos;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CargosController extends Controller
 {
@@ -35,13 +36,20 @@ class CargosController extends Controller
         }
     }
 
-    public function show($id_cargo){
-        try {
-            $cargo = cargos::where('id_cargo', 'LIKE', $id_cargo) -> get();
+    public function show($cargo_id){
+        try {  
+            $exist = count(cargos::where('cargo_id', 'LIKE', $cargo_id) -> get()); 
+            if( $exist === 1 ){ 
+                return Inertia::render('Cargo',[
+                    'Cargos' => cargos::with('Responsables')->where('cargo_id', 'LIKE', $cargo_id)->get()
+                ]); 
+            }else{
+                return redirect()->route('home') -> with('error', 'Cargo no encontrado');
+            }
             return redirect()->route('home');
         } catch (\Throwable $th) {
+            dd($th);
             return redirect()->route('home');
         }
-    }
-    
+    } 
 }

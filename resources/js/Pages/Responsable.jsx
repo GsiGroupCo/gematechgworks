@@ -1,13 +1,11 @@
+ 
 import Modal from "@/Components/Panels/Modals/Modal";
-import Actions from "@/Components/UI/Actions";
 import ButtonMenu from "@/Components/UI/Activo/ButtonMenu";
-import Appbar from "@/Components/UI/Appbar";
-import PanelSection from "@/Components/UI/PanelSection"; 
-import AsignarComponente from "@/Components/forms/Componente/AsignarComponente";
+import Appbar from "@/Components/UI/Responsables/Appbar";
 import CreateDocumento from "@/Components/forms/Documentos/CreateDocumento";
 import { useState } from "react"; 
  
-const ResponsablePage= ({ Responsable, Cargos }) => {
+const ResponsablePage= ({ Responsable }) => {
 
   const [CreateFormModal, setCreateFormModal] = useState(false)
 
@@ -121,29 +119,11 @@ const ResponsablePage= ({ Responsable, Cargos }) => {
     "estado"     : DocumentosPanel
   }]
  
-  const Panels = [{
-    "id"         : "6b4fe94b95bb902a15", 
-    "Tittle"     : "Documentos", 
-    "Data"       : Responsable[0].documentos, 
-    "State"      : DocumentosPanel,
-    "add"        : true
-  },{
-    "id"         : "feddc0dab45263a21a", 
-    "Tittle"     : "Actividades", 
-    "Data"       : Responsable[0].actividades, 
-    "State"      : ActividadesPanel,
-    "add"        : true
-  }]
-
   return (
-    <main className='w-full h-screen overflow-hidden  flex flex-col justify-start items-center '>
-      <Appbar 
-        Objeto = { Responsable[0] } 
-        ShowImage = { ShowImage } 
-        ShowActions = { ShowActions } 
-        ShowFormats = { ShowFormats }  
-        Taq = { Responsable[0].taqresponsable } 
-        urlImage = {`https://gworks.gematech.co/storage/Activos/${Responsable[0].taqresponsable}/${Responsable[0].urlImage}`} 
+    <main className='w-full h-screen overflow-hidden  flex flex-col justify-start items-center '> 
+      <Appbar
+        ShowModal = { () => setCreateFormModal(false) }
+        Responsable = { Responsable }
       />
       <div className="w-full h-full overflow-hidden overflow-y-auto flex flex-col lg:flex-row justify-start items-start"> 
         <div className='hidden h-auto px-4 py-2 lg:w-auto  gap-2 lg:flex flex-col justify-start items-center'>
@@ -161,11 +141,7 @@ const ResponsablePage= ({ Responsable, Cargos }) => {
           }
         </div>
         <div className='w-full h-full gap-2 flex flex-col justify-start items-center'>
-          {
-            Panels ? Panels.map((Constructor) => (
-              <PanelSection key = { Constructor.id } Values = { Constructor } ShowModal = { () => setCreateFormModal(true) } />
-            )) : null 
-          } 
+          
         </div>
       </div>
       <Modal
@@ -210,9 +186,9 @@ const ResponsablePage= ({ Responsable, Cargos }) => {
         {
           DocumentosPanel ? (
             <CreateDocumento
-              Taq = { Responsable[0]. taqresponsable }
+              Taq = { Responsable[0].taqresponsable }
               onClose = { () => setCreateFormModal(false) }
-              route = {`/document/componente/`}
+              route = {`/document/responsable/`}
             />
           ) : null 
         }     

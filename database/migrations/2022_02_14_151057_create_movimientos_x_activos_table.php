@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class CreateMovimientosXActivosTable extends Migration
 {
     public function up()
-    {
+    { 
         Schema::create('movimientos_x_activos', function (Blueprint $table) {
             $table->string('taq_movimiento')->unique();
             $table->string('taqrig');

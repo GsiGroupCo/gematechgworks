@@ -52,8 +52,8 @@ class ResponsablesController extends Controller
     public function show($taqresponsable)
     {
         
-        $exist = count(responsable::where('taqresponsable','LIKE',$taqresponsable)->get());
         try {
+            $exist = count(responsable::where('taqresponsable','LIKE',$taqresponsable)->get());
             if($exist === 1){
                 return Inertia::render('Responsable',[
                     'Responsable' => responsable::with(
@@ -68,7 +68,8 @@ class ResponsablesController extends Controller
             }else{
                 return redirect()->route('home') -> with('error', 'Responsable no encontrado');
             }
-        } catch (\Throwable $th) { 
+        } catch (\Throwable $th) {
+            dd($th);
             return redirect()->route('home') -> with('error', 'Problema encontrando responsable'); 
         }
     }

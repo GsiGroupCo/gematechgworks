@@ -34,7 +34,7 @@ class ActivosController extends Controller
             $image = $request->file('Image');
             if ($image != null) { 
                 $filename = $request->file('Image')->getClientOriginalName();  
-                $compressedImage = Image::make($image)->encode('jpg', 80); 
+                $compressedImage = Image::make($image)->encode('jpg', 80);
                 $rutaDestino = "Activo/{$taqActivo}";
                 $rutaArchivo = "Activo/{$taqActivo}/{$filename}";
                 if (!Storage::disk('public')->exists($rutaDestino)) {

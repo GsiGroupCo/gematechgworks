@@ -16,10 +16,19 @@ class docsActivoController extends Controller
     {
         try { 
             for ($i = 1; $i <= $request -> CantImages; $i++) {
+                $filename = $request->file('Image')->getClientOriginalName();
                 $documento = $request -> file('Image_'.$i);
                 $nombre = $documento -> getClientOriginalName();
                 $ruta = "/home/gematech/public_html/storage/Activos/".$request->Taq."/Documentos";
                 $documento->move($ruta, $nombre);
+
+                $rutaDestino = "Activo/{$taqActivo}";
+                $rutaArchivo = "Activo/{$taqActivo}/{$filename}";
+                if (!Storage::disk('public')->exists($rutaDestino)) {
+                    Storage::disk('public')->makeDirectory($rutaDestino, 0777, true, true);
+                }
+                Storage::disk('public')->put($rutaArchivo, $compressedImage->stream());
+
                 docs_x_activo::create([
                     'taqActivos'  => $request -> Taq,
                     'taqDoc'      => uniqid(TRUE),

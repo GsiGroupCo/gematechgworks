@@ -2,7 +2,6 @@ import Modal from "@/Components/Panels/Modals/Modal";
 import Actions from "@/Components/UI/Actions";
 import ButtonMenu from "@/Components/UI/Activo/ButtonMenu"; 
 import Appbar from "@/Components/UI/Appbar";
-import PanelSection from "@/Components/UI/PanelSection"; 
 import { useState } from "react"; 
  
 const RigPage= ({ Rig }) => {
@@ -200,11 +199,7 @@ const RigPage= ({ Rig }) => {
           }
         </div>
         <div className='w-full h-full gap-2 flex flex-col justify-start items-center'>
-          {
-            Panels ? Panels.map((Constructor) => (
-              <PanelSection key = { Constructor.id } Values = { Constructor } ShowModal = { () => setCreateFormModal(true) } />
-            )) : null 
-          } 
+          
         </div>
       </div>
       <Modal

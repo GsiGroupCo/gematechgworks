@@ -5,11 +5,15 @@ import Caracteristica_target from "@/Components/UI/Activo/Caracteristica_target"
 import AppbarOms from "@/Components/UI/Ots/Appbar" 
 import SearchInput from "@/Components/UI/Search"
 import CreateMantenimiento from "@/Components/forms/Mantenimiento/CreateMantenimiento"
-import { Link } from "@inertiajs/react"
+import EditOms from "@/Components/forms/Oms/EditOms" 
+import { useForm } from "@inertiajs/react"
 import { useEffect, useState } from "react"
 
-const OmsPage = ({ DataOms }) => {
+const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
 
+  console.log(ActivosList)
+  console.log(ResponsablesList)
+  
   const [CreateFormModal, setCreateFormModal] = useState(false)
 
   const [AccionesModal, setAccionesModal] = useState(false) 
@@ -31,25 +35,19 @@ const OmsPage = ({ DataOms }) => {
 
   const [AcctionsButtons, setAcctionsButtons] = useState(true) 
   const [EditarOm, setEditarOm]               = useState(false)
-  const [FinalizarOm, setFinalizarOm]         = useState(false)
   
   function ShowActionButtons(){
     setEditarOm(false)
-    setFinalizarOm(false) 
     setAcctionsButtons(true)
   }
  
   function ShowFormEditOm(){ 
-    setFinalizarOm(false) 
     setAcctionsButtons(false)
     setEditarOm(true)
   }
 
-  function ShowFormFinalizarOm(){ 
-    setEditarOm(false)
-    setAcctionsButtons(false)
-    setFinalizarOm(true) 
-  }
+  
+  const { data, post } = useForm() 
 
   const Acciones = [{
       "id"         : "296215696",
@@ -60,7 +58,10 @@ const OmsPage = ({ DataOms }) => {
       "id"         : "1213522726",
       "label"      : "Finalizar Orden de mantenimiento",
       "estate"     : 1,
-      "function"   : ShowFormFinalizarOm,
+      "function"   : () => { 
+        data.taqom = DataOms[0].taqom 
+        post('/oms/close');
+      },
   }]
   
   const [ComponentesVinculadosPanel, setComponentesVinculadosPanel] = useState(true) 
@@ -360,33 +361,7 @@ const OmsPage = ({ DataOms }) => {
             ) : null
           }
         </div>
-        <div className='w-full h-full gap-2 flex flex-col justify-start items-center'> 
-          {
-            ComponentesVinculadosPanel ? (
-              <div key = {`ComponentesSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
-                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
-                  <SearchInput SearchFunction = { FiltroComponentes } />
-                  <div onClick = { ShowModal } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
-                    Agregar Nuevo componente
-                  </div>
-                  <a href={`download/componentes`} className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
-                    Descargar Listado de componentes
-                  </a>
-                </div>
-                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
-                  {
-                    ComponentesFiltrados ? (
-                      ComponentesFiltrados.map((data) => (
-                        <Link key={data.taqComponente} href={`/componente/${data.taqComponente}`} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                          { data.nombre }
-                        </Link>
-                      ))
-                    ) : null
-                  }
-                </div>
-              </div>
-            ) : null
-          }
+        <div className='w-full h-full gap-2 flex flex-col justify-start items-center'>
           {
             DocumentosPanel ? (
               <div key = {`DocumentosSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
@@ -467,7 +442,16 @@ const OmsPage = ({ DataOms }) => {
               Acciones = { Acciones } 
               key = {`a300c473056b301c`}
             >
-              
+              {
+                EditarOm ? (
+                  <EditOms
+                    Activos = { ActivosList }
+                    Om = { DataOms[0] }
+                    Responsables = { ResponsablesList }
+                    onClose = { () => setShowModal(false) }
+                  />
+                ) : null
+              }
             </Actions>
           ) : null
         }

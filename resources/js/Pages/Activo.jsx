@@ -13,6 +13,7 @@ import CreateDocumento from "@/Components/forms/Documentos/CreateDocumento";
 import CreateMantenimiento from "@/Components/forms/Mantenimiento/CreateMantenimiento";  
 import CreateMovimiento from "@/Components/forms/Movimiento/CreateMovimiento";
 import CreateOms from "@/Components/forms/Oms/CreateOms";
+import { Link } from "@inertiajs/react";
 import { useEffect, useState } from "react"; 
  
 const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Responsables, Rigs, Componentes }) => {
@@ -25,6 +26,7 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
   const [ShowModal, setShowModal] = useState(false)
 
   function ShowActions(){
+    ShowAcctionsButtons()
     setImageModal(false)
     setFormatosModal(false)
     setShowModal(true)
@@ -49,7 +51,14 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
   const [EditarCaracteristicaState, setEditarCaracteristicaState]   = useState(false)
   const [EditarActivoState, setEditarActivoState]                   = useState(false)
   const [ClonarActivoState, setClonarActivoState]                   = useState(false) 
-   
+  
+  function ShowAcctionsButtons(){
+    setEditarCaracteristicaState(false)
+    setClonarActivoState(false) 
+    setEditarActivoState(false)
+    setAcctionsButtons(true)
+  }
+
   function ShowFormEditCaracteristicas(){ 
     setClonarActivoState(false)
     setEditarActivoState(false) 
@@ -295,10 +304,11 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
  
   const MantenimientosData = [];
   Activo.forEach(ActivoData => {
-    ActivoData.ordenes_mantenimiento.forEach(MantenimientoData => {
+    ActivoData.ordenes_mantenimiento.forEach(MantenimientoData => { 
       MantenimientosData.push({
         taqom          : MantenimientoData.taqom,
         taqActivos     : MantenimientoData.taqActivos,
+        responsable    : MantenimientoData.responsable.nombre,
         fechainicio    : MantenimientoData.fechainicio,
         horainicio     : MantenimientoData.horainicio,
         fechafin       : MantenimientoData.fechafin,
@@ -420,19 +430,21 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
   const [MantenimientosFiltrados, setMantenimientosFiltrados] = useState();
   const FiltroMantenimiento = ( searchTerm ) => {
     const filtered = MantenimientosData.filter((data) => { 
-        const taqom         = DocumentosData.taqom.toLowerCase();
-        const taqActivos    = DocumentosData.taqActivos.toLowerCase();
-        const fechainicio   = DocumentosData.fechainicio.toLowerCase();
-        const horainicio    = DocumentosData.horainicio.toLowerCase();
-        const fechafin      = DocumentosData.fechafin.toLowerCase();
-        const horafin       = DocumentosData.horafin.toLowerCase();
-        const tipo          = DocumentosData.tipo.toLowerCase();
-        const prioridad     = DocumentosData.prioridad.toLowerCase();
-        const estado        = DocumentosData.estado.toLowerCase();
-        const descripcion   = DocumentosData.descripcion.toLowerCase(); 
+        const taqom         = data.taqom.toLowerCase();
+        const taqActivos    = data.taqActivos.toLowerCase();
+        const responsable   = data.taqActivos.toLowerCase();
+        const fechainicio   = data.fechainicio.toLowerCase();
+        const horainicio    = data.horainicio.toLowerCase();
+        const fechafin      = data.fechafin.toLowerCase();
+        const horafin       = data.horafin.toLowerCase();
+        const tipo          = data.tipo.toLowerCase();
+        const prioridad     = data.prioridad.toLowerCase();
+        const estado        = data.estado.toLowerCase();
+        const descripcion   = data.descripcion.toLowerCase(); 
         return (
             taqom.includes(searchTerm)       ||
             taqActivos.includes(searchTerm)  ||
+            responsable.includes(searchTerm) ||
             fechainicio.includes(searchTerm) ||
             horainicio.includes(searchTerm)  ||
             fechafin.includes(searchTerm)    ||
@@ -448,11 +460,11 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
 
   const [DocumentosFiltrados, setDocumentosFiltrados] = useState();
   const FiltroDocumentos = ( searchTerm ) => {
-    const filtered = MantenimientosData.filter((data) => {
-        const taqActivos = DocumentosData.taqActivos.toLowerCase();
-        const taqDoc     = DocumentosData.taqDoc.toLowerCase();
-        const nombre     = DocumentosData.nombre.toLowerCase();
-        const DocURL     = DocumentosData.DocURL.toLowerCase(); 
+    const filtered = DocumentosData.filter((data) => {
+        const taqActivos = data.taqActivos.toLowerCase();
+        const taqDoc     = data.taqDoc.toLowerCase();
+        const nombre     = data.nombre.toLowerCase();
+        const DocURL     = data.DocURL.toLowerCase(); 
         return (
             taqDoc.includes(searchTerm)       ||
             taqActivos.includes(searchTerm)  ||
@@ -654,10 +666,17 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
                   { 
                     MantenimientosFiltrados ? (
                       MantenimientosFiltrados.map((data) => (
-                        <div key = { data.taqom } className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                          
-                          Orden de Mtto : { data.taqom }
-                        </div>
+                        <Link key={data.taqom} href={`/oms/${data.taqom}`} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                          <div className='w-full flex flex-col sm:flex-row  justify-between sm:items-center items-start'>
+                              <div className='w-full sm:w-[80%] flex flex-col gap-3'>
+                                  <span className={`${data.estado === 'EN PROCESO' ? 'text-red-500' : 'text-green-500' } font-semibold`}> { data.taqom } </span>
+                                  <span> { data.descripcion } </span>
+                              </div>
+                              <div className='w-full sm:w-[20%]'>
+                                  {data.responsable}
+                              </div>
+                          </div>
+                        </Link>
                       ))
                     ) : null
                   }
@@ -678,8 +697,18 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
                   { 
                     DocumentosFiltrados ? (
                       DocumentosFiltrados.map((data) => (
-                        <div key = { data.taqDoc } className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                          { data.nombre }
+                        <div key = { data.taqDoc } className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer '>
+                          <div>
+                            { data.nombre }
+                          </div>
+                          <div className="flex gap-3">
+                            <div className="w-auto h-auto px-4 py-2 text-black font-semibold transition duration-700 ease-in-out shadow-sm shadow-black hover:text-white hover:bg-green-800  bg-green-500 rounded-sm">
+                              Ver
+                            </div>
+                            <div className="w-auto h-auto px-4 py-2 text-black font-semibold transition duration-700 ease-in-out shadow-sm shadow-black hover:text-white hover:bg-red-800  bg-red-500 rounded-sm">
+                              Eliminar
+                            </div>
+                          </div>
                         </div>
                       ))
                     ) : null
@@ -721,8 +750,18 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
                   { 
                     CertificacionesFiltradas ? (
                       CertificacionesFiltradas.map((data) => (
-                        <div key = { data.taqDoc } className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                          { data.nombre }
+                        <div key = { data.taqDoc } className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer '>
+                          <div>
+                            { data.nombre }
+                          </div>
+                          <div className="flex gap-3">
+                            <div className="w-auto h-auto px-4 py-2 text-black font-semibold transition duration-700 ease-in-out shadow-sm shadow-black hover:text-white hover:bg-green-800  bg-green-500 rounded-sm">
+                              Ver
+                            </div>
+                            <div className="w-auto h-auto px-4 py-2 text-black font-semibold transition duration-700 ease-in-out shadow-sm shadow-black hover:text-white hover:bg-red-800  bg-red-500 rounded-sm">
+                              Eliminar
+                            </div>
+                          </div>
                         </div>
                       ))
                     ) : null
@@ -931,9 +970,8 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
         {
           MovimientosPanel ? (
             <CreateMovimiento
-              Oms = { Oms }
               Rigs = { Rigs }
-              Taq = { Activo[0].taqActivos }
+              taqActivos = { Activo[0].taqActivos }
               onClose = { () => setCreateFormModal(false) }
             />
           ) : null 

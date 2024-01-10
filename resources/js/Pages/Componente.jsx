@@ -3,7 +3,6 @@ import Actions from "@/Components/UI/Actions";
 import ButtonMenu from "@/Components/UI/Activo/ButtonMenu";
 import Caracteristica_target from "@/Components/UI/Activo/Caracteristica_target";
 import Appbar from "@/Components/UI/Appbar";
-import PanelSection from "@/Components/UI/PanelSection";
 import SearchInput from "@/Components/UI/Search";
 import AsignarActivo from "@/Components/forms/Activo/AsignarActivo";
 import ListCaracteristica from "@/Components/forms/Caracteristicas/ListCaracteristica"; 
