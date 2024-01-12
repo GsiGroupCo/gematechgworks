@@ -70,6 +70,9 @@ import CardGeneral from '../Components/UI/CartaGeneral';
     const [ActivosPanel, setActivosPanel] = useState(false)
     const [ComponentesPanel, setComponentesPanel] = useState(false)
     const [OmsPanel, setOmsPanel] = useState(false)  
+    const [OmsPreventivasPanel, setOmsPreventivasPanel] = useState(false)  
+    const [OmsCorrectivasPanel, setOmsCorrectivasPanel] = useState(false)   
+    const [OmsDiseñoMejoraPanel, setOmsDiseñoMejoraPanel] = useState(false) 
     const [DocumentosPanel, setDocumentosPanel] = useState(false)
     const [CargosPanel, setCargosPanel] = useState(false)
     const [ResponsablesPanel, setResponsablesPanel] = useState(false)
@@ -191,6 +194,43 @@ import CardGeneral from '../Components/UI/CartaGeneral';
                 State:'OmsPanel'
               })); 
           }
+    }
+
+    function ShowMantenimientosPreventivos(){
+      if(OmsPreventivasPanel){
+        setOmsCorrectivasPanel(false)
+        setOmsPreventivasPanel(false)
+        setOmsDiseñoMejoraPanel(false)
+      }else{
+        setOmsCorrectivasPanel(false)
+        setOmsDiseñoMejoraPanel(false)
+        setOmsPreventivasPanel(true)
+      }
+    }
+
+    
+    function ShowMantenimientosCorrectivos(){
+      if(OmsCorrectivasPanel){
+        setOmsCorrectivasPanel(false)
+        setOmsPreventivasPanel(false)
+        setOmsDiseñoMejoraPanel(false)
+      }else{
+        setOmsPreventivasPanel(false)
+        setOmsDiseñoMejoraPanel(false)
+        setOmsCorrectivasPanel(true)
+      }
+    }
+
+    function ShowMantenimientosDiseñoMejora(){
+      if(OmsDiseñoMejoraPanel){
+        setOmsCorrectivasPanel(false)
+        setOmsPreventivasPanel(false)
+        setOmsDiseñoMejoraPanel(false)
+      }else{
+        setOmsPreventivasPanel(false)
+        setOmsCorrectivasPanel(false)
+        setOmsDiseñoMejoraPanel(true)
+      }
     }
   
     function ShowDocumentos() {
@@ -469,13 +509,21 @@ import CardGeneral from '../Components/UI/CartaGeneral';
     }, [Responsables])
           
     useEffect(() => {   
-      setOmsFiltradas(OmsList)
-    }, [Oms])
-
-    useEffect(() => {   
       setDocumentosFiltrados(DocumentosList)
     }, [Documentos])
 
+    useEffect(() => {
+      setOmsCorrectivosFiltradas(MantenimientosCorrectivos)
+    }, [Oms]);
+
+    useEffect(() => {
+      setOmsPreventivosFiltradas(MantenimientosPreventivos)
+    }, [Oms]);
+    
+    useEffect(() => {
+      setOmsDiseñoMejoraFiltrados(MantenimientosDiseñoMejora)
+    }, [Oms]);
+    
     const [CategoriasActivoListFitltradas, setCategoriasActivoListFitltradas] = useState();
     const FiltroCategoriaActivo = ( searchTerm ) => {
       const filtered = CategoriasActivoList.filter((data) => {  
@@ -607,39 +655,6 @@ import CardGeneral from '../Components/UI/CartaGeneral';
       setResponsablesFiltrados(filtered);
     };
 
-    const [OmsFiltradas, setOmsFiltradas] = useState();
-    const FiltroOms = ( searchTerm ) => {
-      const filtered = OmsList.filter((data) => { 
-          const taqom          = data.taqom.toLowerCase(); 
-          const taqresponsable = data.taqresponsable.toLowerCase();
-          const responsable    = data.responsable.nombre.toLowerCase();
-          const taqActivos     = data.taqActivos.toLowerCase();
-          const fechainicio    = data.fechainicio.toLowerCase();
-          const horainicio     = data.horainicio.toLowerCase();
-          const fechafin       = data.fechafin.toLowerCase();
-          const horafin        = data.horafin.toLowerCase();
-          const tipo           = data.tipo.toLowerCase();
-          const prioridad      = data.prioridad.toLowerCase();
-          const estado         = data.estado.toLowerCase();
-          const descripcion    = data.descripcion.toLowerCase();
-          return (
-            taqom.includes(searchTerm)           ||
-            taqresponsable.includes(searchTerm)  ||
-            responsable.includes(searchTerm)     ||
-            taqActivos.includes(searchTerm)      ||
-            fechainicio.includes(searchTerm)     ||
-            horainicio.includes(searchTerm)      ||
-            fechafin.includes(searchTerm)        ||
-            horafin.includes(searchTerm)         ||
-            tipo.includes(searchTerm)            ||
-            prioridad.includes(searchTerm)       ||
-            estado.includes(searchTerm)          ||
-            descripcion.includes(searchTerm)
-          );
-      });
-      setOmsFiltradas(filtered);
-    };
-
     const [DocumentosFiltrados, setDocumentosFiltrados] = useState();
     const FiltroDocumentos = ( searchTerm ) => {
       const filtered = DocumentosList.filter((data) => { 
@@ -654,7 +669,119 @@ import CardGeneral from '../Components/UI/CartaGeneral';
       });
       setDocumentosFiltrados(filtered);
     };
+
     
+  const MantenimientosPreventivos = OmsList.filter(
+    (data) => data.tipo === "MTTO PREVENTIVO"
+  );
+
+  const [OmsPreventivosFiltradas, setOmsPreventivosFiltradas] = useState();
+  const FiltroOmsPreventivos = ( searchTerm ) => {
+    const filtered = MantenimientosPreventivos.filter((data) => { 
+        const taqom          = data.taqom.toLowerCase(); 
+        const taqresponsable = data.taqresponsable.toLowerCase();
+        const responsable    = data.responsable.nombre.toLowerCase();
+        const taqActivos     = data.taqActivos.toLowerCase();
+        const fechainicio    = data.fechainicio.toLowerCase();
+        const horainicio     = data.horainicio.toLowerCase();
+        const fechafin       = data.fechafin.toLowerCase();
+        const horafin        = data.horafin.toLowerCase();
+        const tipo           = data.tipo.toLowerCase();
+        const prioridad      = data.prioridad.toLowerCase();
+        const estado         = data.estado.toLowerCase();
+        const descripcion    = data.descripcion.toLowerCase();
+        return (
+          taqom.includes(searchTerm)           ||
+          taqresponsable.includes(searchTerm)  ||
+          responsable.includes(searchTerm)     ||
+          taqActivos.includes(searchTerm)      ||
+          fechainicio.includes(searchTerm)     ||
+          horainicio.includes(searchTerm)      ||
+          fechafin.includes(searchTerm)        ||
+          horafin.includes(searchTerm)         ||
+          tipo.includes(searchTerm)            ||
+          prioridad.includes(searchTerm)       ||
+          estado.includes(searchTerm)          ||
+          descripcion.includes(searchTerm)
+        );
+    });
+    setOmsPreventivosFiltradas(filtered);
+  };
+
+  const MantenimientosCorrectivos = OmsList.filter(
+    (data) => data.tipo === "MTTO CORRECTIVO"
+  );
+
+  const [OmsCorrectivosFiltradas, setOmsCorrectivosFiltradas] = useState();
+  const FiltroOmsCorrectivos = ( searchTerm ) => {
+    const filtered = MantenimientosCorrectivos.filter((data) => { 
+        const taqom          = data.taqom.toLowerCase(); 
+        const taqresponsable = data.taqresponsable.toLowerCase();
+        const responsable    = data.responsable.nombre.toLowerCase();
+        const taqActivos     = data.taqActivos.toLowerCase();
+        const fechainicio    = data.fechainicio.toLowerCase();
+        const horainicio     = data.horainicio.toLowerCase();
+        const fechafin       = data.fechafin.toLowerCase();
+        const horafin        = data.horafin.toLowerCase();
+        const tipo           = data.tipo.toLowerCase();
+        const prioridad      = data.prioridad.toLowerCase();
+        const estado         = data.estado.toLowerCase();
+        const descripcion    = data.descripcion.toLowerCase();
+        return (
+          taqom.includes(searchTerm)           ||
+          taqresponsable.includes(searchTerm)  ||
+          responsable.includes(searchTerm)     ||
+          taqActivos.includes(searchTerm)      ||
+          fechainicio.includes(searchTerm)     ||
+          horainicio.includes(searchTerm)      ||
+          fechafin.includes(searchTerm)        ||
+          horafin.includes(searchTerm)         ||
+          tipo.includes(searchTerm)            ||
+          prioridad.includes(searchTerm)       ||
+          estado.includes(searchTerm)          ||
+          descripcion.includes(searchTerm)
+        );
+    });
+    setOmsCorrectivosFiltradas(filtered);
+  };
+
+  const MantenimientosDiseñoMejora = OmsList.filter(
+    (data) => data.tipo === "MTTO DISEÑO MEJORA"
+  );
+
+  const [OmsDiseñoMejoraFiltrados, setOmsDiseñoMejoraFiltrados] = useState();
+  const FiltroDiseñoMejora = ( searchTerm ) => {
+    const filtered = MantenimientosDiseñoMejora.filter((data) => { 
+        const taqom          = data.taqom.toLowerCase(); 
+        const taqresponsable = data.taqresponsable.toLowerCase();
+        const responsable    = data.responsable.nombre.toLowerCase();
+        const taqActivos     = data.taqActivos.toLowerCase();
+        const fechainicio    = data.fechainicio.toLowerCase();
+        const horainicio     = data.horainicio.toLowerCase();
+        const fechafin       = data.fechafin.toLowerCase();
+        const horafin        = data.horafin.toLowerCase();
+        const tipo           = data.tipo.toLowerCase();
+        const prioridad      = data.prioridad.toLowerCase();
+        const estado         = data.estado.toLowerCase();
+        const descripcion    = data.descripcion.toLowerCase();
+        return (
+          taqom.includes(searchTerm)           ||
+          taqresponsable.includes(searchTerm)  ||
+          responsable.includes(searchTerm)     ||
+          taqActivos.includes(searchTerm)      ||
+          fechainicio.includes(searchTerm)     ||
+          horainicio.includes(searchTerm)      ||
+          fechafin.includes(searchTerm)        ||
+          horafin.includes(searchTerm)         ||
+          tipo.includes(searchTerm)            ||
+          prioridad.includes(searchTerm)       ||
+          estado.includes(searchTerm)          ||
+          descripcion.includes(searchTerm)
+        );
+    });
+    setOmsDiseñoMejoraFiltrados(filtered);
+  };
+ 
     return (
       <main className='w-full h-screen overflow-hidden bg-gray-200 flex flex-col xl:flex-row '>
         <MenuAppbar Buttons = { Buttons } Default = { ShowDefault } /> 
@@ -895,32 +1022,114 @@ import CardGeneral from '../Components/UI/CartaGeneral';
           }
           {
             OmsPanel ? (
-              <div key = {`OmsPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
-                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
-                  <SearchInput SearchFunction = { FiltroOms } />
-                  <div onClick = { () => setShowModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
-                    Agregar Nueva OM
-                  </div> 
+              <div key={`OmsPanel`} className='w-full h-full  p-4 flex flex-col justify-start items-center '>
+                <div className='w-full h-[70px]  flex justify-between px-4 py-2 gap-3'>
+                  <div onClick={() => ShowMantenimientosPreventivos() }  className={`w-1/3 h-full ${ OmsPreventivasPanel ? 'bg-[#ce1241]' : 'bg-[#385449] ' } border-2 cursor-pointer rounded-sm transition duration-700 ease-in-out hover:scale-105 hover:bg-[#ce1241] flex justify-between px-4 items-center text-white`}>
+                    <span> Mantenimientos Preventivos </span>
+                    <span> { MantenimientosPreventivos.length } </span>
+                  </div>
+                  <div onClick={() => ShowMantenimientosCorrectivos() }  className={`w-1/3 h-full ${ OmsCorrectivasPanel ? 'bg-[#ce1241]' : 'bg-[#385449] ' } border-2 cursor-pointer rounded-sm transition duration-700 ease-in-out hover:scale-105 hover:bg-[#ce1241] flex justify-between px-4 items-center text-white`}>
+                    <span> Mantenimientos Correctivos </span>
+                    <span> { MantenimientosCorrectivos.length } </span>
+                  </div>
+                  <div onClick={() => ShowMantenimientosDiseñoMejora() }  className={`w-1/3 h-full ${ OmsDiseñoMejoraPanel ? 'bg-[#ce1241]' : 'bg-[#385449] ' } border-2 cursor-pointer rounded-sm transition duration-700 ease-in-out hover:scale-105 hover:bg-[#ce1241] flex justify-between px-4 items-center text-white`}>
+                    <span> Diseño / Mejora </span>
+                    <span> { MantenimientosDiseñoMejora.length } </span>
+                  </div>
                 </div>
-                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
-                  { 
-                    OmsFiltradas ? (
-                      OmsFiltradas.map((data) => (
-                        <Link key={data.taqom} href={`/oms/${data.taqom}`} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                          <div className='w-full flex flex-col sm:flex-row  justify-between sm:items-center items-start'>
-                              <div className='w-full sm:w-[80%] flex flex-col gap-3'>
-                                  <span className={`${data.estado === 'EN PROCESO' ? 'text-red-500' : 'text-green-500' } font-semibold`}> { data.taqom } </span>
-                                  <span> { data.descripcion } </span>
-                              </div>
-                              <div className='w-full sm:w-[20%] text-center'>
-                                  RESPONSABLE: { data.responsable }
-                              </div>
-                          </div>
-                        </Link>
-                      ))
-                    ) : null
-                  }
-                </div>
+                {
+                  OmsPreventivasPanel ? (
+                    <div key = {`OmsPreventivaPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                      <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                        <SearchInput SearchFunction = { FiltroOmsPreventivos } />
+                        <div onClick = { () => setShowModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                          Agregar Nuevo
+                        </div> 
+                      </div>
+                      <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                        { 
+                          OmsPreventivosFiltradas ? (
+                            OmsPreventivosFiltradas.map((data) => (
+                              <Link key={data.taqom} href={`/oms/${data.taqom}`} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                                <div className='w-full flex flex-col sm:flex-row  justify-between sm:items-center items-start'>
+                                    <div className='w-full sm:w-[80%] flex flex-col gap-3'>
+                                        <span className={`${data.estado === 'EN PROCESO' ? 'text-red-500' : 'text-green-500' } font-semibold`}> { data.taqom } </span>
+                                        <span> { data.descripcion } </span>
+                                    </div>
+                                    <div className='w-full sm:w-[20%] text-center'>
+                                        RESPONSABLE: { data.responsable }
+                                    </div>
+                                </div>
+                              </Link>
+                            ))
+                          ) : null
+                        }
+                      </div>
+                    </div>
+                  ) : null
+                }
+                {
+                  OmsCorrectivasPanel ? (
+                    <div key = {`OmsCorrectivaPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                      <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                        <SearchInput SearchFunction = { FiltroOmsCorrectivos } />
+                        <div onClick = { () => setShowModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                          Agregar Nuevo
+                        </div> 
+                      </div>
+                      <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                        { 
+                          OmsCorrectivosFiltradas ? (
+                            OmsCorrectivosFiltradas.map((data) => (
+                              <Link key={data.taqom} href={`/oms/${data.taqom}`} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                                <div className='w-full flex flex-col sm:flex-row  justify-between sm:items-center items-start'>
+                                    <div className='w-full sm:w-[80%] flex flex-col gap-3'>
+                                        <span className={`${data.estado === 'EN PROCESO' ? 'text-red-500' : 'text-green-500' } font-semibold`}> { data.taqom } </span>
+                                        <span> { data.descripcion } </span>
+                                    </div>
+                                    <div className='w-full sm:w-[20%] text-center'>
+                                        RESPONSABLE: { data.responsable }
+                                    </div>
+                                </div>
+                              </Link>
+                            ))
+                          ) : null
+                        }
+                      </div>
+                    </div>
+                  ) : null
+                }
+                {
+                  OmsDiseñoMejoraPanel ? (
+                    <div key = {`OmsPreventivaPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                      <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                        <SearchInput SearchFunction = { FiltroDiseñoMejora } />
+                        <div onClick = { () => setShowModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
+                          Agregar Nuevo
+                        </div> 
+                      </div>
+                      <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                        { 
+                          OmsDiseñoMejoraFiltrados ? (
+                            OmsDiseñoMejoraFiltrados.map((data) => (
+                              <Link key={data.taqom} href={`/oms/${data.taqom}`} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                                <div className='w-full flex flex-col sm:flex-row  justify-between sm:items-center items-start'>
+                                    <div className='w-full sm:w-[80%] flex flex-col gap-3'>
+                                        <span className={`${data.estado === 'EN PROCESO' ? 'text-red-500' : 'text-green-500' } font-semibold`}> { data.taqom } </span>
+                                        <span> { data.descripcion } </span>
+                                    </div>
+                                    <div className='w-full sm:w-[20%] text-center'>
+                                        RESPONSABLE: { data.responsable }
+                                    </div>
+                                </div>
+                              </Link>
+                            ))
+                          ) : null
+                        }
+                      </div>
+                    </div>
+                  ) : null
+                }
               </div>
             ) : null
           }

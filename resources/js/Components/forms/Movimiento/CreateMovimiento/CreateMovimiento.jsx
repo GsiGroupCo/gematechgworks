@@ -13,12 +13,12 @@ const CreateMovimiento = ({ onClose, Rigs, taqActivos }) =>  {
         initialValues:initialValue(),
         validationSchema: validationSchema(),
         validateOnChange: false,
-        onSubmit: async () => { 
-            data.taqActivos = taqActivos,
-            data.taqrig = formvalue.taqrig
+        onSubmit: async (formvalue) => {  
+            data.taqActivos  = taqActivos,
+            data.taqrig      = formvalue.taqrig
             data.fechaSalida = formvalue.fechaSalida, 
-            data.descripcion = formvalue.descripcion, 
-            post(`/movimiento/activo/store`)
+            data.descripcion = formvalue.descripcion,  
+            post(`/movimiento/activo/store`) 
             onClose();
         }
     })
@@ -70,7 +70,7 @@ const CreateMovimiento = ({ onClose, Rigs, taqActivos }) =>  {
             </div> 
             <div className='w-full h-auto flex-col justify-center items-center gap-3'>
                 <div className='w-full h-auto flex gap-2 justify-start items-center'>
-                    <label htmlFor="taqom" className='font-bold text-black'>
+                    <label htmlFor="fechaSalida" className='font-bold text-black'>
                         Fecha Salida
                     </label> 
                     <span className='text-red-500 font-bold text-2xl'>
@@ -79,18 +79,18 @@ const CreateMovimiento = ({ onClose, Rigs, taqActivos }) =>  {
                 </div> 
                 <input 
                     type="date" 
-                    name="taqom"
-                    id="taqom"
-                    value={formik.values.taqom}  
+                    name="fechaSalida"
+                    id="fechaSalida"
+                    value={formik.values.fechaSalida}  
                     onChange={(e) => {
                         formik.handleChange(e);
-                        formik.setFieldValue('taqom', e.target.value.toUpperCase());
+                        formik.setFieldValue('fechaSalida', e.target.value.toUpperCase());
                     }}
-                    className = {`w-full h-auto px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.taqom && formik.errors.taqom ? 'border-red-500' : 'border-black' }`}
+                    className = {`w-full h-auto px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.fechaSalida && formik.errors.fechaSalida ? 'border-red-500' : 'border-black' }`}
                 />
                 {
-                    formik.touched.taqom && formik.errors.taqom && (
-                        <div className="text-red-500 font-bold">{formik.errors.taqom}</div>
+                    formik.touched.fechaSalida && formik.errors.fechaSalida && (
+                        <div className="text-red-500 font-bold">{formik.errors.fechaSalida}</div>
                     )
                 }
             </div>

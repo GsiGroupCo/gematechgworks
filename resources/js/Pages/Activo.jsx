@@ -7,6 +7,7 @@ import SearchInput from "@/Components/UI/Search";
 import CloneActivo from "@/Components/forms/Activo/CloneActivo";
 import EditActivo from "@/Components/forms/Activo/EditActivo"; 
 import ListCaracteristica from "@/Components/forms/Caracteristicas/ListCaracteristica"; 
+import CreateCaracteristica from "@/Components/forms/Caracteristicas/createCaracteristica";
 import CreateCertificacion from "@/Components/forms/Certificaciones/CreateCertificacion";
 import AsignarComponente from "@/Components/forms/Componente/AsignarComponente";
 import CreateDocumento from "@/Components/forms/Documentos/CreateDocumento";
@@ -16,8 +17,8 @@ import CreateOms from "@/Components/forms/Oms/CreateOms";
 import { Link } from "@inertiajs/react";
 import { useEffect, useState } from "react"; 
  
-const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Responsables, Rigs, Componentes }) => {
-
+const ActivoPage= ({ Activo, Activos, Oms, Empresas, Tipo, Responsables, Rigs, Componentes }) => {
+ 
   const [CreateFormModal, setCreateFormModal] = useState(false)
 
   const [AccionesModal, setAccionesModal] = useState(false) 
@@ -48,12 +49,14 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
   }
 
   const [AcctionsButtons, setAcctionsButtons]                       = useState(true) 
+  const [AgregarCaracteristicaState, setAgregarCaracteristicaState] = useState(false)
   const [EditarCaracteristicaState, setEditarCaracteristicaState]   = useState(false)
   const [EditarActivoState, setEditarActivoState]                   = useState(false)
   const [ClonarActivoState, setClonarActivoState]                   = useState(false) 
   
   function ShowAcctionsButtons(){
     setEditarCaracteristicaState(false)
+    setAgregarCaracteristicaState(false)
     setClonarActivoState(false) 
     setEditarActivoState(false)
     setAcctionsButtons(true)
@@ -62,14 +65,24 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
   function ShowFormEditCaracteristicas(){ 
     setClonarActivoState(false)
     setEditarActivoState(false) 
+    setAgregarCaracteristicaState(false)
     setAcctionsButtons(false)
     setEditarCaracteristicaState(true)
+  }
+
+  function ShowFormAgregarCaracteristica(){ 
+    setClonarActivoState(false)
+    setEditarActivoState(false) 
+    setAcctionsButtons(false)
+    setEditarCaracteristicaState(false)
+    setAgregarCaracteristicaState(true)
   }
 
   function ShowFormEditActivo(){ 
     setClonarActivoState(false)
     setEditarCaracteristicaState(false)
     setAcctionsButtons(false)
+    setAgregarCaracteristicaState(false)
     setEditarActivoState(true) 
   }
 
@@ -77,24 +90,30 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
     setEditarCaracteristicaState(false)
     setEditarActivoState(false) 
     setAcctionsButtons(false)
+    setAgregarCaracteristicaState(false)
     setClonarActivoState(true)
   }
  
   const Acciones = [{
-      "id"         : "296215696",
-      "label"      : "Editar Caracteristica",
-      "estate"     : 2,
-      "function"   : ShowFormEditCaracteristicas,
+    "id"         : "2qwed96215696",
+    "label"      : "Agregar Caracteristica",
+    "estate"     : 1,
+    "function"   : ShowFormAgregarCaracteristica,
   },{
-      "id"         : "1213522726",
-      "label"      : "Editar Activo",
-      "estate"     : 2,
-      "function"   : ShowFormEditActivo,
+    "id"         : "296215696",
+    "label"      : "Editar Caracteristica",
+    "estate"     : 2,
+    "function"   : ShowFormEditCaracteristicas,
   },{
-      "id"         : "571701126",
-      "label"      : "Clonar Activo",
-      "estate"     : 2,
-      "function"   : ShowFormClonarActivo,
+    "id"         : "1213522726",
+    "label"      : "Editar Activo",
+    "estate"     : 2,
+    "function"   : ShowFormEditActivo,
+  },{
+    "id"         : "571701126",
+    "label"      : "Clonar Activo",
+    "estate"     : 2,
+    "function"   : ShowFormClonarActivo,
   }]
 
   const [MantenimientosPanel, setMantenimientosPanel] = useState(false) 
@@ -364,27 +383,26 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
 
   const CertificacionesEliminadasData = [];
   Activo.forEach(ActivoData => { 
-    ActivoData.certificaciones.forEach(CertificacionesEliminadasData => {
+    ActivoData.certificaciones.forEach(data => {
       CertificacionesEliminadasData.push({
-        taqDeleteRegister  : CertificacionesEliminadasData.taqDeleteRegister,
-        taqActivos         : CertificacionesEliminadasData.taqActivos,
-        nombreDocumento    : CertificacionesEliminadasData.nombreDocumento,
-        Responsable        : CertificacionesEliminadasData.taqresponsable,  
+        taqDeleteRegister  : data.taqDeleteRegister,
+        taqActivos         : data.taqActivos,
+        nombreDocumento    : data.nombreDocumento,
+        Responsable        : data.taqresponsable,  
       });
     });
   });
 
   const MovimientosData = [];
-  Activo.forEach(ActivosData => {  
-    ActivosData.movimiento.forEach(MovimientosData => {
+  Activo.forEach(ActivosData => {
+    ActivosData.movimiento.forEach(data => { 
       MovimientosData.push({
-        taq_movimiento : MovimientosData.taq_movimiento,
-        taqrig         : MovimientosData.taqrig,
-        taqActivos     : MovimientosData.taqActivos,
-        fechaSalida    : MovimientosData.fechaSalida, 
-        fechaRetorno   : MovimientosData.fechaRetorno,
-        estado         : MovimientosData.estado,
-        descripcion    : MovimientosData.descripcion,
+        taq_movimiento : data.taq_movimiento,
+        Rig            : data.rig,
+        fechaSalida    : data.fechaSalida, 
+        fechaRetorno   : data.fechaRetorno,
+        estado         : data.estado,
+        descripcion    : data.descripcion,
       });
     });
   }); 
@@ -409,11 +427,11 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
 
   const GaleriaData = [];
   Activo.forEach(ActivosData => {  
-    ActivosData.galeria.forEach(MovimientosData => {
-      MovimientosData.push({
-        foto_id    : MovimientosData.foto_id,
-        taqActivos : MovimientosData.taqActivos,
-        Image      : MovimientosData.Image, 
+    ActivosData.galeria.forEach(data => {
+      GaleriaData.push({
+        foto_id    : data.foto_id,
+        taqActivos : data.taqActivos,
+        Image      : data.Image, 
       });
     });
   }); 
@@ -425,6 +443,7 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
     setDocumentosEliminadosFiltrados(DocumentosEliminadosData)
     setComponentesFiltrados(ComponentesData)
     setMantenimientosFiltrados(MantenimientosData)
+    setMovimientosFiltrados(MovimientosData)
   }, [Activo])
 
   const [MantenimientosFiltrados, setMantenimientosFiltrados] = useState();
@@ -495,13 +514,13 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
   const [CertificacionesFiltradas, setCertificacionesFiltradas] = useState();
   const FiltroCertificaciones = ( searchTerm ) => {
     const filtered = MantenimientosData.filter((data) => {
-        const taqActivos       = CertificacionesData.taqActivos.toLowerCase();
-        const taqDoc           = CertificacionesData.taqDoc.toLowerCase();
-        const nombre           = CertificacionesData.nombre.toLowerCase();
-        const fechacertificion = CertificacionesData.fechacertificion.toLowerCase(); 
-        const frecuencia       = CertificacionesData.frecuencia.toLowerCase();
-        const estado           = CertificacionesData.estado.toLowerCase();
-        const DocURL           = CertificacionesData.DocURL.toLowerCase();
+        const taqActivos       = data.taqActivos.toLowerCase();
+        const taqDoc           = data.taqDoc.toLowerCase();
+        const nombre           = data.nombre.toLowerCase();
+        const fechacertificion = data.fechacertificion.toLowerCase(); 
+        const frecuencia       = data.frecuencia.toLowerCase();
+        const estado           = data.estado.toLowerCase();
+        const DocURL           = data.DocURL.toLowerCase();
         return (
             taqDoc.includes(searchTerm)           ||
             taqActivos.includes(searchTerm)       ||
@@ -517,11 +536,11 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
 
   const [CertificacionesEliminadasFiltradas, setCertificacionesEliminadasFiltradas] = useState();
   const FiltroCertificacionesEliminadas = ( searchTerm ) => {
-    const filtered = MantenimientosData.filter((data) => {
-        const taqDeleteRegister  = CertificacionesEliminadasData.taqDeleteRegister.toLowerCase();
-        const taqActivos         = CertificacionesEliminadasData.taqActivos.toLowerCase();
-        const nombreDocumento    = CertificacionesEliminadasData.nombreDocumento.toLowerCase();
-        const Responsable        = CertificacionesEliminadasData.taqresponsable.toLowerCase();  
+    const filtered = CertificacionesData.filter((data) => {
+        const taqDeleteRegister  = data.taqDeleteRegister.toLowerCase();
+        const taqActivos         = data.taqActivos.toLowerCase();
+        const nombreDocumento    = data.nombreDocumento.toLowerCase();
+        const Responsable        = data.taqresponsable.toLowerCase();  
         return (
             taqDeleteRegister.includes(searchTerm) ||
             taqActivos.includes(searchTerm)        ||
@@ -531,22 +550,19 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
     });
     setCertificacionesEliminadasFiltradas(filtered);
   };
-
   
   const [MovimientosFiltrados, setMovimientosFiltrados] = useState();
-  const FiltroMovimientos = ( searchTerm ) => {
+  const FiltroMovimientos = ( searchTerm ) => { 
     const filtered = MantenimientosData.filter((data) => { 
-        const taq_movimiento = MovimientosData.taq_movimiento.toLowerCase();
-        const taqrig         = MovimientosData.taqrig.toLowerCase();
-        const taqActivos     = MovimientosData.taqActivos.toLowerCase();
-        const fechaSalida    = MovimientosData.fechaSalida.toLowerCase(); 
-        const fechaRetorno   = MovimientosData.fechaRetorno.toLowerCase();
-        const estado         = MovimientosData.estado.toLowerCase();
-        const descripcion    = MovimientosData.descripcion.toLowerCase(); 
+        const taq_movimiento = data.taq_movimiento.toLowerCase();
+        const Rig            = data.rig.toLowerCase();
+        const fechaSalida    = data.fechaSalida.toLowerCase(); 
+        const fechaRetorno   = data.fechaRetorno.toLowerCase();
+        const estado         = data.estado.toLowerCase();
+        const descripcion    = data.descripcion.toLowerCase();
         return (
-            taq_movimiento.includes(searchTerm) ||
-            taqActivos.includes(searchTerm)     ||
-            taqrig.includes(searchTerm)         || 
+            taq_movimiento.includes(searchTerm) || 
+            Rig.includes(searchTerm)            || 
             fechaSalida.includes(searchTerm)    ||
             fechaRetorno.includes(searchTerm)   || 
             estado.includes(searchTerm)         ||
@@ -555,7 +571,7 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
     });
     setMovimientosFiltrados(filtered);
   };
-
+ 
   const [ComponentesFiltrados, setComponentesFiltrados] = useState();
   const FiltrarComponentes = ( searchTerm ) => {
     const filtered = ComponentesData.filter((Data) => {  
@@ -585,9 +601,9 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
   const [GaleriaFiltrados, setGaleriaFiltrados] = useState();
   const FiltrarGaleria = ( searchTerm ) => {
     const filtered = GaleriaData.filter((data) => { 
-        const foto_id        = MovimientosData.foto_id.toLowerCase();
-        const taqActivos     = MovimientosData.taqActivos.toLowerCase();
-        const Image          = MovimientosData.Image.toLowerCase(); 
+        const foto_id        = data.foto_id.toLowerCase();
+        const taqActivos     = data.taqActivos.toLowerCase();
+        const Image          = data.Image.toLowerCase(); 
         return (
             foto_id.includes(searchTerm)    ||
             taqActivos.includes(searchTerm) ||
@@ -596,8 +612,6 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
     });
     setGaleriaFiltrados(filtered);
   };
-  
-  Componentes
   
   const ComponentesFree = Componentes.filter(
     (ComponentesLibres) => ComponentesLibres.estado === "SIN ASIGNAR"
@@ -804,7 +818,17 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
                     MovimientosFiltrados ? (
                       MovimientosFiltrados.map((data) => (
                         <div key = { data.taq_movimiento } className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                          { data.taqrig }
+                          <div className="w-auto">    
+                            { data.Rig.nombre }
+                          </div>
+                          <div className="w-[300px] flex flex-col justify-start items-start">
+                            <div>
+                              Fecha Salida: { data.fechaSalida }
+                            </div> 
+                            <div className={`${data.fechaRetorno ? '' : 'text-red-500'} font-bold`}>
+                              Fecha Retorno: { data.fechaRetorno ? data.fechaRetorno : 'SIN RETORNAR' }
+                            </div>
+                          </div>
                         </div>
                       ))
                     ) : null
@@ -882,14 +906,23 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Caracteristicas, Tipo, Resp
               Acciones = { Acciones } 
               key = {`a300c473056b301c`}
             >
-              <> 
+              <>
+                {
+                  AgregarCaracteristicaState ? (
+                    <CreateCaracteristica
+                      Taq = { Activo[0].taqActivos }
+                      onClose = { () => setShowModal(false) }
+                      route = {`/caracteristica/activo/store`}
+                    />
+                  ) : null
+                }
                 {
                   EditarCaracteristicaState  ? (
                     <ListCaracteristica
-                      Caracteristicas = { Caracteristicas }
+                      Caracteristicas = { Activo[0].caracteristicas }
                       onClose = {() => setShowModal(false)}
-                      DeleteRoute = {`caracteristica/activo/delete`}
-                      EditRoute = {`caracteristica/activo/update`}
+                      DeleteRoute = {`/caracteristica/activo/delete`}
+                      EditRoute = {`/caracteristica/activo/update`}
                     />
                   ) : null
                 }

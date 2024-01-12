@@ -13,8 +13,7 @@ class CreateMovimientosXActivosTable extends Migration
             $table->string('taqrig');
             $table->string('taqActivos');
             $table->string('fechaSalida');
-            $table->string('fechaRetorno');
-            $table->string('estado');
+            $table->string('fechaRetorno')->nullable();
             $table->string('descripcion',500)->nullable();
             $table->timestamps();
         });

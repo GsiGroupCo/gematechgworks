@@ -10,9 +10,10 @@ import CreateCertificacion from "@/Components/forms/Certificaciones/CreateCertif
 import ClonarComponente from "@/Components/forms/Componente/ClonarComponente";
 import EditComponente from "@/Components/forms/Componente/EditComponente";
 import CreateDocumento from "@/Components/forms/Documentos/CreateDocumento";
+import { Link } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 
-const ActivoPage= ({ ComponentesData, Categorias, Activos }) => {
+const ComponentePage= ({ ComponentesData, Categorias, Activos }) => {
   
   const [CreateFormModal, setCreateFormModal] = useState(false)
   
@@ -474,9 +475,9 @@ const ActivoPage= ({ ComponentesData, Categorias, Activos }) => {
                   { 
                     ActivosFiltrados ? (
                       ActivosFiltrados.map((data) => (
-                        <div key = { data.taqActivos } className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
+                        <Link href={`/activo/${data.taqActivos}`} key = { data.taqActivos } className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
                           { data.nombre }
-                        </div>
+                        </Link>
                       ))
                     ) : null
                   }
@@ -685,4 +686,4 @@ const ActivoPage= ({ ComponentesData, Categorias, Activos }) => {
 }
 
 
-export default ActivoPage;
+export default ComponentePage;

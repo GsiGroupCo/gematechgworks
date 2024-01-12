@@ -15,8 +15,7 @@ class movimientos_x_activos extends Model
         'taqrig',
         'taqActivos',
         'fechaSalida',
-        'fechaRetorno',
-        'estado',
+        'fechaRetorno', 
         'descripcion',
     ];
 

@@ -8,19 +8,20 @@ import { useForm } from "@inertiajs/react";
 
 
 const FormPanelEditCaracteristica = ({ onClose, Caracteristicas, route }) =>  {
-  
-  const { data , patch } = useForm()
+   
+  const { data , post } = useForm()
 
   const formik = useFormik({
     initialValues:initialValue(Caracteristicas),
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      data.taqotro           = Caracteristicas.taqotro
+      data.taqotro           = Caracteristicas.taq_caracteristica
       data.taqActivos        = Caracteristicas.taqActivos
       data.nombre            = formValue.Nombre
       data.valor             = formValue.value
-      patch(`${route}`)
+      console.log(data)
+      post(route)
       onClose()
     }
   })

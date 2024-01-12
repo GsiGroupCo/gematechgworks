@@ -82,7 +82,7 @@ Route::controller(ComponentesController::class)->group(function () {
 
 Route::controller(CaracteristicasXActivoController::class)->group(function () {
     Route::post('caracteristica/activo/store','store') -> name('caracteristica.activo.store') -> middleware('auth');
-    Route::patch('caracteristica/activo/update','update') -> name('caracteristica.activo.update') -> middleware('auth');
+    Route::post('caracteristica/activo/update','update') -> name('caracteristica.activo.update') -> middleware('auth');
     Route::post('caracteristica/activo/delete','delete') -> name('caracteristica.activo.delete') -> middleware('auth');
 });
 

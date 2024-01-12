@@ -4,7 +4,7 @@ import { useState } from "react";
 import EditCaracteristica from "../EditCaracteristica";
 
 const ListCaracteristica = ({ onClose, Caracteristicas, DeleteRoute, EditRoute }) => {
- 
+  
   const { post } = useForm()
 
   const [CaracteristicasItem, setCaracteristicasItem] = useState();
@@ -64,7 +64,7 @@ const ListCaracteristica = ({ onClose, Caracteristicas, DeleteRoute, EditRoute }
           <EditCaracteristica
             onClose = { onClose } 
             Caracteristicas = { CaracteristicasItem }
-            route = { EditRoute }
+            route = {EditRoute}
           />
         ) : null
       }

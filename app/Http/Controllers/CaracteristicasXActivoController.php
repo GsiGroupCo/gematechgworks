@@ -8,29 +8,29 @@ class CaracteristicasXActivoController extends Controller
 {
     public function store(Request $request)
     {
-        try {
+        try { 
             caracteristicas_x_activo::create([
                 'taq_caracteristica' => uniqid(TRUE),
-                'taqActivos'         => $request -> taqActivos,
+                'taqActivos'         => $request -> Taq,
                 'nombre'             => $request -> nombre,
                 'value'              => $request -> value,
             ]);
-            return redirect()->route('activos.show', ['activos' => $request->taqActivos]) -> with('status', 'Caracteristica Añadida exitosamente');
+            return redirect()->route('activos.show', ['activos' => $request->Taq]) -> with('status', 'Caracteristica Añadida exitosamente');
         } catch (\Throwable $th) {
-            return redirect()->route('activos.show', ['activos' => $request->taqActivos]) -> with('error', 'Problemas Añadiendo la caracteristica');
+            dd($th);
+            return redirect()->route('activos.show', ['activos' => $request->Taq]) -> with('error', 'Problemas Añadiendo la caracteristica');
         }
     }
 
     public function update(Request $request)
     {
-        try {
-            caracteristicas_x_activo::where('taq_caracteristica','LIKE',$request ->taqomro) -> update([
+        try { 
+            caracteristicas_x_activo::where('taq_caracteristica','LIKE',$request ->taqotro) -> update([
                 'nombre'  => $request -> nombre,
                 'value'   => $request -> valor,
             ]);
             return redirect()->route('activos.show', ['activos' => $request->taqActivos]) -> with('status', 'Caracteristica Editada exitosamente');
-        } catch (\Throwable $th) {
-            
+        } catch (\Throwable $th) { 
             return redirect()->route('activos.show', ['activos' => $request->taqActivos]) -> with('error', 'Problemas Editando la caracteristica');
         }
     }

@@ -70,7 +70,7 @@ class ActivosController extends Controller
                         'OrdenesMantenimiento.Responsable',
                         'Historial.Componente',
                         'Galeria',
-                        'Movimiento',
+                        'Movimiento.Rig',
                         'Caracteristicas',
                         'Documentos',
                         'Documentos_Eliminados',
