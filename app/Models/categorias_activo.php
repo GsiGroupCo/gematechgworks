@@ -21,4 +21,8 @@ class categorias_activo extends Model
         return $this->hasMany(activos::class,'categoria_id', 'categoria_id');
     }
 
+    public function Mantenimiento_Activo(){
+        return $this->hasMany(mantenimientos_x_activos::class,'categoria_id', 'categoria_id');
+    }
+
 }

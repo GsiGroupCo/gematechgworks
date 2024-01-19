@@ -22,8 +22,12 @@ class responsable extends Authenticatable
       return $this->belongsTo(cargos::class, 'cargo_id', 'cargo_id');
    }
 
-   public function Om(){
-      return $this->hasMany(om::class, 'taqresponsable', 'taqresponsable');
+   public function Oma(){
+      return $this->hasMany(oma::class, 'taqresponsable', 'taqresponsable');
+   }
+
+   public function Omc(){
+      return $this->hasMany(omc::class, 'taqresponsable', 'taqresponsable');
    }
 
    public function Documentos(){
@@ -32,5 +36,13 @@ class responsable extends Authenticatable
      
    public function DocumentosEliminados(){
       return $this->hasMany(docs_x_responsables_eli::class, 'taqresponsable', 'taqresponsable');
+   }
+
+   public function Actividades_Mtto_Activo(){
+      return $this->hasMany(act_x_oma::class, 'taqresponsable', 'taqresponsable');
+   }
+
+   public function Actividades_Mtto_Componente(){
+      return $this->hasMany(act_x_omc::class, 'taqresponsable', 'taqresponsable');
    }
 }

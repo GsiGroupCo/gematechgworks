@@ -11,8 +11,11 @@ use App\Models\activos;
 use App\Models\cargos;
 use App\Models\categoria_componentes;
 use App\Models\categorias_activo;
-use App\Models\componentes; 
-use App\Models\om;
+use App\Models\componentes;
+use App\Models\mantenimientos_x_activos;
+use App\Models\mantenimientos_x_componentes;
+use App\Models\oma;
+use App\Models\omc;
 use App\Models\rigs;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
@@ -23,15 +26,18 @@ class AuthController extends Controller
 
     public function Home() {  
         return Inertia::render('Home',[ 
-            'CategoriasActivo'      => categorias_activo::with('Activos')->get(),
-            'CategoriasComponentes' => categoria_componentes::with('Componentes')->get(),
-            'Oms'                   => om::with('Responsable')->get(),
-            'Activos'               => activos::all(),
-            'Componentes'           => componentes::all(),
-            'Documentos'            => docs::all(),
-            'Cargos'                => cargos::with('Responsables')->get(), 
-            'Responsables'          => responsable::with('cargo')->get(),
-            'Rigs'                  => rigs::with('Movimientos.Activo')->get()
+            'CategoriasActivo'           => categorias_activo::with('Activos')->get(),
+            'CategoriasComponentes'      => categoria_componentes::with('Componentes')->get(),
+            'Omas'                       => oma::with('Responsable','Activos')->get(),
+            'Mantenimientos_activos'     => mantenimientos_x_activos::all(),
+            'Mantenimientos_componentes' => mantenimientos_x_componentes::all(),
+            'Omcs'                       => omc::with('Responsable','Componente')->get(),
+            'Activos'                    => activos::all(),
+            'Componentes'                => componentes::all(),
+            'Documentos'                 => docs::all(),
+            'Cargos'                     => cargos::with('Responsables')->get(), 
+            'Responsables'               => responsable::with('cargo')->get(),
+            'Rigs'                       => rigs::with('Movimientos.Activo')->get()
         ]);
     }
     

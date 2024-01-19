@@ -38,7 +38,7 @@ class ComponentesController extends Controller
                 Storage::disk('public')->put($rutaArchivo, $compressedImage->stream());
                 componentes::create([
                     'taqComponente' => $taqComponente, 
-                    'categoria_id'       => $request -> categoria_id,
+                    'categoria_id'  => $request -> categoria_id,
                     'nombre'        => $request -> nombre,
                     'descripcion'   => $request -> descripcion,
                     'serial'        => $request -> serial,
@@ -50,7 +50,7 @@ class ComponentesController extends Controller
             }else{
                 componentes::create([
                     'taqComponente' => $taqComponente, 
-                    'categoria_id'       => $request -> categoria_id,
+                    'categoria_id'  => $request -> categoria_id,
                     'nombre'        => $request -> nombre,
                     'descripcion'   => $request -> descripcion,
                     'serial'        => $request -> serial,
@@ -60,8 +60,7 @@ class ComponentesController extends Controller
                 ]);
                 return redirect()->route('componentes.show', [ 'componentes' => $taqComponente ]) -> with('status', 'Componente Registrado Correctamente');
             }
-        } catch (\Throwable $th) { 
-            dd($th);
+        } catch (\Throwable $th) {
             return redirect()->route('home') -> with('error', 'Problema Registrando Componente');
         }
     }

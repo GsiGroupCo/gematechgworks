@@ -4,24 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\activos;
 use Illuminate\Http\Request;
-use App\Models\om;
+use App\Models\oma;
+use App\Models\omc;
 use App\Models\responsable;
 use Inertia\Inertia;
 
-class OmsController extends Controller
+class OmcController extends Controller
 {
+    
     public function store(Request $request)
     {
-       try { 
+        try { 
             $taqom = $request -> taqom;
-            $om = count(om::where('taqom','LIKE',$taqom)->get());
+            $om = count(omc::where('taqom','LIKE',$taqom)->get());
             if($om == 0)
             {
-                $estado     = 'EN PROCESO';
+                $estado = 'EN PROCESO';
                 date_default_timezone_set("America/Bogota");
-                om::create([
+                omc::create([
                     'taqom'          => $taqom,
-                    'taqActivos'     => $request -> taqActivos,
+                    'taqComponente'  => $request -> taqComponente,
                     'taqresponsable' => $request -> taqresponsable,
                     'fechainicio'    => date('m-d-Y', time()),
                     'horainicio'     => date('h:i:s a', time()),
@@ -36,32 +38,29 @@ class OmsController extends Controller
             }else{
                 return redirect()->route('home') -> with('error', 'Problema Registrando OM');
             }
-        } catch (\Throwable $th) {
+        } catch (\Throwable $th) { 
             return redirect()->route('home') -> with('error', 'Problema Registrando OM'); 
-       }
+        }
     }
  
     public function show($taqom)
     {
-        try {
-            $exist = count(om::where('taqom','LIKE',$taqom)->get()); 
-            if( $exist === 1 ){
-                return Inertia::render('Om',[
-                    'DataOms' => om::with(
-                        'Activos.Historial.Componente',
+        try { 
+            $existOmc = count(omc::where('taqom','LIKE',$taqom)->get()); 
+            if( $existOmc === 1 ){
+                return Inertia::render('Omc',[
+                    'DataOms' => omc::with(
+                        'Componente',
                         'Responsable',
                         'Documentos',
                         'Documentos_Eliminados',
-                        'Mantenimientos.Actividades'
+                        'Actividades.Responsable'
                     )->where('taqom', 'LIKE', $taqom)->get(),
                     'ResponsablesList' => responsable::where('estado','LIKE','VIGENTE')->get(),
                     'ActivosList' => activos::all()
-                ]); 
-            }else{
-                return redirect()->route('home') -> with('error', 'OM no encontrada');
-            }
+                ]);
+            } 
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()->route('home') -> with('error', 'Problema encontrando OM');
         }
     }
@@ -69,9 +68,9 @@ class OmsController extends Controller
     public function update(Request $request)
     {
         try {
-            $exist = om::where('taqom','LIKE',$request -> taqom)->get()->count();  
-            if($exist === 1 ){
-                om::where('taqom','LIKE', $request ->taqom)-> update([ 
+            $existOmc = omc::where('taqom','LIKE',$request -> taqom)->get()->count();  
+            if($existOmc === 1 ){
+                omc::where('taqom','LIKE', $request ->taqom)-> update([ 
                     'taqresponsable' => $request -> taqresponsable,
                     'descripcion'    => $request -> descripcion,
                     'tipo'           => $request -> tipo, 
@@ -88,11 +87,11 @@ class OmsController extends Controller
 
     public function open(Request $request)
     {
-        try {
-            $exist = om::where('taqom','LIKE',$request -> taqom)->get()->count();
-            if($exist === 1){
+        try { 
+            $existOmc = omc::where('taqom','LIKE',$request -> taqom)->get()->count();
+            if($existOmc === 1){
                 date_default_timezone_set("America/Bogoma");
-                om::where('taqom','LIKE',$request -> taqom)-> update( [
+                oma::where('taqom','LIKE',$request -> taqom)-> update([
                     'estado'   => 'EN PROCESO'
                 ]);    
                 return redirect()->route('oms.show',$request -> taqom);
@@ -107,10 +106,10 @@ class OmsController extends Controller
     public function closed(Request $request)
     {
         try {
-            $exist = om::where('taqom','LIKE',$request -> taqom)->get()->count();
-            if($exist === 1){
+            $existOmc = omc::where('taqom','LIKE',$request -> taqom)->get()->count();
+            if($existOmc === 1){
                 date_default_timezone_set("America/Bogoma");
-                om::where('taqom','LIKE',$request -> taqom)-> update( [
+                omc::where('taqom','LIKE',$request -> taqom)-> update( [
                     'estado'   => 'FINALIZADO'
                 ]);    
                 return redirect()->route('oms.show',$request -> taqom);

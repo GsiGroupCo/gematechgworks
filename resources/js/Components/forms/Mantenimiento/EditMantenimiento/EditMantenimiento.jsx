@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { initialValue, validationSchema } from './EditMantenimiento.form';
 import { useForm } from '@inertiajs/react'
 
-const EditMantenimiento = ({ onClose, Mtto }) =>  {
+const EditMantenimiento = ({ onClose, Mtto, route }) =>  {
 
   const { data, post } = useForm()
   
@@ -13,11 +13,13 @@ const EditMantenimiento = ({ onClose, Mtto }) =>  {
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      data.TaqManto    = Mtto[0].TaqManto
-      data.nombre      = formValue.nombre
-      data.descripcion = formValue.descripcion
-      data.Tipo        = formValue.Tipo 
-      post('/mantenimiento/update')
+      data.taqMantenimiento = Mtto.taqMantenimiento
+      data.nombre           = formValue.nombre
+      data.descripcion      = formValue.descripcion
+      data.Tipo             = formValue.Tipo
+      console.log(data)
+      console.log(route)
+      post(route)
       onClose();
     }
   })

@@ -25,7 +25,7 @@ class activos extends Model
     }
 
     public function OrdenesMantenimiento(){
-        return $this->hasMany(om::class,'taqActivos','taqActivos');
+        return $this->hasMany(oma::class,'taqActivos','taqActivos');
     }
 
     public function Historial(){
@@ -42,6 +42,10 @@ class activos extends Model
 
     public function Caracteristicas(){
         return $this->hasMany(caracteristicas_x_activo::class,'taqActivos','taqActivos');
+    }
+
+    public function Mantenimientos(){
+        return $this->hasMany(mantenimientos_x_activos::class,'taqActivos', 'taqActivos');
     }
 
     public function Documentos(){

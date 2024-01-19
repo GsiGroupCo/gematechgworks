@@ -52,7 +52,6 @@ class CertificacionesXActivoController extends Controller
             }
             return redirect() -> route('activos.show', ['activos' => $request->taqActivos]) -> with('status', 'Certificacion Registrada Correctamente');
         } catch (\Throwable $th) {
-            dd($th);
             return redirect() -> route('activos.show', ['activos' => $request->taqActivos]) -> with('error', 'Problema Registrando Certificacion');
         }
     }
@@ -79,17 +78,17 @@ class CertificacionesXActivoController extends Controller
         }
     }
 
-    public function caducado($taqDoc,$taqActivos){
+    // public function caducado($taqDoc,$taqActivos){
 
-        $certificacion = certificacione::where('taqDoc','LIKE', $taqDoc)->get();
+    //     $certificacion = certificacione::where('taqDoc','LIKE', $taqDoc)->get();
 
-        certificacione::where('taqDoc','LIKE', $taqDoc) -> update([
-            'estado' => 'CADUCADO',
-        ]);
+    //     certificacione::where('taqDoc','LIKE', $taqDoc) -> update([
+    //         'estado' => 'CADUCADO',
+    //     ]);
 
-        Session::flash('UpdateEstado','Certificacion'.$taqDoc.' Caducada');
-        return redirect()->route('activos.show',$taqActivos);
+    //     Session::flash('UpdateEstado','Certificacion'.$taqDoc.' Caducada');
+    //     return redirect()->route('activos.show',$taqActivos);
 
-    }
+    // }
 
 }

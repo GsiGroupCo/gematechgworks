@@ -21,6 +21,14 @@ class componentes extends Model
         'urlImage',
     ];
 
+    public function omc(){
+        return $this->hasMany(omc::class,'taqComponente','taqComponente');
+    }
+
+    public function Mantenimientos(){
+        return $this->hasMany(mantenimientos_x_componentes::class,'taqComponente','taqComponente');
+    }
+
     public function Historial_Activos(){
         return $this->belongsTo(componente_x_activos::class,'taqComponente','taqComponente');
     }
@@ -31,7 +39,7 @@ class componentes extends Model
         return $this->belongsTo(categoria_componentes::class,'categoria_id','categoria_id');
     }
     public function Actividad_Mantenimiento(){
-        return $this->belongsTo(act_x_mantenimiento::class,'taqComponente','taqComponente');
+        return $this->belongsTo(act_x_mantenimiento_componente::class,'taqComponente','taqComponente');
     }
     public function Caracteristicas(){
         return $this->hasMany(caracteristicas_x_componentes::class,'taqComponente','taqComponente');

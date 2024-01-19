@@ -11,9 +11,9 @@ import CreateCaracteristica from "@/Components/forms/Caracteristicas/createCarac
 import CreateCertificacion from "@/Components/forms/Certificaciones/CreateCertificacion";
 import AsignarComponente from "@/Components/forms/Componente/AsignarComponente";
 import CreateDocumento from "@/Components/forms/Documentos/CreateDocumento";
-import CreateMantenimiento from "@/Components/forms/Mantenimiento/CreateMantenimiento";  
+import CreateMantenimiento from "@/Components/forms/Mantenimiento/CreateMantenimientoComponente";  
 import CreateMovimiento from "@/Components/forms/Movimiento/CreateMovimiento";
-import CreateOms from "@/Components/forms/Oms/CreateOms";
+import CreateOms from "@/Components/forms/Oms/CreateOmas";
 import { Link } from "@inertiajs/react";
 import { useEffect, useState } from "react"; 
  
@@ -964,6 +964,9 @@ const ActivoPage= ({ Activo, Activos, Oms, Empresas, Tipo, Responsables, Rigs, C
         {
           MantenimientosPanel ? (
             <CreateOms 
+              Activos = { Activos }
+              Componentes = { Componentes } 
+              Tipe = {`Ninguna`}
               LastOm = { Oms && Oms[0] ? Oms[0].taqom : "0" }
               Responsables = { Responsables }
               onClose = { () => setCreateFormModal(false) } 

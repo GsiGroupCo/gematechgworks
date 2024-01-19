@@ -20,4 +20,8 @@ class categoria_componentes extends Model
     public function Componentes(){
         return $this->hasMany(componentes::class,'categoria_id', 'categoria_id');
     }
+
+    public function Mantenimiento(){
+        return $this->hasMany(mantenimientos_x_componentes::class,'categoria_id', 'categoria_id');
+    }
 }

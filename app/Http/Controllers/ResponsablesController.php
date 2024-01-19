@@ -69,7 +69,6 @@ class ResponsablesController extends Controller
                 return redirect()->route('home') -> with('error', 'Responsable no encontrado');
             }
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()->route('home') -> with('error', 'Problema encontrando responsable'); 
         }
     }

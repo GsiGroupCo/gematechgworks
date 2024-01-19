@@ -17,7 +17,6 @@ class CaracteristicasXActivoController extends Controller
             ]);
             return redirect()->route('activos.show', ['activos' => $request->Taq]) -> with('status', 'Caracteristica Añadida exitosamente');
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()->route('activos.show', ['activos' => $request->Taq]) -> with('error', 'Problemas Añadiendo la caracteristica');
         }
     }

@@ -1,10 +1,10 @@
 import * as Yup from 'yup';
 
-export function initialValue(Mtto) {
+export function initialValue(Mtto) { 
   return {
-    nombre       :Mtto[0].nombre,
-    descripcion  :Mtto[0].descripcion,
-    Tipo         :Mtto[0].tipe,
+    nombre       :Mtto.Nombre,
+    descripcion  :Mtto.descripcion,
+    Tipo         :Mtto.tipe,
   };
 }
 

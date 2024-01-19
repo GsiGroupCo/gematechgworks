@@ -48,7 +48,6 @@ class CargosController extends Controller
             }
             return redirect()->route('home');
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()->route('home');
         }
     } 

@@ -10,6 +10,7 @@ use App\Models\activos;
 use App\Models\om;
 use App\Models\categorias_activo;
 use App\Models\componentes;
+use App\Models\oma;
 use App\Models\responsable;
 use App\Models\rigs;
  
@@ -79,7 +80,7 @@ class ActivosController extends Controller
                     )->where('taqActivos','LIKE',$activo)->get(),
                     "Rigs" => rigs::all(),
                     "Activos" => activos::all(),
-                    "oms" => om::all(),
+                    "oms" => oma::all(),
                     "Componentes" => componentes::all(),
                     "CategoriasActivo" => categorias_activo::all(),
                     "Responsables" => responsable::all()
@@ -88,7 +89,6 @@ class ActivosController extends Controller
                 return redirect()->route('home') -> with('error', 'Activo no encontrado');
             }
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()->route('home') -> with('error', 'Problema encontrando activo');
         }
         

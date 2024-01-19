@@ -15,9 +15,13 @@ use App\Http\Controllers\docsComponenteController;
 use App\Http\Controllers\CaracteristicasXActivoController;
 use App\Http\Controllers\ComponentesController;
 use App\Http\Controllers\CaracteristicasXComponentesController;
+use App\Http\Controllers\act_x_omasController;
+use App\Http\Controllers\act_x_omcsController;
 use App\Http\Controllers\CertificacionesXComponentesController;
-use App\Http\Controllers\mantenimientosController;
-use App\Http\Controllers\OmsController;
+use App\Http\Controllers\MantenimientosActivoController;
+use App\Http\Controllers\MantenimientosComponentesController;
+use App\Http\Controllers\OmaController;
+use App\Http\Controllers\OmcController;
 use App\Http\Controllers\RigsController; 
 use App\Http\Controllers\ComponentesXActivoController;
 use App\Http\Controllers\movactivosController;
@@ -25,7 +29,9 @@ use App\Http\Controllers\CertificacionesXActivoController;
 use App\Http\Controllers\documentsController;
 use App\Http\Controllers\docsActivoController; 
 use App\Http\Controllers\docsOmController;
-use App\Http\Controllers\act_x_mantenimientoController; 
+
+use App\Http\Controllers\act_x_mantenimientoActivoController; 
+use App\Http\Controllers\act_x_mantenimientoComponenteController; 
  
 Route::get('/', function () {
     return  redirect('home');
@@ -92,18 +98,32 @@ Route::controller(CaracteristicasXComponentesController::class)->group(function 
     Route::post('caracteristica/componente/delete/{taqActivos}/{taqotro}','delete') -> name('caracteristica.componente.delete') -> middleware('auth');
 });
  
-Route::controller(mantenimientosController::class)->group(function () {
-    Route::post('mantenimiento/store', 'store') -> name('mantenimiento.store') -> middleware('auth'); 
-    Route::post('mantenimiento/update','update') -> name('mantenimiento.update') -> middleware('auth'); 
-    Route::get('mantenimiento/show/{taqManto}','show') -> name('mantenimiento.show') -> middleware('auth'); 
+Route::controller(MantenimientosActivoController::class)->group(function () {
+    Route::post('mantenimiento/activo/store', 'store')  -> name('mantenimiento.activo.store')  -> middleware('auth');  
+    Route::post('mantenimiento/activo/update','update')       -> name('mantenimiento.activo.update') -> middleware('auth'); 
+    Route::get('mantenimiento/activo/show/{taqMantenimiento}','show') -> name('mantenimiento.activo.show')   -> middleware('auth'); 
 });
 
-Route::controller(OmsController::class)->group(function () {
-    Route::post('oms/store', 'store') -> name ('oms.store') -> middleware('auth');   
-    Route::get('oms/{oms}', 'show') -> name ('oms.show') -> middleware('auth'); 
-    Route::post('oms/update', 'update') -> name ('oms.update') -> middleware('auth'); 
-    Route::post('oms/open', 'open') -> name ('oms.open') -> middleware('auth'); 
-    Route::post('oms/close', 'closed') -> name ('oms.close') -> middleware('auth');
+Route::controller(MantenimientosComponentesController::class)->group(function () { 
+    Route::post('mantenimiento/componente/store', 'store') -> name('mantenimiento.componente.store')  -> middleware('auth'); 
+    Route::post('mantenimiento/componente/update','update')          -> name('mantenimiento.componente.update') -> middleware('auth'); 
+    Route::get('mantenimiento/componente/show/{taqMantenimiento}','show')    -> name('mantenimiento.componente.show')   -> middleware('auth'); 
+});
+
+Route::controller(OmaController::class)->group(function () {
+    Route::post('omas/store', 'store')   -> name ('omas.store')  -> middleware('auth');      
+    Route::get('omas/{omas}', 'show')    -> name ('omas.show')   -> middleware('auth');    
+    Route::post('omas/update', 'update') -> name ('omas.update') -> middleware('auth'); 
+    Route::post('omas/open', 'open')     -> name ('omas.open')   -> middleware('auth'); 
+    Route::post('omas/close', 'closed')  -> name ('omas.close')  -> middleware('auth');
+});
+
+Route::controller(OmcController::class)->group(function () {
+    Route::post('omcs/store', 'store')   -> name ('omcs.store')  -> middleware('auth');
+    Route::get('omcs/{omcs}', 'show')    -> name ('omcs.show')   -> middleware('auth');
+    Route::post('omcs/update', 'update') -> name ('omcs.update') -> middleware('auth');
+    Route::post('omcs/open', 'open')     -> name ('omcs.open')   -> middleware('auth');
+    Route::post('omcs/close', 'closed')  -> name ('omcs.close')  -> middleware('auth');
 });
 
 Route::controller(RigsController::class)->group(function () {
@@ -158,12 +178,26 @@ Route::controller(docsOmController::class)->group(function () {
     Route::post('documentos/om/delete','delete') -> name('documentos.delete') -> middleware('auth');
 });
 
-Route::controller(act_x_mantenimientoController::class)->group(function () {
-    Route::post('actividades/mantenimiento/store', 'store') -> name('actividad.mantenimiento.store') -> middleware('auth'); 
-    Route::post('actividades/mantenimiento/update','update') -> name('actividad.mantenimiento.update') -> middleware('auth'); 
-    Route::post('actividades/mantenimiento/delete','delete') -> name('actividad.mantenimiento.delete') -> middleware('auth');
+Route::controller(act_x_mantenimientoActivoController::class)->group(function () {  
+    Route::post('actividades/mantenimiento/activo/store', 'store') -> name('actividad.mantenimiento.activo.store')   -> middleware('auth'); 
+    Route::post('actividades/mantenimiento/activo/update','update') -> name('actividad.mantenimiento.activo.update') -> middleware('auth'); 
+    Route::post('actividades/mantenimiento/activo/delete','delete') -> name('actividad.mantenimiento.activo.delete') -> middleware('auth');
+});
+
+Route::controller(act_x_mantenimientoComponenteController::class)->group(function () {
+    Route::post('actividades/mantenimiento/componente/store', 'store') -> name('actividad.mantenimiento.componente.store')   -> middleware('auth'); 
+    Route::post('actividades/mantenimiento/componente/update','update') -> name('actividad.mantenimiento.componente.update') -> middleware('auth'); 
+    Route::post('actividades/mantenimiento/componente/delete','delete') -> name('actividad.mantenimiento.componente.delete') -> middleware('auth');
 });
   
+Route::controller(act_x_omasController::class)->group(function () { 
+    Route::post('/actividades/omas/asing/worker', 'asing') -> name('actividad.omas.asing') -> middleware('auth');
+});
+
+Route::controller(act_x_omcsController::class)->group(function () { 
+    Route::post('/actividades/omcs/asing/worker', 'asing') -> name('actividad.omcs.asing') -> middleware('auth');
+});
+
 Route::controller(ExcelController::class)->group(function () {
     Route::get('getfile/{taqsolicitud}', 'get_solicitud') -> name('file.down') -> middleware('auth');
     Route::get('Download/ot/{taqot}', 'Download_ot_report') -> name('ot.down') -> middleware('auth');
