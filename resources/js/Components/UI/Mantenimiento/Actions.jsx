@@ -1,6 +1,5 @@
 import EditMtto from "@/Components/forms/Mantenimiento/FormEditMtto/FormEditMtto";
-import NewActMtto from "@/Components/forms/Mantenimiento/FormNewActividadMtto/FormNewActividadMtto";
-import Mantenimiento from "@/Pages/Mantenimiento/Informacion";
+import NewActMtto from "@/Components/forms/Mantenimiento/FormNewActividadMtto/FormNewActividadMtto"; 
 import { useState } from "react";
 
 const  Actions = ({ Mantenimiento, Responsables, onClose }) => {

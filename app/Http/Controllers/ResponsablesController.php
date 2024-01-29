@@ -58,7 +58,10 @@ class ResponsablesController extends Controller
                 return Inertia::render('Responsable',[
                     'Responsable' => responsable::with(
                         'Cargo',
-                        'Om',
+                        'Oma.Activos',
+                        'Omc.Componente',
+                        'Actividades_Oma.Actividad',
+                        'Actividades_Omc.Actividad',
                         'Documentos',
                         'DocumentosEliminados'
                     )->where('taqresponsable', 'LIKE', $taqresponsable)->get(),
@@ -69,6 +72,7 @@ class ResponsablesController extends Controller
                 return redirect()->route('home') -> with('error', 'Responsable no encontrado');
             }
         } catch (\Throwable $th) {
+            dd($th);
             return redirect()->route('home') -> with('error', 'Problema encontrando responsable'); 
         }
     }

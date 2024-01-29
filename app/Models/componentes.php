@@ -29,9 +29,10 @@ class componentes extends Model
         return $this->hasMany(mantenimientos_x_componentes::class,'taqComponente','taqComponente');
     }
 
-    public function Historial_Activos(){
+    public function Historial_uso(){
         return $this->belongsTo(componente_x_activos::class,'taqComponente','taqComponente');
     }
+    
     public function Galeria(){
         return $this->hasMany(galeria_x_componentes::class,'taqComponente','taqComponente');
     }

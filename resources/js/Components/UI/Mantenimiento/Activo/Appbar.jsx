@@ -2,14 +2,17 @@
 import ArrowIcon from '@/Components/Icons/arrow'; 
 import PointerIcon from '@/Components/Icons/pointer';
 
-const Appbar = ({ Nombre, ShowModal }) => {
- 
+const Appbar = ({ MttoData, ShowModal }) => { 
+  
   return (
     <div className='w-full h-[10%] sm:h-auto px-8 py-4 bg-[#385449] flex justify-start items-center justify-items-center gap-6'>
         <div className='w-full h-full sm:h-[150px] sm:px-8 md:py-4 bg-[#385449] flex justify-start items-center justify-items-center gap-6'>
           <div className=' w-full sm:w-[60%] h-auto text-white font-bold flex flex-col justify-center items-start smitems-center sm:items-start justify-items-center order-2'>
               {
-                Nombre ? <h3 className=' text-sm sm:text-base md:text-2xl'> Mantenimiento: { Nombre } </h3> : null
+                MttoData.Nombre ? <h3 className=' text-sm sm:text-base md:text-2xl'> { MttoData.Nombre } </h3> : null
+              } 
+              {
+                MttoData.descripcion ? <span> { MttoData.descripcion } </span> : null
               } 
           </div>
         </div>

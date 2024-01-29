@@ -3,16 +3,51 @@ import Actions from "@/Components/UI/Actions"
 import ButtonMenu from "@/Components/UI/Activo/ButtonMenu"  
 import Caracteristica_target from "@/Components/UI/Activo/Caracteristica_target"
 import AppbarOms from "@/Components/UI/Ots/Appbar" 
+import AsingWorker from "@/Components/forms/Mantenimiento/Actividades/AsingWorker"
 import SearchInput from "@/Components/UI/Search"
-import CreateMantenimiento from "@/Components/forms/Mantenimiento/CreateMantenimientoComponente"
-import EditOms from "@/Components/forms/Oms/EditOms" 
+import CreateMantenimiento from "@/Components/forms/Mantenimiento/CreateMantenimientoComponente" 
 import { useForm } from "@inertiajs/react"
 import { useEffect, useState } from "react"
+import EditActividades from "@/Components/forms/Mantenimiento/Actividades/EditActividades"
+import DeleteActividad from "@/Components/forms/Mantenimiento/Actividades/DeleteActividad"
+import EditOmcs from "@/Components/forms/Oms/EditOmcs"
 
-const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
+const OmsPage = ({ DataOms, ComponentesList, ResponsablesList, MantenimientosList }) => {
  
   const [CreateFormModal, setCreateFormModal] = useState(false)
+  const [actividad_selected, setactividad_selected] = useState('');
 
+  const [AsignarResponsableState, setAsignarResponsableState] = useState(false)
+  const [EditarActividadState, setEditarActividadState] = useState(false)
+  const [EliminarActividadState, setEliminarActividadState] = useState(false)
+
+  function ShowAsignarForm(){
+    setEliminarActividadState(false)
+    setEditarActividadState(false)
+    setAsignarResponsableState(true)
+  }
+  
+  function ShowEditarForm(){
+    setAsignarResponsableState(false)
+    setEliminarActividadState(false)
+    setEditarActividadState(true)
+  }
+  
+  function ShowEliminarForm(){
+    setAsignarResponsableState(false)
+    setEditarActividadState(false)
+    setEliminarActividadState(true)
+  }
+
+  const { data, post } = useForm()
+
+  function AprobeActividad(actividad_id){
+    data.actividad_id = actividad_id
+    data.taqom = DataOms[0].taqom
+    post('/actividad/omc/approbe')
+  }
+  
+  const [AccionesActividad, setAccionesActividad] = useState(false) 
   const [AccionesModal, setAccionesModal] = useState(false) 
   const [FormatosModal, setFormatosModal] = useState(false) 
   const [ShowModal, setShowModal] = useState(false)
@@ -42,10 +77,7 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
     setAcctionsButtons(false)
     setEditarOm(true)
   }
-
   
-  const { data, post } = useForm() 
-
   const Acciones = [{
       "id"         : "296215696",
       "label"      : "Editar Orden de mantenimiento",
@@ -57,40 +89,27 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
       "estate"     : 1,
       "function"   : () => { 
         data.taqom = DataOms[0].taqom 
-        post('/oms/close');
+        post('/omcs/close');
+        setShowModal(false)
       },
   }]
-  
-  const [ComponentesVinculadosPanel, setComponentesVinculadosPanel] = useState(true) 
+
   const [DocumentosPanel, setDocumentosPanel]                       = useState(false)
   const [DocumentosEliminadosPanel, setDocumentosEliminadosPanel]   = useState(false)
   const [MantenimientosPanel, setMantenimientosPanel]               = useState(false) 
      
   function ShowDefault(){
-    setComponentesVinculadosPanel(false)
     setDocumentosPanel(false)
     setDocumentosEliminadosPanel(false) 
     setMantenimientosPanel(false)
   }
-  
-  function ShowComponentes() {
-    if(ComponentesVinculadosPanel){
-      ShowDefault()
-    }else{
-      setDocumentosPanel(false)
-      setDocumentosEliminadosPanel(false) 
-      setMantenimientosPanel(false)
-      setComponentesVinculadosPanel(true)
-    }
-  }
-
+   
   function ShowDocumentos() {
     if(DocumentosPanel){      
       ShowDefault()
     }else{
       setDocumentosEliminadosPanel(false) 
       setMantenimientosPanel(false)
-      setComponentesVinculadosPanel(false)
       setDocumentosPanel(true)
     }
   }
@@ -100,7 +119,6 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
       ShowDefault()
     }else{
       setMantenimientosPanel(false)
-      setComponentesVinculadosPanel(false)
       setDocumentosPanel(false)
       setDocumentosEliminadosPanel(true) 
     }
@@ -110,13 +128,12 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
     if(MantenimientosPanel){
       ShowDefault()
     }else{
-      setComponentesVinculadosPanel(false)
       setDocumentosPanel(false)
       setDocumentosEliminadosPanel(false) 
       setMantenimientosPanel(true)
     }
   } 
- 
+  
   const DocumentosData = [];
   DataOms.forEach(Om => { 
     Om.documentos.forEach(DocumentosData => {
@@ -141,25 +158,32 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
     });
   }); 
 
-  const MantenimientosData = [];
-  DataOms.forEach(Om => {  
-    Om.mantenimientos.forEach(MttoData => {
-      MantenimientosData.push({
-        taqmantenimiento  : MttoData.taqmantenimiento,
-        taqom             : MttoData.taqom,
-        Nombre            : MttoData.Nombre,
-        Descripcion       : MttoData.Descripcion, 
-        tipe              : MttoData.tipe
+  const ActividadesData = [];
+  DataOms.forEach(Om => {
+    Om.actividades.forEach(ActData => {  
+      const ultimoResponsable = ActData.responsable.length > 0
+        ? ActData.responsable[ActData.responsable.length - 1].responsable
+        : null; 
+      const nombreResponsable = ultimoResponsable ? ultimoResponsable.nombre : ''; 
+      ActividadesData.push({
+        actividad_id   : ActData.actividad_id,
+        nombre         : ActData.nombre,
+        estado         : ActData.estado,
+        descripcion    : ActData.descripcion,
+        responsable    : nombreResponsable,
+        sistema        : ActData.sistema,
+        frecuencia     : ActData.frecuencia, 
+        tipofrecuencia : ActData.tipofrecuencia
       });
     });
-  }); 
+  });
 
-  useEffect(() => {  
+  useEffect(() => {
     setDocumentosFiltrados(DocumentosData)
     setDocumentosEliminadosFiltrados(DocumentosEliminadosData)
-    setMantenimientosFiltrados(MantenimientosData)
+    setActividadesFiltrados(ActividadesData)
   }, [DataOms])
- 
+  
   const [DocumentosFiltrados, setDocumentosFiltrados] = useState();
   const FiltroDocumentos = ( searchTerm ) => {
     const filtered = DocumentosData.filter((data) => { 
@@ -194,23 +218,29 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
     setDocumentosEliminadosFiltrados(filtered);
   };
 
-  const [MantenimientosFiltrados, setMantenimientosFiltrados] = useState();
-  const FiltroMantenimientos = ( searchTerm ) => {
-    const filtered = DocumentosData.filter((data) => {
-        const taqmantenimiento  =  MttoData.taqmantenimiento.toLowerCase();
-        const taqom             =  MttoData.taqom.toLowerCase();
-        const Nombre            =  MttoData.Nombre.toLowerCase();
-        const Descripcion       =  MttoData.Descripcion.toLowerCase(); 
-        const tipe              =  MttoData.tipe.toLowerCase();
+  const [ActividadesFiltrados, setActividadesFiltrados] = useState();
+  const FiltroActividades = ( searchTerm ) => {
+    const filtered = ActividadesData.filter((ActData) => {
+        const actividad_id   = ActData.actividad_id.toLowerCase();
+        const nombre         = ActData.nombre.toLowerCase();
+        const estado         = ActData.estado.toLowerCase();
+        const descripcion    = ActData.descripcion.toLowerCase();
+        const responsable    = ActData.responsable.nombre.toLowerCase();
+        const sistema        = ActData.sistema.toLowerCase();
+        const frecuencia     = ActData.frecuencia.toLowerCase(); 
+        const tipofrecuencia = ActData.tipofrecuencia.toLowerCase();
         return (
-          taqmantenimiento.includes(searchTerm) ||
-          taqom.includes(searchTerm)            ||
-          Nombre.includes(searchTerm)           ||
-          Descripcion.includes(searchTerm)      ||
-          tipe.includes(searchTerm)
+          actividad_id.includes(searchTerm)   ||
+          nombre.includes(searchTerm)         ||
+          estado.includes(searchTerm)         ||
+          descripcion.includes(searchTerm)    ||
+          responsable.includes(searchTerm)    ||
+          sistema.includes(searchTerm)        ||
+          frecuencia.includes(searchTerm)     ||
+          tipofrecuencia.includes(searchTerm)
         );
     });
-    FiltroMantenimientos(filtered);
+    setActividadesFiltrados(filtered);
   };
   
   const Data = [{  
@@ -232,6 +262,11 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
   }]
 
   const Buttons = [{
+    "id"         : '8842172',
+    "label"      : "Actividades de mantenimiento",
+    "Myfunction" : ShowMantenimientos,
+    "estado"     : MantenimientosPanel
+  },{
     "id"         : '030963498',
     "label"      : "Documentos",
     "Myfunction" : ShowDocumentos,
@@ -241,42 +276,8 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
     "label"      : "Documentos Eliminados",
     "Myfunction" : ShowDocumentosEliminados,
     "estado"     : DocumentosEliminadosPanel
-  },{
-    "id"         : '8842172',
-    "label"      : "Mantenimientos",
-    "Myfunction" : ShowMantenimientos,
-    "estado"     : MantenimientosPanel
   }]
- 
-  const Panels = [{
-    "id"         : "6b4fe94b95bb902a15", 
-    "Tittle"     : "Componentes", 
-    "Data"       : "", 
-    "State"      : ComponentesVinculadosPanel,
-    "add"        : true
-  },
-  {
-    "id"         : "feddc0dab45263a21a", 
-    "Tittle"     : "Documentos", 
-    "Data"       : "", 
-    "State"      : DocumentosPanel,
-    "add"        : true
-  },
-  {
-    "id"         : "8acfc6e23005040812", 
-    "Tittle"     : "Documentos Eliminados", 
-    "Data"       : "", 
-    "State"      : DocumentosEliminadosPanel,
-    "add"        : false
-  },
-  {
-    "id"         : "be83a6a6312252cfa2ef", 
-    "Tittle"     : "Actividades Mantenimientos", 
-    "Data"       : DataOms[0].mantenimientos, 
-    "State"      : MantenimientosPanel,
-    "add"        : true
-  }]
-
+  
   return (
     <main className='w-full h-screen overflow-hidden  flex flex-col justify-start items-center '>
       <AppbarOms
@@ -358,20 +359,75 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
           }
           {
             MantenimientosPanel ? (
-              <div key = {`MttoSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+              <div key = {`MttoActividadesPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
                 <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
-                  <SearchInput SearchFunction = { FiltroMantenimientos } /> 
+                  <SearchInput SearchFunction = { FiltroActividades } /> 
                   <div onClick = { ShowModal } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
-                    Agregar Nuevo Mtto
+                    Agregar Nueva actividad
                   </div> 
                 </div>                
                 <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
                   { 
-                    MantenimientosFiltrados ? (
-                      MantenimientosFiltrados.map((data) => (
-                        <div key={data.taqmantenimiento} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                          { data.nombre }
-                        </div>
+                    ActividadesFiltrados ? (
+                      ActividadesFiltrados.map((data) => (
+                        <div key = { data.actividad_id } className='w-full h-auto flex justify-between items-center border border-black cursor-pointer px-4 py-2'>
+                          <div className="w-auto flex flex-col justify-start items-start gap-2">
+                            <span className='w-auto h-full font-bold text-lg '>
+                              { data.nombre }
+                            </span>
+                            <span className='w-auto h-full '>
+                              { data.descripcion }
+                            </span>
+                            <span className='w-auto h-full '>
+                              { data.responsable }
+                            </span>
+                          </div>
+                          {
+                            data.estado != 'COMPLETADA' ? (
+                              <div className='w-[200px] h-full  flex flex-col justify-center items-center gap-1'> 
+                                { 
+                                  data.responsable ? (
+                                    <span 
+                                      onClick = {() => AprobeActividad(data.actividad_id) } 
+                                      className='w-full h-auto px-4 py-2 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-green-500 hover:bg-green-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
+                                      Finalizar Actividad
+                                    </span>
+                                  ) : (
+                                    <span 
+                                      onClick = {()=>{
+                                        ShowAsignarForm()
+                                        setactividad_selected(data.actividad_id)
+                                        setAccionesActividad(true)
+                                      }} 
+                                      className='w-full h-auto px-4 py-2 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-green-500 hover:bg-green-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
+                                      Asignar Responsable  
+                                    </span>
+                                  )
+                                }
+                                <span onClick = {()=>{
+                                  setactividad_selected(data.actividad_id)
+                                  setAccionesActividad(true)
+                                  ShowEditarForm()
+                                }} 
+                                  className='w-full h-auto px-4 py-2 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-yellow-500 hover:bg-yellow-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
+                                  Editar  
+                                </span>
+                                <span 
+                                  onClick = {()=>{
+                                    ShowEliminarForm()
+                                    setAccionesActividad(true)
+                                  }} 
+                                  className='w-full h-auto px-4 py-2 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-red-500 hover:bg-red-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
+                                  Eliminar
+                                </span>
+                              </div>
+                            ) : (
+                              <>
+                                Actividad Finalizada
+                              </>
+                            )
+                          }
+                        </div> 
                       ))
                     ) : null
                   }
@@ -395,9 +451,11 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
             >
               {
                 EditarOm ? (
-                  <EditOms
-                    Activos = { ActivosList }
-                    Om = { DataOms[0] }
+                  <EditOmcs
+                    Componentes = { ComponentesList }
+                    Mantenimientos = { MantenimientosList }
+                    Omc = { DataOms[0] }
+                    Tipe = { `Ninguna` } 
                     Responsables = { ResponsablesList }
                     onClose = { () => setShowModal(false) }
                   />
@@ -427,6 +485,43 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
             />
           ) : null
         }
+      </Modal>
+      <Modal
+        isVisible = { AccionesActividad }
+        onClose = { () => setAccionesActividad(false) }
+        tittle = {`Asignar trabajador`}
+      >
+        {
+          AsignarResponsableState ? (
+            <AsingWorker 
+              actividad_id = { actividad_selected }
+              Responsables = { ResponsablesList } 
+              onClose = { () => setAccionesActividad(false) } 
+              taqom = { DataOms[0].taqom } 
+              route = {`/actividad/omc/asing`} 
+            />
+          ) : null
+        }
+        {
+          EditarActividadState ? (
+            <EditActividades 
+              onClose = { () => setAccionesActividad(false) } 
+              Actividad = { actividad_selected }
+              taqom = { DataOms[0].taqom } 
+              route = {`/actividad/omc/update`} 
+            />
+          ) : null
+        }
+        {
+          EliminarActividadState ? (
+            <DeleteActividad 
+              Actividad = { actividad_selected }
+              taqom = { DataOms[0].taqom }
+              onClose = { () => setAccionesActividad(false) }
+              route = {`/actividad/omc/delete`} 
+            />
+          ) : null
+        }        
       </Modal>       
     </main>
   )

@@ -191,11 +191,17 @@ Route::controller(act_x_mantenimientoComponenteController::class)->group(functio
 });
   
 Route::controller(act_x_omasController::class)->group(function () { 
-    Route::post('/actividades/omas/asing/worker', 'asing') -> name('actividad.omas.asing') -> middleware('auth');
+    Route::post('/actividad/oma/asing', 'asing')     -> name('actividad.omas.asing')   -> middleware('auth');
+    Route::post('/actividad/oma/approbe', 'approbe') -> name('actividad.omas.approbe') -> middleware('auth');
+    Route::post('/actividad/oma/update', 'update')   -> name('actividad.omas.update')  -> middleware('auth');
+    Route::post('/actividad/oma/delete', 'delete')   -> name('actividad.omas.delete')  -> middleware('auth');
 });
 
 Route::controller(act_x_omcsController::class)->group(function () { 
-    Route::post('/actividades/omcs/asing/worker', 'asing') -> name('actividad.omcs.asing') -> middleware('auth');
+    Route::post('/actividad/omc/asing', 'asing')     -> name('actividad.omcs.asing')   -> middleware('auth');
+    Route::post('/actividad/omc/approbe', 'approbe') -> name('actividad.omcs.approbe') -> middleware('auth');
+    Route::post('/actividad/omc/update', 'update')   -> name('actividad.omcs.update')  -> middleware('auth');
+    Route::post('/actividad/omc/delete', 'delete')   -> name('actividad.omcs.delete')  -> middleware('auth');
 });
 
 Route::controller(ExcelController::class)->group(function () {

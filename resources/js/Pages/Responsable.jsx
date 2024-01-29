@@ -84,20 +84,32 @@ const ResponsablePage= ({ Responsable }) => {
   }]
  
   const [ActividadesPanel, setActividadesPanel] = useState(true) 
+  const [OmasResponsablePanel, setOmasResponsablePanel] = useState(false) 
+  const [OmcsResponsablePanel, setOmcsResponsablePanel] = useState(false) 
+  const [ActividadesOmaPanel, setActividadesOmaPanel] = useState(false) 
+  const [ActividadesOmcPanel, setActividadesOmcPanel] = useState(false) 
   const [DocumentosPanel, setDocumentosPanel] = useState(false)
   const [DocumentosEliminadosPanel, setDocumentosEliminadosPanel] = useState(false);
      
   function ShowDefault(){
     setActividadesPanel(false)
     setDocumentosPanel(false)
+    setOmasResponsablePanel(false)
+    setOmcsResponsablePanel(false)
+    setActividadesOmaPanel(false)
+    setActividadesOmcPanel(false)
     setDocumentosEliminadosPanel(false)
   }
   
   function ShowActividades() {
     if(ActividadesPanel){
       ShowDefault()
-    }else{     
+    }else{       
       setDocumentosPanel(false)
+      setOmasResponsablePanel(false)
+      setOmcsResponsablePanel(false)
+      setActividadesOmaPanel(false)
+      setActividadesOmcPanel(false)
       setDocumentosEliminadosPanel(false)
       setActividadesPanel(true)
     }
@@ -106,8 +118,12 @@ const ResponsablePage= ({ Responsable }) => {
   function ShowDocumentos() {
     if(DocumentosPanel){
       ShowDefault()
-    }else{    
-      setActividadesPanel(false)
+    }else{     
+      setActividadesPanel(false) 
+      setOmasResponsablePanel(false)
+      setOmcsResponsablePanel(false)
+      setActividadesOmaPanel(false)
+      setActividadesOmcPanel(false)
       setDocumentosEliminadosPanel(false)
       setDocumentosPanel(true)
     }
@@ -116,18 +132,93 @@ const ResponsablePage= ({ Responsable }) => {
   function ShowDocumentosEliminados() {
     if(DocumentosEliminadosPanel){
       ShowDefault()
-    }else{    
+    }else{     
       setActividadesPanel(false)
       setDocumentosPanel(false)
+      setOmasResponsablePanel(false)
+      setOmcsResponsablePanel(false)
+      setActividadesOmaPanel(false)
+      setActividadesOmcPanel(false) 
       setDocumentosEliminadosPanel(true)
     }
   }
 
+  function ShowOmas() {
+    if(OmasResponsablePanel){
+      ShowDefault()
+    }else{     
+      setActividadesPanel(false)
+      setDocumentosPanel(false)
+      setOmcsResponsablePanel(false)
+      setActividadesOmaPanel(false)
+      setActividadesOmcPanel(false) 
+      setDocumentosEliminadosPanel(false)
+      setOmasResponsablePanel(true)
+    }
+  }
+
+  function ShowOmcs() {
+    if(OmcsResponsablePanel){
+      ShowDefault()
+    }else{     
+      setActividadesPanel(false)
+      setDocumentosPanel(false)
+      setActividadesOmaPanel(false)
+      setActividadesOmcPanel(false) 
+      setDocumentosEliminadosPanel(false)
+      setOmasResponsablePanel(false)
+      setOmcsResponsablePanel(true)
+    }
+  }
+
+  function ShowActividadesOma() {
+    if(ActividadesOmaPanel){
+      ShowDefault()
+    }else{     
+      setActividadesPanel(false)
+      setDocumentosPanel(false)
+      setActividadesOmcPanel(false) 
+      setDocumentosEliminadosPanel(false)
+      setOmasResponsablePanel(false)
+      setOmcsResponsablePanel(false)
+      setActividadesOmaPanel(true)
+    }
+  }
+  
+  function ShowActividadesOmc() {
+    if(ActividadesOmcPanel){
+      ShowDefault()
+    }else{     
+      setActividadesPanel(false)
+      setDocumentosPanel(false)
+      setActividadesOmaPanel(false) 
+      setDocumentosEliminadosPanel(false)
+      setOmasResponsablePanel(false)
+      setOmcsResponsablePanel(false)
+      setActividadesOmcPanel(true)
+    }
+  }
+
   const Buttons = [{  
-    "id"         : '16256256',
-    "label"      : "Actividades",
-    "Myfunction" : ShowActividades,
-    "estado"     : ActividadesPanel
+    "id"         : '16123256256',
+    "label"      : "Mantenimientos Activos",
+    "Myfunction" : ShowOmas,
+    "estado"     : OmasResponsablePanel
+  },{  
+    "id"         : '16256212356',
+    "label"      : "Actividades Activos",
+    "Myfunction" : ShowActividadesOma,
+    "estado"     : ActividadesOmaPanel
+  },{  
+    "id"         : '1625634256',
+    "label"      : "Mantenimientos Componentes",
+    "Myfunction" : ShowOmcs,
+    "estado"     : OmcsResponsablePanel
+  },{  
+    "id"         : '16qw12256256',
+    "label"      : "Actividades Componentes",
+    "Myfunction" : ShowActividadesOmc,
+    "estado"     : ActividadesOmcPanel
   },{
     "id"         : '030963498',
     "label"      : "Documentos",
@@ -140,23 +231,57 @@ const ResponsablePage= ({ Responsable }) => {
     "estado"     : DocumentosEliminadosPanel
   }]
  
-  const ActividadesData = [];
-  Responsable.forEach(object => { 
-    object.om.forEach(data => {
-      ActividadesData.push({
+  const OrdenesMttoActivos = [];
+  Responsable.forEach(object => {
+    object.oma.forEach(data => {
+      OrdenesMttoActivos.push({
         taqom       : data.taqom,
-        taqActivos  : data.taqActivos,
-        fechainicio : data.fechainicio,
-        horainicio  : data.horainicio,
-        fechafin    : data.fechafin,
-        horafin     : data.horafin,
-        tipo        : data.tipo,
-        prioridad   : data.prioridad,
+        activo      : data.activos.nombre,
+        taqActivos  : data.activos.taqActivos,
         estado      : data.estado,
         descripcion : data.descripcion,
       });
     });
-  }); 
+  });
+  
+  const OrdenesMttoComponentes = [];
+  Responsable.forEach(object => {
+    object.omc.forEach(data => {
+      OrdenesMttoComponentes.push({
+        taqom         : data.taqom,
+        componente    : data.componente.nombre,
+        taqComponente : data.componente.taqComponente,
+        estado        : data.estado,
+        descripcion   : data.descripcion,
+      });
+    });
+  });
+
+  const ActividadesOma = [];
+  Responsable.forEach(object => { 
+    object.actividades__oma.forEach(data => {
+      ActividadesOma.push({
+        actividad_id : data.actividad.actividad_id,
+        taqom        : data.actividad.taqom,
+        nombre       : data.actividad.nombre,
+        descripcion  : data.actividad.descripcion,
+        estado       : data.actividad.estado,
+      });
+    });
+  });
+
+  const ActividadesOmc = [];
+  Responsable.forEach(object => {
+    object.actividades__omc.forEach(data => {
+      ActividadesOmc.push({
+        actividad_id : data.actividad.actividad_id,
+        taqom        : data.actividad.taqom,
+        nombre       : data.actividad.nombre,
+        descripcion  : data.actividad.descripcion,
+        estado       : data.actividad.estado,
+      });
+    });
+  });
 
   const DocumentosData = [];
   Responsable.forEach(object => { 
@@ -167,7 +292,7 @@ const ResponsablePage= ({ Responsable }) => {
         DocURL     : data.DocURL, 
       });
     });
-  }); 
+  });
 
   const DocumentosEliminadosData = []; 
   Responsable.forEach(object => { 
@@ -182,36 +307,88 @@ const ResponsablePage= ({ Responsable }) => {
   }); 
 
   useEffect(() => {
-    setMantenimientosFiltrados(ActividadesData)
+    setOmas(OrdenesMttoActivos)
+    setOmas(OrdenesMttoComponentes)
+    setActsOma(ActividadesOma)
+    setActsOmc(ActividadesOmc)
     setDocumentosFiltrados(DocumentosData)
     setDocumentosEliminadosFiltrados(DocumentosEliminadosData)
   }, [Responsable])
 
-  const [MantenimientosFiltrados, setMantenimientosFiltrados] = useState();
-  const FiltroMantenimiento = ( searchTerm ) => {
-    const filtered = MantenimientosData.filter((data) => {
-        const taqActivos  = data.taqActivos.toLowerCase();
-        const fechainicio = data.fechainicio.toLowerCase();
-        const horainicio  = data.horainicio.toLowerCase();
-        const fechafin    = data.fechafin.toLowerCase();
-        const horafin     = data.horafin.toLowerCase();
-        const tipo        = data.tipo.toLowerCase();
-        const prioridad   = data.prioridad.toLowerCase();
+  const [Omas, setOmas] = useState();
+  const FiltroOmas = ( searchTerm ) => {
+    const filtered = OrdenesMttoActivos.filter((data) => {
+        const taqom       = data.taqom.toLowerCase();
+        const activo      = data.activos.nombre.toLowerCase();
+        const taqActivos  = data.activos.taqActivos.toLowerCase();
         const estado      = data.estado.toLowerCase();
         const descripcion = data.descripcion.toLowerCase();
         return (
-          taqActivos.includes(searchTerm)    ||
-          fechainicio.includes(searchTerm)   ||
-          horainicio.includes(searchTerm)    ||
-          fechafin.includes(searchTerm)      ||
-          horafin.includes(searchTerm)       ||
-          tipo.includes(searchTerm)          ||
-          prioridad.includes(searchTerm)     ||
-          estado.includes(searchTerm)        ||   
+          taqActivos.includes(searchTerm)  ||
+          activo.includes(searchTerm)      ||
+          taqom.includes(searchTerm)       || 
+          estado.includes(searchTerm)      ||   
           descripcion.includes(searchTerm)      
         );
     });
-    setMantenimientosFiltrados(filtered);
+    setOmas(filtered);
+  };
+
+  const [Omcs, setOmcs] = useState();
+  const FiltroOmcs = ( searchTerm ) => {
+    const filtered = OrdenesMttoComponentes.filter((data) => {
+        const taqom         = data.taqom.toLowerCase();
+        const componente    = data.componente.nombre.toLowerCase();
+        const taqComponente = data.componente.taqComponente.toLowerCase();
+        const estado        = data.estado.toLowerCase();
+        const descripcion   = data.descripcion.toLowerCase();
+        return (
+          taqActivos.includes(searchTerm)  ||
+          activo.includes(searchTerm)      ||
+          taqom.includes(searchTerm)       || 
+          estado.includes(searchTerm)      ||   
+          descripcion.includes(searchTerm)      
+        );
+    });
+    setOmcs(filtered);
+  };
+ 
+  const [ActsOma, setActsOma] = useState();
+  const FiltroActsOma = ( searchTerm ) => {
+    const filtered = ActividadesOma.filter((data) => {
+        const actividad_id = data.actividad_id.toLowerCase();
+        const taqom        = data.taqom.toLowerCase();
+        const nombre       = data.nombre.toLowerCase();
+        const descripcion  = data.descripcion.toLowerCase();
+        const estado       = data.estado.toLowerCase();
+        return (
+          actividad_id.includes(searchTerm) ||
+          taqom.includes(searchTerm)        ||
+          nombre.includes(searchTerm)       || 
+          estado.includes(searchTerm)       ||   
+          descripcion.includes(searchTerm)      
+        );
+    });
+    setActsOma(filtered);
+  };
+
+  const [ActsOmc, setActsOmc] = useState();
+  const FiltroActsOmc = ( searchTerm ) => {
+    const filtered = ActividadesOmc.filter((data) => {
+        const actividad_id = data.actividad_id.toLowerCase();
+        const taqom        = data.taqom.toLowerCase();
+        const nombre       = data.nombre.toLowerCase();
+        const descripcion  = data.descripcion.toLowerCase();
+        const estado       = data.estado.toLowerCase();
+        return (
+          actividad_id.includes(searchTerm) ||
+          taqom.includes(searchTerm)        ||
+          nombre.includes(searchTerm)       || 
+          estado.includes(searchTerm)       ||   
+          descripcion.includes(searchTerm)    
+        );
+    });
+    setActsOmc(filtered);
   };
 
   const [DocumentosFiltrados, setDocumentosFiltrados] = useState();
@@ -267,53 +444,108 @@ const ResponsablePage= ({ Responsable }) => {
         </div>
         <div className='w-full h-full gap-2 flex flex-col justify-start items-center'>
           {
-            ActividadesPanel ? (
-              <div key = {`ActividadesSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+            OmasResponsablePanel ? (
+              <div key = {`OmasResponsablePanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
                 <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
-                  <SearchInput SearchFunction = { <div key = {`MantenimientoSectionPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
-                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
-                  <SearchInput SearchFunction = { FiltroMantenimiento } />
+                  <SearchInput SearchFunction = { FiltroOmas } />
                   <div onClick = { () => setCreateFormModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
-                    Agregar Nuevo Mantenimiento
+                    Agregar Nuevo Mantenimiento de Activo
                   </div> 
                 </div>
                 <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
                   { 
-                    MantenimientosFiltrados ? (
-                      MantenimientosFiltrados.map((data) => (
-                        <Link key={data.taqom} href={`/oms/${data.taqom}`} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                          <div className='w-full flex flex-col sm:flex-row  justify-between sm:items-center items-start'>
-                              <div className='w-full sm:w-[80%] flex flex-col gap-3'>
-                                  <span className={`${data.estado === 'EN PROCESO' ? 'text-red-500' : 'text-green-500' } font-semibold`}> { data.taqom } </span>
-                                  <span> { data.descripcion } </span>
-                              </div>
-                              <div className='w-full sm:w-[20%]'>
-                                  {data.responsable}
-                              </div>
+                    Omas ? (
+                      Omas.map((data) => (
+                        <Link href={`/omas/${data.taqom}`} key = { data.taqom } className='w-full h-auto flex flex-col justify-center items-star bg-white border border-black px-4 py-2 cursor-pointer '>
+                          <div className = {`font-bold ${data.estado != 'FINALIZADO' ? 'text-red-500' : 'text-green-500'} `} >
+                            { data.taqom }
+                          </div>
+                          <div>
+                            { data.descripcion }
                           </div>
                         </Link>
                       ))
                     ) : null
                   }
                 </div>
-              </div> } />
+              </div>
+            ) : null
+          }
+          {
+            OmcsResponsablePanel ? (
+              <div key = {`OmasResponsablePanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroOmcs } />
                   <div onClick = { () => setCreateFormModal(true) } className='w-full sm:w-auto h-auto text-center flex justify-center items-center px-2 py-1 border border-black hover:border-white rounded-md text-sm bg-green-500 hover:bg-green-800 text-white cursor-pointer duration-700 ease-in-out'>
-                    Agregar Nuevo Mantenimiento
+                    Agregar Nuevo Mantenimiento de Componente
                   </div> 
                 </div>
                 <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
                   { 
-                    MantenimientosFiltrados ? (
-                      MantenimientosFiltrados.map((data) => (
-                        <Link key={data.taqom} href={`/oms/${data.taqom}`} className='w-full h-auto flex  justify-between items-center bg-white border border-black px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition duration-700 ease-in-out'>
-                          <div className='w-full flex flex-col sm:flex-row  justify-between sm:items-center items-start'>
-                              <div className='w-full sm:w-[80%] flex flex-col gap-3'>
-                                  <span className={`${data.estado === 'EN PROCESO' ? 'text-red-500' : 'text-green-500' } font-semibold`}> { data.taqom } </span>
-                                  <span> { data.descripcion } </span>
-                              </div>
-                              <div className='w-full sm:w-[20%]'>
-                                  {data.responsable}
-                              </div>
+                    Omcs ? (
+                      Omcs.map((data) => (
+                        <Link href={`/omcs/${data.taqom}`} key = { data.taqom } className='w-full h-auto flex flex-col justify-center items-star bg-white border border-black px-4 py-2 cursor-pointer '>
+                          <div className = {`font-bold ${data.estado != 'FINALIZADO' ? 'text-red-500' : 'text-green-500'} `} >
+                            { data.taqom }
+                          </div>
+                          <div>
+                            { data.descripcion }
+                          </div>
+                        </Link>
+                      ))
+                    ) : null
+                  }
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            ActividadesOmaPanel ? (
+              <div key = {`ActividadesOmaPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroActsOma } /> 
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    ActsOma ? (
+                      ActsOma.map((data) => (
+                        <Link href={`/omas/${data.taqom}`} key = { data.taqom } className='w-full h-auto flex flex-col justify-center items-star bg-white border border-black px-4 py-2 cursor-pointer '>
+                          <div className = {`font-bold ${data.estado != 'FINALIZADO' ? 'text-red-500' : 'text-green-500'} `} >
+                           Actividad: { data.nombre }
+                          </div>
+                          <div>
+                            { data.descripcion }
+                          </div>
+                          <div>
+                            { data.taqom }
+                          </div>
+                        </Link>
+                      ))
+                    ) : null
+                  } 
+                </div>
+              </div>
+            ) : null
+          }
+          {
+            ActividadesOmcPanel ? (
+              <div key = {`ActividadesOmcPanel`} className='w-full h-full flex flex-col justify-start items-center justify-items-center gap-2 p-4 overflow-y-auto'>
+                <div className='w-full h-auto flex flex-col sm:flex-row justify-center items-center gap-3 px-2 py-1'>
+                  <SearchInput SearchFunction = { FiltroActsOmc } /> 
+                </div>
+                <div className={`w-full h-full flex flex-col justify-start items-center gap-2 py-1 px-4  overflow-hidden overflow-y-auto`}>
+                  { 
+                    ActsOmc ? (
+                      ActsOmc.map((data) => (
+                        <Link href={`/omcs/${data.taqom}`} key = { data.taqom } className='w-full h-auto flex flex-col justify-center items-star bg-white border border-black px-4 py-2 cursor-pointer '>
+                          <div className = {`font-bold ${data.estado != 'FINALIZADO' ? 'text-red-500' : 'text-green-500'} `} >
+                           Actividad: { data.nombre }
+                          </div>
+                          <div>
+                            { data.descripcion }
+                          </div>
+                          <div>
+                            { data.taqom }
                           </div>
                         </Link>
                       ))

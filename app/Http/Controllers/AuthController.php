@@ -36,7 +36,7 @@ class AuthController extends Controller
             'Componentes'                => componentes::all(),
             'Documentos'                 => docs::all(),
             'Cargos'                     => cargos::with('Responsables')->get(), 
-            'Responsables'               => responsable::with('cargo')->get(),
+            'Responsables'               => responsable::with('cargo')->where('estado','LIKE','VIGENTE')->get(),
             'Rigs'                       => rigs::with('Movimientos.Activo')->get()
         ]);
     }

@@ -83,7 +83,7 @@ class ActivosController extends Controller
                     "oms" => oma::all(),
                     "Componentes" => componentes::all(),
                     "CategoriasActivo" => categorias_activo::all(),
-                    "Responsables" => responsable::all()
+                    "Responsables" => responsable::where('estado','LIKE','VIGENTE')->get()
                 ]); 
             }else{
                 return redirect()->route('home') -> with('error', 'Activo no encontrado');

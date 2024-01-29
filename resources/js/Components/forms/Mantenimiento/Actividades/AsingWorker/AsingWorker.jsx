@@ -5,8 +5,8 @@ import { initialValue, validationSchema } from './AsingWorker.form';
 import { useForm } from '@inertiajs/react';
 import { useState } from "react"; 
 
-const AsingWorker = ({ onClose, Responsables, route }) =>  {
-  
+const AsingWorker = ({ onClose, Responsables, route, taqom, actividad_id }) =>  {
+   
   const { data, post } = useForm()
   const [filtro, setFiltro] = useState("");
   
@@ -15,12 +15,10 @@ const AsingWorker = ({ onClose, Responsables, route }) =>  {
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      data.nombre           = formValue.nombre
-      data.descripcion      = formValue.Descripcion
-      data.sistema          = formValue.sistema 
-      data.frecuencia       = formValue.frecuencia
-      data.tipofrecuencia   = Mantenimiento[0].tipe
-      data.taqMantenimiento = Mantenimiento[0].taqMantenimiento 
+      data.actividad_id    = actividad_id,
+      data.taqresponsable  = formValue.taqresponsable
+      data.taqom           = taqom  
+      console.log(data)
       post(route)
       onClose();
     }
@@ -54,8 +52,7 @@ const AsingWorker = ({ onClose, Responsables, route }) =>  {
               id="taqresponsable"
               value={formik.values.taqresponsable} 
               onChange={(e) => {
-                  formik.handleChange(e);
-                  formik.setFieldValue('taqresponsable', e.target.value.toUpperCase());
+                  formik.handleChange(e); 
               }} 
               className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.taqresponsable && formik.errors.taqresponsable ? 'border-red-500' : 'border-black' }`}
             >

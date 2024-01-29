@@ -72,7 +72,7 @@ class ComponentesController extends Controller
             if( $exist === 1 ){ 
                 return Inertia::render('Componente',[
                     'ComponentesData'  => componentes::with(
-                        'Historial_Activos.Activos',
+                        'Historial_uso.Activos',
                         'Actividad_Mantenimiento',
                         'Galeria', 
                         'Categoria',
@@ -89,6 +89,7 @@ class ComponentesController extends Controller
                 return redirect()->route('home') -> with('error', 'Componente no encontrado');
             }
         } catch (\Throwable $th) {
+            dd($th);
             return redirect()->route('home') -> with('error', 'Problema encontrando componente');
         }
     }

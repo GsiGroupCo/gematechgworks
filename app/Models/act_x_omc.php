@@ -15,7 +15,6 @@ class act_x_omc extends Model
         'actividad_id',
         'taqom',
         'taqMantenimiento',
-        'taqresponsable',
         'nombre',
         'descripcion',
         'estado'
@@ -28,6 +27,6 @@ class act_x_omc extends Model
         return $this->belongsTo(mantenimientos_x_componentes::class,'taqMantenimiento', 'taqMantenimiento');
     } 
     public function Responsable(){
-        return $this->belongsTo(responsable::class,'taqresponsable', 'taqresponsable');
+        return $this->hasMany(act_x_omc_x_responsable::class,'actividad_id', 'actividad_id');
     } 
 }

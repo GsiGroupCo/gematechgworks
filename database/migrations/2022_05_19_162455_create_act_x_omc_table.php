@@ -12,8 +12,7 @@ class CreateActXOmcTable extends Migration
         Schema::create('act_x_omc', function (Blueprint $table) {
             $table->string('actividad_id')->unique();
             $table->string('taqom');
-            $table->string('taqMantenimiento');
-            $table->string('taqresponsable')->nullable();
+            $table->string('taqMantenimiento'); 
             $table->string('nombre');
             $table->string('descripcion');
             $table->string('estado');
@@ -22,8 +21,7 @@ class CreateActXOmcTable extends Migration
 
         Schema::table('act_x_omc', function (Blueprint $table) {
             $table->foreign('taqom')->references('taqom')->on('omcs');
-            $table->foreign('taqMantenimiento')->references('taqMantenimiento')->on('mantenimientos_x_componentes');
-            $table->foreign('taqresponsable')->references('taqresponsable')->on('responsables');
+            $table->foreign('taqMantenimiento')->references('taqMantenimiento')->on('mantenimientos_x_componentes'); 
         });
     }
 

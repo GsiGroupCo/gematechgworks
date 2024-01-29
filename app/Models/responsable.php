@@ -17,7 +17,6 @@ class responsable extends Authenticatable
         'urlImage',
     ];
  
-
    public function Cargo(){
       return $this->belongsTo(cargos::class, 'cargo_id', 'cargo_id');
    }
@@ -36,13 +35,14 @@ class responsable extends Authenticatable
      
    public function DocumentosEliminados(){
       return $this->hasMany(docs_x_responsables_eli::class, 'taqresponsable', 'taqresponsable');
-   }
+   } 
 
-   public function Actividades_Mtto_Activo(){
-      return $this->hasMany(act_x_oma::class, 'taqresponsable', 'taqresponsable');
-   }
+   public function Actividades_Oma(){
+      return $this->hasMany(act_x_oma_x_responsable::class,'taqresponsable', 'taqresponsable');
+   } 
 
-   public function Actividades_Mtto_Componente(){
-      return $this->hasMany(act_x_omc::class, 'taqresponsable', 'taqresponsable');
-   }
+   public function Actividades_Omc(){
+      return $this->hasMany(act_x_omc_x_responsable::class,'taqresponsable', 'taqresponsable');
+   } 
+
 }

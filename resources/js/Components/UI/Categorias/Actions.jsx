@@ -53,7 +53,7 @@ const  Actions = ({ onClose, taqresponsable }) => {
 
     const Acciones = [{  
         "id"         : '127562',
-        "label"      : "Editar Informacion",
+        "label"      : "Editar ",
         "estate"     : 2,
         "function"   : ShowEdit,
     },{  

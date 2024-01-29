@@ -1,11 +1,10 @@
 import { useFormik } from "formik";
-import { initialValue, validationSchema } from './CreateOmcs.form';
+import { initialValue, validationSchema } from './EditOmcs.form';
 import { useForm } from '@inertiajs/react'
 import { useState } from "react"; 
 
-const CreateOmc  = ({ onClose, Responsables, LastOma, Componentes, Tipe, Mantenimientos }) =>  {
+const CreateOmc  = ({ onClose, Responsables, Componentes, Tipe, Mantenimientos, Omc }) =>  {
  
-
   const { data, post } = useForm() 
   const [filtro, setFiltro] = useState("");
   const [FiltroMtto, setFiltroMtto] = useState("");
@@ -13,18 +12,18 @@ const CreateOmc  = ({ onClose, Responsables, LastOma, Componentes, Tipe, Manteni
   const [CategoriaIdSeleccionada, setCategoriaIdSeleccionada] = useState("");
 
   const formik = useFormik({
-    initialValues:initialValue(LastOma, Tipe),
+    initialValues:initialValue(Omc),
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      data.taqom             = formValue.taqom
+      data.taqom             = Omc.taqom
       data.taqComponente     = formValue.taqComponente      
       data.taqMantenimiento  = formValue.taqMantenimiento
       data.taqresponsable    = formValue.Responsable
       data.descripcion       = formValue.Descripcion
       data.tipo              = formValue.Tipo
       data.prioridad         = formValue.Prioridad 
-      post('/omcs/store');
+      post('/omcs/update');
       onClose();
     }
   })
@@ -37,52 +36,7 @@ const CreateOmc  = ({ onClose, Responsables, LastOma, Componentes, Tipe, Manteni
     >
       <h3 className='font-bold'>
         Asignando Nueva OM
-      </h3>
-      <div className='w-full flex justify-center items-center gap-3'>
-        <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
-          <div className='w-full h-auto flex gap-2 justify-start items-center'>
-            <label htmlFor="LastOt" className='font-bold text-black'>
-              ULTIMA OM
-            </label> 
-            <span className='text-red-500 font-bold text-2xl'>
-              *
-            </span>
-          </div>
-          <input 
-            type="text"
-            disabled 
-            name="LastOt"
-            id="LastOt"
-            value={formik.values.LastOm}
-            className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-800 bg-gray-600 placeholder-white text-white cursor-not-allowed`}
-          /> 
-        </div>
-        <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
-          <div className='w-full h-auto flex gap-2 justify-start items-center'>
-            <label htmlFor="taqom" className='font-bold text-black'>
-              OM
-            </label> 
-            <span className='text-red-500 font-bold text-2xl'>
-              *
-            </span>
-          </div>
-          <input 
-            type="number"
-            min={0}
-            name="taqom"
-            id="taqom"
-            value={formik.values.taqom}
-            onChange={formik.handleChange}
-            placeholder='23001'
-            className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.taqom && formik.errors.taqom ? 'border-red-500' : 'border-black' }`}
-          />
-          {
-            formik.touched.taqom && formik.errors.taqom && (
-              <div className="text-red-500 font-bold">{formik.errors.taqom}</div>
-            )
-          }
-        </div>
-      </div>
+      </h3> 
       <div className='w-full h-auto flex-col justify-center items-center gap-3'>
         <div className='w-full h-auto flex gap-2 justify-start items-center'>
           <label htmlFor="Responsable" className='font-bold text-black'>

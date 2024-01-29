@@ -5,16 +5,48 @@ import Caracteristica_target from "@/Components/UI/Activo/Caracteristica_target"
 import AppbarOms from "@/Components/UI/Ots/Appbar" 
 import AsingWorker from "@/Components/forms/Mantenimiento/Actividades/AsingWorker"
 import SearchInput from "@/Components/UI/Search"
-import CreateMantenimiento from "@/Components/forms/Mantenimiento/CreateMantenimientoComponente"
-import EditOms from "@/Components/forms/Oms/EditOms" 
+import CreateMantenimiento from "@/Components/forms/Mantenimiento/CreateMantenimientoComponente" 
 import { useForm } from "@inertiajs/react"
 import { useEffect, useState } from "react"
+import EditActividades from "@/Components/forms/Mantenimiento/Actividades/EditActividades"
+import DeleteActividad from "@/Components/forms/Mantenimiento/Actividades/DeleteActividad" 
 
-const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
+const OmsPage = ({ DataOms, ActivosList, ResponsablesList, MantenimientosList }) => {
  
   const [CreateFormModal, setCreateFormModal] = useState(false)
+  const [actividad_selected, setactividad_selected] = useState('');
+
+  const [AsignarResponsableState, setAsignarResponsableState] = useState(false)
+  const [EditarActividadState, setEditarActividadState] = useState(false)
+  const [EliminarActividadState, setEliminarActividadState] = useState(false)
+
+  function ShowAsignarForm(){
+    setEliminarActividadState(false)
+    setEditarActividadState(false)
+    setAsignarResponsableState(true)
+  }
   
-  const [AsingWorkerState, setAsingWorkerState] = useState(false) 
+  function ShowEditarForm(){
+    setAsignarResponsableState(false)
+    setEliminarActividadState(false)
+    setEditarActividadState(true)
+  }
+  
+  function ShowEliminarForm(){
+    setAsignarResponsableState(false)
+    setEditarActividadState(false)
+    setEliminarActividadState(true)
+  }
+
+  const { data, post } = useForm()
+
+  function AprobeActividad(actividad_id){
+    data.actividad_id = actividad_id
+    data.taqom = DataOms[0].taqom
+    post('/actividad/oma/approbe')
+  }
+  
+  const [AccionesActividad, setAccionesActividad] = useState(false) 
   const [AccionesModal, setAccionesModal] = useState(false) 
   const [FormatosModal, setFormatosModal] = useState(false) 
   const [ShowModal, setShowModal] = useState(false)
@@ -44,9 +76,7 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
     setAcctionsButtons(false)
     setEditarOm(true)
   }
- 
-  const { data, post } = useForm() 
-
+  
   const Acciones = [{
       "id"         : "296215696",
       "label"      : "Editar Orden de mantenimiento",
@@ -58,7 +88,8 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
       "estate"     : 1,
       "function"   : () => { 
         data.taqom = DataOms[0].taqom 
-        post('/oms/close');
+        post('/omas/close');
+        setShowModal(false);
       },
   }]
 
@@ -128,18 +159,23 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
 
   const ActividadesData = [];
   DataOms.forEach(Om => {
-    Om.actividades.forEach(ActData => { 
+    Om.actividades.forEach(ActData => {  
+      const ultimoResponsable = ActData.responsable.length > 0
+        ? ActData.responsable[ActData.responsable.length - 1].responsable
+        : null; 
+      const nombreResponsable = ultimoResponsable ? ultimoResponsable.nombre : ''; 
       ActividadesData.push({
         actividad_id   : ActData.actividad_id,
         nombre         : ActData.nombre,
+        estado         : ActData.estado,
         descripcion    : ActData.descripcion,
-        responsable    : ActData.responsable.nombre ? ActData.responsable.nombre : '',
+        responsable    : nombreResponsable,
         sistema        : ActData.sistema,
         frecuencia     : ActData.frecuencia, 
         tipofrecuencia : ActData.tipofrecuencia
       });
     });
-  }); 
+  });
 
   useEffect(() => {
     setDocumentosFiltrados(DocumentosData)
@@ -186,6 +222,7 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
     const filtered = ActividadesData.filter((ActData) => {
         const actividad_id   = ActData.actividad_id.toLowerCase();
         const nombre         = ActData.nombre.toLowerCase();
+        const estado         = ActData.estado.toLowerCase();
         const descripcion    = ActData.descripcion.toLowerCase();
         const responsable    = ActData.responsable.nombre.toLowerCase();
         const sistema        = ActData.sistema.toLowerCase();
@@ -194,6 +231,7 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
         return (
           actividad_id.includes(searchTerm)   ||
           nombre.includes(searchTerm)         ||
+          estado.includes(searchTerm)         ||
           descripcion.includes(searchTerm)    ||
           responsable.includes(searchTerm)    ||
           sistema.includes(searchTerm)        ||
@@ -343,17 +381,51 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
                               { data.responsable }
                             </span>
                           </div>
-                          <div className='w-auto h-full  flex justify-end items-center gap-1'>
-                            <span onClick = { () => setAsingWorkerState(true) } className='w-auto h-auto px-4 py-2 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-green-500 hover:bg-green-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
-                              Asignar Responsable  
-                            </span>
-                            <span onClick = { () => {} } className='w-auto h-auto px-4 py-2 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-yellow-500 hover:bg-yellow-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
-                              Editar  
-                            </span>
-                            <span onClick = { () => {} } className='w-auto h-auto px-4 py-2 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-red-500 hover:bg-red-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
-                              Eliminar
-                            </span>
-                          </div>
+                          {
+                            data.estado != 'COMPLETADA' ? (
+                              <div className='w-[200px] h-full  flex flex-col justify-center items-center gap-1'> 
+                                { 
+                                  data.responsable ? (
+                                    <span 
+                                      onClick = {() => AprobeActividad() } 
+                                      className='w-full h-auto px-4 py-2 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-green-500 hover:bg-green-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
+                                      Finalizar Actividad
+                                    </span>
+                                  ) : (
+                                    <span 
+                                      onClick = {()=>{
+                                        setactividad_selected(data.actividad_id)
+                                        ShowAsignarForm()
+                                        setAccionesActividad(true)
+                                      }} 
+                                      className='w-full h-auto px-4 py-2 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-green-500 hover:bg-green-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
+                                      Asignar Responsable  
+                                    </span>
+                                  )
+                                }
+                                <span onClick = {()=>{
+                                  setactividad_selected(data.actividad_id)
+                                  setAccionesActividad(true)
+                                  ShowEditarForm()
+                                }} 
+                                  className='w-full h-auto px-4 py-2 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-yellow-500 hover:bg-yellow-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
+                                  Editar  
+                                </span>
+                                <span 
+                                  onClick = {()=>{
+                                    ShowEliminarForm()
+                                    setAccionesActividad(true)
+                                  }} 
+                                  className='w-full h-auto px-4 py-2 rounded-md  shadow-sm flex border border-black hover:border-white shadow-blackflex justify-center items-center bg-red-500 hover:bg-red-800 transition duration-700 ease-in-out text-black hover:text-white font-semibold'>
+                                  Eliminar
+                                </span>
+                              </div>
+                            ) : (
+                              <>
+                                Actividad Finalizada
+                              </>
+                            )
+                          }
                         </div> 
                       ))
                     ) : null
@@ -378,9 +450,11 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
             >
               {
                 EditarOm ? (
-                  <EditOms
+                  <EditOmas
+                    Tipe = { `Ninguna` }
+                    Mantenimientos = { MantenimientosList }
                     Activos = { ActivosList }
-                    Om = { DataOms[0] }
+                    Oma = { DataOms[0] }
                     Responsables = { ResponsablesList }
                     onClose = { () => setShowModal(false) }
                   />
@@ -412,11 +486,41 @@ const OmsPage = ({ DataOms, ActivosList, ResponsablesList }) => {
         }
       </Modal>
       <Modal
-        isVisible = { AsingWorkerState }
-        onClose = { () => setAsingWorkerState(false) }
+        isVisible = { AccionesActividad }
+        onClose = { () => setAccionesActividad(false) }
         tittle = {`Asignar trabajador`}
       >
-         <AsingWorker Responsables = { ResponsablesList } onClose = { () => setAsingWorkerState(false) } route = {`/actividad/oma/asing`} />
+        {
+           AsignarResponsableState ? (
+            <AsingWorker 
+              actividad_id = { actividad_selected }
+              Responsables = { ResponsablesList } 
+              onClose = { () => setAccionesActividad(false) } 
+              taqom = { DataOms[0].taqom } 
+              route = {`/actividad/oma/asing`} 
+            />
+          ) : null
+        }
+        {
+          EditarActividadState ? (
+            <EditActividades 
+              onClose = { () => setAccionesActividad(false) } 
+              Actividad = { actividad_selected }
+              taqom = { DataOms[0].taqom } 
+              route = {`/actividad/oma/update`} 
+            />
+          ) : null
+        }
+        {
+          EliminarActividadState ? (
+            <DeleteActividad 
+              Actividad = { actividad_selected }
+              taqom = { DataOms[0].taqom }
+              onClose = { () => setAccionesActividad(false) }
+              route = {`/actividad/oma/delete`} 
+            />
+          ) : null
+        }        
       </Modal>       
     </main>
   )

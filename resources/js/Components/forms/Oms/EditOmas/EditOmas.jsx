@@ -1,11 +1,10 @@
 import { useFormik } from "formik";
-import { initialValue, validationSchema } from './CreateOmcs.form';
+import { initialValue, validationSchema } from './EditOmas.form';
 import { useForm } from '@inertiajs/react'
 import { useState } from "react"; 
 
-const CreateOmc  = ({ onClose, Responsables, LastOma, Componentes, Tipe, Mantenimientos }) =>  {
+const EditOmas  = ({ onClose, Responsables, Activos, Tipe, Mantenimientos, Oma }) =>  {
  
-
   const { data, post } = useForm() 
   const [filtro, setFiltro] = useState("");
   const [FiltroMtto, setFiltroMtto] = useState("");
@@ -13,18 +12,18 @@ const CreateOmc  = ({ onClose, Responsables, LastOma, Componentes, Tipe, Manteni
   const [CategoriaIdSeleccionada, setCategoriaIdSeleccionada] = useState("");
 
   const formik = useFormik({
-    initialValues:initialValue(LastOma, Tipe),
+    initialValues:initialValue(Tipe),
     validationSchema: validationSchema(),
     validateOnChange: false,
-    onSubmit: async (formValue) => {
-      data.taqom             = formValue.taqom
-      data.taqComponente     = formValue.taqComponente      
+    onSubmit: async (formValue) => { 
+      data.taqom             = Oma.taqom, 
+      data.taqActivos        = formValue.taqActivos      
       data.taqMantenimiento  = formValue.taqMantenimiento
       data.taqresponsable    = formValue.Responsable
       data.descripcion       = formValue.Descripcion
       data.tipo              = formValue.Tipo
       data.prioridad         = formValue.Prioridad 
-      post('/omcs/store');
+      post('/omas/update'); 
       onClose();
     }
   })
@@ -36,53 +35,8 @@ const CreateOmc  = ({ onClose, Responsables, LastOma, Componentes, Tipe, Manteni
       method = "POST"
     >
       <h3 className='font-bold'>
-        Asignando Nueva OM
-      </h3>
-      <div className='w-full flex justify-center items-center gap-3'>
-        <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
-          <div className='w-full h-auto flex gap-2 justify-start items-center'>
-            <label htmlFor="LastOt" className='font-bold text-black'>
-              ULTIMA OM
-            </label> 
-            <span className='text-red-500 font-bold text-2xl'>
-              *
-            </span>
-          </div>
-          <input 
-            type="text"
-            disabled 
-            name="LastOt"
-            id="LastOt"
-            value={formik.values.LastOm}
-            className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-800 bg-gray-600 placeholder-white text-white cursor-not-allowed`}
-          /> 
-        </div>
-        <div className='w-full h-auto flex flex-col justify-center items-start justify-items-center gap-2'>
-          <div className='w-full h-auto flex gap-2 justify-start items-center'>
-            <label htmlFor="taqom" className='font-bold text-black'>
-              OM
-            </label> 
-            <span className='text-red-500 font-bold text-2xl'>
-              *
-            </span>
-          </div>
-          <input 
-            type="number"
-            min={0}
-            name="taqom"
-            id="taqom"
-            value={formik.values.taqom}
-            onChange={formik.handleChange}
-            placeholder='23001'
-            className = {`w-full h-auto  px-4 py-2 rounded-md focus:outline-none border border-gray-300 ${ formik.touched.taqom && formik.errors.taqom ? 'border-red-500' : 'border-black' }`}
-          />
-          {
-            formik.touched.taqom && formik.errors.taqom && (
-              <div className="text-red-500 font-bold">{formik.errors.taqom}</div>
-            )
-          }
-        </div>
-      </div>
+        Actualizando OM
+      </h3> 
       <div className='w-full h-auto flex-col justify-center items-center gap-3'>
         <div className='w-full h-auto flex gap-2 justify-start items-center'>
           <label htmlFor="Responsable" className='font-bold text-black'>
@@ -125,8 +79,8 @@ const CreateOmc  = ({ onClose, Responsables, LastOma, Componentes, Tipe, Manteni
       <div className="w-full flex justify-center items-center gap-3 ">
         <div className='w-1/2 h-auto flex-col justify-center items-center gap-3'>
           <div className='w-full h-auto flex gap-2 justify-start items-center'>
-            <label htmlFor="taqComponente" className='font-bold text-black'>
-              Componente
+            <label htmlFor="taqActivos" className='font-bold text-black'>
+              Activo
             </label> 
             <span className='text-red-500 font-bold text-2xl'>
               *
@@ -140,13 +94,13 @@ const CreateOmc  = ({ onClose, Responsables, LastOma, Componentes, Tipe, Manteni
               className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
           <select 
-            id="taqComponente" 
-            name="taqComponente"  
-            value = { formik.values.taqComponente } 
+            id="taqActivos" 
+            name="taqActivos"  
+            value = { formik.values.taqActivos } 
             onChange={(e) => {
               formik.handleChange(e);
               const categoriaId = Activos.find(
-                (data) => data.taqComponente === e.target.value
+                (data) => data.taqActivos === e.target.value
               )?.categoria_id;
               setCategoriaIdSeleccionada(categoriaId || "");
             }}
@@ -155,11 +109,11 @@ const CreateOmc  = ({ onClose, Responsables, LastOma, Componentes, Tipe, Manteni
                 POR FAVOR SELECCIONA UNA OPCION
             </option>
             {
-              Componentes ? (
-                Componentes.filter(data => data.nombre.includes(filtroActivos)).map((data) => (
+              Activos ? (
+                Activos.filter(data => data.nombre.includes(filtroActivos)).map((data) => (
                   <option 
-                    key = { data.taqComponente } 
-                    value = { data.taqComponente }
+                    key = { data.taqActivos } 
+                    value = { data.taqActivos }
                   >
                     { data.nombre } 
                   </option>
@@ -168,8 +122,8 @@ const CreateOmc  = ({ onClose, Responsables, LastOma, Componentes, Tipe, Manteni
             }
           </select>
           {
-            formik.touched.taqComponente && formik.errors.taqComponente && (
-              <div className="text-red-500 font-bold">{formik.errors.taqComponente}</div>
+            formik.touched.taqActivos && formik.errors.taqActivos && (
+              <div className="text-red-500 font-bold">{formik.errors.taqActivos}</div>
             )
           }
         </div>
@@ -306,4 +260,4 @@ const CreateOmc  = ({ onClose, Responsables, LastOma, Componentes, Tipe, Manteni
   )
 }
 
-export default CreateOmc;
+export default EditOmas;
